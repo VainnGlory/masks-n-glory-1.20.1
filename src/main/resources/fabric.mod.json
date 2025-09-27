@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "masks-n-glory",
+	"version": "${version}",
+	"name": "masks n glory",
+	"description": "a mod by VainnGlory for the Quilted minecraft server, mainly add masks and... perhaps more",
+	"authors": [
+		"VainnGlory"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/masks-n-glory/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.vainnglory.masksnglory.MasksNGlory"
+		],
+      "client": [
+        "net.vainnglory.masksnglory.MasksNGloryclient"
+      ],
+		"fabric-datagen": [
+			"net.vainnglory.masksnglory.MasksNGloryDataGenerator"
+		]
+	},
+	"mixins": [
+		"masks-n-glory.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
