@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "masks-n-glory:echodust"
+  },
+  "base": {
+    "item": "masks-n-glory:rawpale"
+  },
+  "result": {
+    "item": "masks-n-glory:rust"
+  },
+  "template": {
+    "item": "minecraft:blaze_powder"
+  }
+}

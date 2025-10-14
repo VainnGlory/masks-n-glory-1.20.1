@@ -17,7 +17,6 @@ public enum ModArmorMaterials implements ArmorMaterial {
     ;
 
     private final String name;
-    private final int durabilityMultiplier;
     private final int[] protectionAmounts;
     private final int enchantability;
     private final SoundEvent equipSound;
@@ -29,7 +28,6 @@ public enum ModArmorMaterials implements ArmorMaterial {
 
     ModArmorMaterials(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
         this.name = name;
-        this.durabilityMultiplier = durabilityMultiplier;
         this.protectionAmounts = protectionAmounts;
         this.enchantability = enchantability;
         this.equipSound = equipSound;

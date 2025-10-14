@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " # ",
+    "#S#",
+    "E# "
+  ],
+  "key": {
+    "#": {
+      "item": "masks-n-glory:goldenscrap"
+    },
+    "S": {
+      "item": "masks-n-glory:gildedingot"
+    }
+  },
+  "E": {
+    "item": "minecraft:echo_shard"
+},
+  "result": {
+    "item": "masks-n-glory:golden_pan"
+  }
+}

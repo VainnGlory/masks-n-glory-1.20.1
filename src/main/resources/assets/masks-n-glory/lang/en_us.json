@@ -1,9 +1,32 @@
 {
-  "item.masks-n-glory.eshard": "E Shard",
-  "item.masks-n-glory.dshard": "D Shard",
+  "item.masks-n-glory.eshard": "Mysterious Amber Shard",
+  "item.masks-n-glory.dshard": "Mysterious Pickle Scented Shard",
+  "item.masks-n-glory.rawpale": "Raw Pale Steel Ingot",
+  "item.masks-n-glory.gildedingot": "Gilded Ingot",
+  "item.masks-n-glory.echodust": "Echo Dust",
 
-  "item.masks-n-glory.ego_mask": "Ego's Mask",
-  "item.masks-n-glory.d_man_mask": "D_Man's Mask",
+  "item.masks-n-glory.goldenscrap": "Golden Scrap",
+  "tooltip.masks-n-glory.goldenscrap": "§7*seems to be a part of a greater whole...*",
+
+  "item.masks-n-glory.ego_mask": "Ego's Amber Mask",
+  "item.masks-n-glory.d_man_mask": "D_Man's Clown Mask",
+
+  "item.masks-n-glory.rusted_sword": "§6Pale Steel Sword",
+  "tooltip.masks-n-glory.rusted_sword": "§7*You can see your own death reflected in the blade*",
+
+
+  "item.masks-n-glory.rust": "Pale Steel Ingot",
+  "item.masks-n-glory.pale_template": "Pale Steel Smithing Template",
+  "upgrade.masks-n-glory.pale_template": "Pale Steel Upgrade",
+  "item.masks-n-glory.pale_template.base_slot_description": "Add netherite sword",
+  "item.masks-n-glory.pale_template.applies_to": "Netherite Sword",
+  "item.masks-n-glory.pale_template.additions_slot_description": "Add Pale Steel Ingot",
+  "item.masks-n-glory.pale_template.ingredients": "Pale Steel Ingot",
+
+  "item.masks-n-glory.maelstrom": "Maelstrom",
+
+  "item.masks-n-glory.golden_pan": "§6Golden War-Pan",
+  "tooltip.masks-n-glory.golden_pan": "§7*A pan? For cooking? No, a pan, for breaking teeth*",
 
   "itemgroup.shards": "Masks N Glory"
 }

@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>ModArmorItem.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ModArmorItem.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">net</span><span class="s2">.</span><span class="s1">vainnglory</span><span class="s2">.</span><span class="s1">masksnglory</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">custom</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">minecraft</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Entity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">minecraft</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">effect</span><span class="s2">.</span><span class="s1">StatusEffectInstance</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">minecraft</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">effect</span><span class="s2">.</span><span class="s1">StatusEffects</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">minecraft</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">player</span><span class="s2">.</span><span class="s1">PlayerEntity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">minecraft</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">ArmorItem</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">minecraft</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">ArmorMaterial</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">minecraft</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">ItemStack</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">minecraft</span><span class="s2">.</span><span class="s1">world</span><span class="s2">.</span><span class="s1">World</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">net</span><span class="s2">.</span><span class="s1">vainnglory</span><span class="s2">.</span><span class="s1">masksnglory</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">ModArmorMaterials</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">spongepowered</span><span class="s2">.</span><span class="s1">include</span><span class="s2">.</span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">common</span><span class="s2">.</span><span class="s1">collect</span><span class="s2">.</span><span class="s1">ImmutableMap</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Map</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">ModArmorItem </span><span class="s0">extends </span><span class="s1">ArmorItem </span><span class="s2">{</span>
+    <span class="s0">private static final </span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">ArmorMaterial</span><span class="s2">, </span><span class="s1">StatusEffectInstance</span><span class="s2">&gt; </span><span class="s1">MATERIAL_TO_EFFECT_MAP </span><span class="s2">=</span>
+            <span class="s2">(</span><span class="s0">new </span><span class="s1">ImmutableMap</span><span class="s2">.</span><span class="s1">Builder</span><span class="s2">&lt;</span><span class="s1">ArmorMaterial</span><span class="s2">, </span><span class="s1">StatusEffectInstance</span><span class="s2">&gt;())</span>
+                    <span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">ModArmorMaterials</span><span class="s2">.</span><span class="s1">ESHARD</span><span class="s2">, </span><span class="s0">new </span><span class="s1">StatusEffectInstance</span><span class="s2">(</span><span class="s1">StatusEffects</span><span class="s2">.</span><span class="s1">REGENERATION</span><span class="s2">, </span><span class="s3">400</span><span class="s2">, </span><span class="s3">0</span><span class="s2">,</span>
+                            <span class="s0">false</span><span class="s2">, </span><span class="s0">false</span><span class="s2">, </span><span class="s0">true</span><span class="s2">))</span>
+                    <span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s1">ModArmorMaterials</span><span class="s2">.</span><span class="s1">DSHARD</span><span class="s2">, </span><span class="s0">new </span><span class="s1">StatusEffectInstance</span><span class="s2">(</span><span class="s1">StatusEffects</span><span class="s2">.</span><span class="s1">STRENGTH</span><span class="s2">, </span><span class="s3">400</span><span class="s2">, </span><span class="s3">1</span><span class="s2">,</span>
+                            <span class="s0">false</span><span class="s2">, </span><span class="s0">false</span><span class="s2">, </span><span class="s0">true</span><span class="s2">)).</span><span class="s1">build</span><span class="s2">();</span>
+
+    <span class="s0">public </span><span class="s1">ModArmorItem</span><span class="s2">(</span><span class="s1">ArmorMaterial material</span><span class="s2">, </span><span class="s1">Type type</span><span class="s2">, </span><span class="s1">Settings settings</span><span class="s2">) {</span>
+        <span class="s0">super</span><span class="s2">(</span><span class="s1">material</span><span class="s2">, </span><span class="s1">type</span><span class="s2">, </span><span class="s1">settings</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">inventoryTick</span><span class="s2">(</span><span class="s1">ItemStack stack</span><span class="s2">, </span><span class="s1">World world</span><span class="s2">, </span><span class="s1">Entity entity</span><span class="s2">, </span><span class="s0">int </span><span class="s1">slot</span><span class="s2">, </span><span class="s0">boolean </span><span class="s1">selected</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(!</span><span class="s1">world</span><span class="s2">.</span><span class="s1">isClient</span><span class="s2">()) {</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">entity </span><span class="s0">instanceof </span><span class="s1">PlayerEntity player </span><span class="s2">&amp;&amp; </span><span class="s1">hasFullSuitOfArmorOn</span><span class="s2">(</span><span class="s1">player</span><span class="s2">)) {</span>
+                <span class="s1">evaluateArmorEffects</span><span class="s2">(</span><span class="s1">player</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">super</span><span class="s2">.</span><span class="s1">inventoryTick</span><span class="s2">(</span><span class="s1">stack</span><span class="s2">, </span><span class="s1">world</span><span class="s2">, </span><span class="s1">entity</span><span class="s2">, </span><span class="s1">slot</span><span class="s2">, </span><span class="s1">selected</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">evaluateArmorEffects</span><span class="s2">(</span><span class="s1">PlayerEntity player</span><span class="s2">) {</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Map</span><span class="s2">.</span><span class="s1">Entry</span><span class="s2">&lt;</span><span class="s1">ArmorMaterial</span><span class="s2">, </span><span class="s1">StatusEffectInstance</span><span class="s2">&gt; </span><span class="s1">entry </span><span class="s2">: </span><span class="s1">MATERIAL_TO_EFFECT_MAP</span><span class="s2">.</span><span class="s1">entrySet</span><span class="s2">()) {</span>
+            <span class="s1">ArmorMaterial mapArmorMaterial </span><span class="s2">= </span><span class="s1">entry</span><span class="s2">.</span><span class="s1">getKey</span><span class="s2">();</span>
+            <span class="s1">StatusEffectInstance mapStatusEffect </span><span class="s2">= </span><span class="s1">entry</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">();</span>
+
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">hasCorrectArmorOn</span><span class="s2">(</span><span class="s1">mapArmorMaterial</span><span class="s2">, </span><span class="s1">player</span><span class="s2">)) {</span>
+                <span class="s1">addStatusEffectForMaterial</span><span class="s2">(</span><span class="s1">player</span><span class="s2">, </span><span class="s1">mapArmorMaterial</span><span class="s2">, </span><span class="s1">mapStatusEffect</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">addStatusEffectForMaterial</span><span class="s2">(</span><span class="s1">PlayerEntity player</span><span class="s2">, </span><span class="s1">ArmorMaterial mapArmorMaterial</span><span class="s2">, </span><span class="s1">StatusEffectInstance mapStatusEffect</span><span class="s2">) {</span>
+        <span class="s0">boolean </span><span class="s1">hasPlayerEffect </span><span class="s2">= </span><span class="s1">player</span><span class="s2">.</span><span class="s1">hasStatusEffect</span><span class="s2">(</span><span class="s1">mapStatusEffect</span><span class="s2">.</span><span class="s1">getEffectType</span><span class="s2">());</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">hasCorrectArmorOn</span><span class="s2">(</span><span class="s1">mapArmorMaterial</span><span class="s2">, </span><span class="s1">player</span><span class="s2">) &amp;&amp; !</span><span class="s1">hasPlayerEffect</span><span class="s2">) {</span>
+            <span class="s1">player</span><span class="s2">.</span><span class="s1">addStatusEffect</span><span class="s2">(</span><span class="s0">new </span><span class="s1">StatusEffectInstance</span><span class="s2">(</span><span class="s1">mapStatusEffect</span><span class="s2">));</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">hasFullSuitOfArmorOn</span><span class="s2">(</span><span class="s1">PlayerEntity player</span><span class="s2">) {</span>
+        <span class="s1">ItemStack helmet </span><span class="s2">= </span><span class="s1">player</span><span class="s2">.</span><span class="s1">getInventory</span><span class="s2">().</span><span class="s1">getArmorStack</span><span class="s2">(</span><span class="s3">3</span><span class="s2">);</span>
+
+        <span class="s0">return </span><span class="s2">!</span><span class="s1">helmet</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">hasCorrectArmorOn</span><span class="s2">(</span><span class="s1">ArmorMaterial material</span><span class="s2">, </span><span class="s1">PlayerEntity player</span><span class="s2">) {</span>
+        <span class="s1">ArmorItem helmet </span><span class="s2">= ((</span><span class="s1">ArmorItem</span><span class="s2">)</span><span class="s1">player</span><span class="s2">.</span><span class="s1">getInventory</span><span class="s2">().</span><span class="s1">getArmorStack</span><span class="s2">(</span><span class="s3">3</span><span class="s2">).</span><span class="s1">getItem</span><span class="s2">());</span>
+
+        <span class="s0">return </span><span class="s1">helmet</span><span class="s2">.</span><span class="s1">getMaterial</span><span class="s2">() == </span><span class="s1">material</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

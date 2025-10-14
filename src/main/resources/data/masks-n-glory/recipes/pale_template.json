@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "#A#",
+    "#S#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:blackstone"
+    },
+    "S": {
+      "item": "masks-n-glory:rust"
+    },
+    "A": {
+      "item": "masks-n-glory:pale_template"
+    }
+  },
+  "result": {
+    "item": "masks-n-glory:pale_template",
+    "count": 2
+  }
+}
