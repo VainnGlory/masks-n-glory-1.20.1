@@ -25,6 +25,7 @@ public class ModItems {
     public static final Item NMASKS = registerItem("nmasks", new Item(new FabricItemSettings()));
     public static final Item RUSTED = registerItem("rust", new Item(new FabricItemSettings()));
     public static final Item GLORIOUS = registerItem("void", new Item(new FabricItemSettings()));
+    public static final Item BONE = registerItem("bone", new Item(new FabricItemSettings()));
     public static final Item RAWPALEINGOT = registerItem("rawpale", new Item(new FabricItemSettings()));
     public static final Item GILDEDINGOT = registerItem("gildedingot", new Item(new FabricItemSettings()));
     public static final Item ECHODUST = registerItem("echodust", new Item(new FabricItemSettings()));
@@ -61,6 +62,9 @@ public class ModItems {
 
     public static final Item GOLDEN_PAN = registerItem("golden_pan",
             new GoldenPanItem(ModToolMaterial.RUSTED,1, -1.8f, new FabricItemSettings()));
+
+    public static final Item PALE_SWORD = registerItem("pale_sword",
+            new PaleSwordItem(ModToolMaterial.RUSTED, 4 , -2.8f, new FabricItemSettings()));
 
 
     public static final Item PALE_TEMPLATE = registerItem("pale_template", new Item(new FabricItemSettings()));

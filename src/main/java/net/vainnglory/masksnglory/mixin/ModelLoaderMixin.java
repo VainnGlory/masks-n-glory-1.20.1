@@ -38,4 +38,10 @@ public abstract class ModelLoaderMixin {
     public void addGoldenPan(BlockColors blockColors, Profiler profiler, Map<Identifier, JsonUnbakedModel> jsonUnbakedModels, Map<Identifier, List<ModelLoader.SourceTrackedData>> blockStates, CallbackInfo ci) {
         this.addModel(new ModelIdentifier(MasksNGlory.MOD_ID, "golden_pan_detail", "inventory"));
     }
+
+    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/model/ModelLoader;addModel(Lnet/minecraft/client/util/ModelIdentifier;)V", ordinal = 3, shift = At.Shift.AFTER))
+    public void addPaleSword(BlockColors blockColors, Profiler profiler, Map<Identifier, JsonUnbakedModel> jsonUnbakedModels, Map<Identifier, List<ModelLoader.SourceTrackedData>> blockStates, CallbackInfo ci) {
+        this.addModel(new ModelIdentifier(MasksNGlory.MOD_ID, "pale_sword_detail", "inventory"));
+
+    }
 }

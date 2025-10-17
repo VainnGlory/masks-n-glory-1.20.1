@@ -25,6 +25,7 @@ public class ModItemGroups {
                         entries.add(ModItems.RUSTED);
                         entries.add(ModItems.RAWPALEINGOT);
                         entries.add(ModItems.GILDEDINGOT);
+                        entries.add(ModItems.BONE);
                         entries.add(ModItems.ECHODUST);
                         entries.add(ModItems.GOLDENSCRAP);
 
@@ -43,6 +44,7 @@ public class ModItemGroups {
                         entries.add(ModItems.RUSTED_SWORD);
                         entries.add(ModItems.MAELSTROM);
                         entries.add(ModItems.GOLDEN_PAN);
+                        entries.add(ModItems.PALE_SWORD);
 
                         entries.add(ModItems.PALE_TEMPLATE);
 

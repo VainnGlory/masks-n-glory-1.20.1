@@ -5,6 +5,7 @@
   "item.masks-n-glory.pshard": "Mysterious Two Faced Shard",
   "item.masks-n-glory.rawpale": "Raw Pale Steel Ingot",
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
+  "item.masks-n-glory.bone": "Bone Alloy Ingot",
   "item.masks-n-glory.echodust": "Echo Dust",
   "item.masks-n-glory.void": "Error:Null",
 
@@ -23,8 +24,11 @@
   "item.masks-n-glory.null_mask": "Null Mask",
   "item.masks-n-glory.knight_mask": "Knight Mask",
 
-  "item.masks-n-glory.rusted_sword": "§6Pale Steel Sword",
+  "item.masks-n-glory.rusted_sword": "§6Pale Bone Alloy Saber",
   "tooltip.masks-n-glory.rusted_sword": "§7*You can see your own death reflected in the blade*",
+
+  "item.masks-n-glory.pale_sword": "§6Pale Steel Greatsword",
+  "tooltip.masks-n-glory.pale_sword": "§7*A shiny weapon, hard to use in combat*",
 
 
   "item.masks-n-glory.rust": "Pale Steel Ingot",

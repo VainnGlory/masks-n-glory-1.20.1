@@ -30,5 +30,7 @@ public class MasksNGlory implements ModInitializer {
 
 
 		LOGGER.info("Starting The 9/5");
+
+        //thank you, @InfinityFarzad (https://modrinth.com/user/InfinityFarzad) for the "Pale Steel Greatsword" texture !
 	}
 }

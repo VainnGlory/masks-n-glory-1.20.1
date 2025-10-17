@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "masks-n-glory:rust"
+  },
+  "base": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "result": {
+    "item": "masks-n-glory:bone"
+  },
+  "template": {
+    "item": "minecraft:bone"
+  }
+}
