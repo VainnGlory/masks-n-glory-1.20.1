@@ -17,9 +17,21 @@ public class ModLootTableModifier {
     private static final Identifier JUNGLE_TEMPLE_ID =
             new Identifier("minecraft", "chests/jungle_temple");
 
+    private static final Identifier STRONGHOLD_ID=
+            new Identifier("minecraft", "chests/stronghold_corridor");
+
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, Source) -> {
 
+            if (STRONGHOLD_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.001f))
+                        .with(ItemEntry.builder(ModItems.GLORIOUS))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
 
             if (JUNGLE_TEMPLE_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()

@@ -13,8 +13,26 @@ public enum ModArmorMaterials implements ArmorMaterial {
     ESHARD("eshard", 25, new int[] { 3, 8, 6, 3 }, 19,
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.ESHARD)),
     DSHARD("dshard", 25, new int[] { 3, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DSHARD));
-    ;
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DSHARD)),
+    MASKS("masks", 25, new int[] { 3, 8, 6, 3 }, 19,
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.MASKS)),
+    HMASKS("hmasks", 25, new int[] { 1, 8, 6, 3 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HMASKS)),
+    GMASKS("gmasks", 25, new int[] { 1, 8, 6, 3 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.GMASKS)),
+    SMASKS("smasks", 25, new int[] { 1, 8, 6, 3 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.SMASKS)),
+    KMASKS("kmasks", 25, new int[] { 1, 8, 6, 3 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.KMASKS)),
+    EMASKS("emasks", 25, new int[] { 1, 8, 6, 3 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.EMASKS)),
+    NMASKS("nmasks", 25, new int[] { 1, 8, 6, 3 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.NMASKS)),
+    OSHARD("oshard", 25, new int[] { 3, 8, 6, 3 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.OSHARD)),
+    PSHARD("pshard", 25, new int[] { 3, 8, 6, 3 }, 19,
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.PSHARD));
+
 
     private final String name;
     private final int[] protectionAmounts;

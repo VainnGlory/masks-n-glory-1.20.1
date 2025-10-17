@@ -1,15 +1,27 @@
 {
   "item.masks-n-glory.eshard": "Mysterious Amber Shard",
   "item.masks-n-glory.dshard": "Mysterious Pickle Scented Shard",
+  "item.masks-n-glory.oshard": "Mysterious Rusted Shard",
+  "item.masks-n-glory.pshard": "Mysterious Two Faced Shard",
   "item.masks-n-glory.rawpale": "Raw Pale Steel Ingot",
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
   "item.masks-n-glory.echodust": "Echo Dust",
+  "item.masks-n-glory.void": "Error:Null",
 
   "item.masks-n-glory.goldenscrap": "Golden Scrap",
   "tooltip.masks-n-glory.goldenscrap": "§7*seems to be a part of a greater whole...*",
 
   "item.masks-n-glory.ego_mask": "Ego's Amber Mask",
   "item.masks-n-glory.d_man_mask": "D_Man's Clown Mask",
+  "item.masks-n-glory.oji_mask": "Oji's Mask",
+  "item.masks-n-glory.piko_mask": "Piko's Mask",
+  "item.masks-n-glory.blank_mask": "Blank Mask",
+  "item.masks-n-glory.happy_mask": "Happy Face Mask",
+  "item.masks-n-glory.sad_mask": "Sad Face Mask",
+  "item.masks-n-glory.grin_mask": "Grinning Face Mask",
+  "item.masks-n-glory.eye_mask": "Eye Mask",
+  "item.masks-n-glory.null_mask": "Null Mask",
+  "item.masks-n-glory.knight_mask": "Knight Mask",
 
   "item.masks-n-glory.rusted_sword": "§6Pale Steel Sword",
   "tooltip.masks-n-glory.rusted_sword": "§7*You can see your own death reflected in the blade*",

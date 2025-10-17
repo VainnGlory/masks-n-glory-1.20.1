@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "base": {
+    "item": "masks-n-glory:blank_mask"
+  },
+  "result": {
+    "item": "masks-n-glory:grin_mask"
+  },
+  "template": {
+    "item": "minecraft:rotten_flesh"
+  }
+}
