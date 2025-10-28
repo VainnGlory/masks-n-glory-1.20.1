@@ -22,17 +22,19 @@ public class ModArmorItem extends ArmorItem {
                             false, false, true))
                     .put(ModArmorMaterials.PSHARD, new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 2,
                             false, false, true))
+                    .put(ModArmorMaterials.TSHARD, new StatusEffectInstance(StatusEffects.ABSORPTION, 300, 3,
+                            false, false, true))
                     .put(ModArmorMaterials.HMASKS, new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 400, 0,
                             false, false, true))
                     .put(ModArmorMaterials.GMASKS, new StatusEffectInstance(StatusEffects.BAD_OMEN, 400, 0,
                             false, false, true))
-                    .put(ModArmorMaterials.SMASKS, new StatusEffectInstance(StatusEffects.HASTE, 400, 0,
+                    .put(ModArmorMaterials.SMASKS, new StatusEffectInstance(StatusEffects.HASTE, 600, 0,
                             false, false, true))
-                    .put(ModArmorMaterials.KMASKS, new StatusEffectInstance(StatusEffects.ABSORPTION, 400, 0,
+                    .put(ModArmorMaterials.KMASKS, new StatusEffectInstance(StatusEffects.ABSORPTION, 200, 2,
                             false, false, true))
-                    .put(ModArmorMaterials.EMASKS, new StatusEffectInstance(StatusEffects.NIGHT_VISION, 400, 0,
+                    .put(ModArmorMaterials.EMASKS, new StatusEffectInstance(StatusEffects.NIGHT_VISION, 5000, 0,
                             false, false, true))
-                    .put(ModArmorMaterials.NMASKS, new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 400, 0,
+                    .put(ModArmorMaterials.NMASKS, new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 1000, 0,
                             false, false, true))
                     .put(ModArmorMaterials.DSHARD, new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1,
                             false, false, true)).build();

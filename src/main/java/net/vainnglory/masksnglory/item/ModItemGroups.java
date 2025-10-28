@@ -22,6 +22,7 @@ public class ModItemGroups {
                         entries.add(ModItems.DSHARD);
                         entries.add(ModItems.OSHARD);
                         entries.add(ModItems.PSHARD);
+                        entries.add(ModItems.TSHARD);
                         entries.add(ModItems.RUSTED);
                         entries.add(ModItems.RAWPALEINGOT);
                         entries.add(ModItems.GILDEDINGOT);
@@ -33,6 +34,7 @@ public class ModItemGroups {
                         entries.add(ModItems.DMAN_MASK);
                         entries.add(ModItems.OJI_MASK);
                         entries.add(ModItems.PIKO_MASK);
+                        entries.add(ModItems.TOG_MASK);
                         entries.add(ModItems.BLANK_MASK);
                         entries.add(ModItems.GRIN_MASK);
                         entries.add(ModItems.SAD_MASK);

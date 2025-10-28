@@ -16,6 +16,7 @@ public class ModItems {
     public static final Item DSHARD = registerItem("dshard", new Item(new FabricItemSettings()));
     public static final Item OSHARD = registerItem("oshard", new Item(new FabricItemSettings()));
     public static final Item PSHARD = registerItem("pshard", new Item(new FabricItemSettings()));
+    public static final Item TSHARD = registerItem("tshard", new Item(new FabricItemSettings()));
     public static final Item MASKS = registerItem("masks", new Item(new FabricItemSettings()));
     public static final Item HMASKS = registerItem("hmasks", new Item(new FabricItemSettings()));
     public static final Item GMASKS = registerItem("gmasks", new Item(new FabricItemSettings()));
@@ -53,6 +54,8 @@ public class ModItems {
             new ModArmorItem(ModArmorMaterials.OSHARD, ArmorItem.Type.HELMET, new FabricItemSettings()));
     public static final Item PIKO_MASK = registerItem("piko_mask",
             new ModArmorItem(ModArmorMaterials.PSHARD, ArmorItem.Type.HELMET, new FabricItemSettings()));
+    public static final Item TOG_MASK = registerItem("tog_mask",
+            new ModArmorItem(ModArmorMaterials.TSHARD, ArmorItem.Type.HELMET, new FabricItemSettings()));
 
     public static final Item RUSTED_SWORD = registerItem("rusted_sword",
             new RustedSwordItem(ModToolMaterial.RUSTED, 3 , -2.2f, new FabricItemSettings()));
@@ -74,6 +77,7 @@ public class ModItems {
         entries.add(ESHARD);
         entries.add(DSHARD);
         entries.add(RUSTED);
+        entries.add(TSHARD);
     }
 
     private static Item registerItem(String name, Item item) {

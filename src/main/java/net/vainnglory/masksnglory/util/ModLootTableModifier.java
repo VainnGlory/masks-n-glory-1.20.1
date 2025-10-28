@@ -20,6 +20,7 @@ public class ModLootTableModifier {
     private static final Identifier STRONGHOLD_ID=
             new Identifier("minecraft", "chests/stronghold_corridor");
 
+
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, Source) -> {
 
