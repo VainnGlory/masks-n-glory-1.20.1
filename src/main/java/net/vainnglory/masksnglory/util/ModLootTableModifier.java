@@ -11,8 +11,8 @@ import net.minecraft.util.Identifier;
 import net.vainnglory.masksnglory.item.ModItems;
 
 public class ModLootTableModifier {
-    private static final Identifier WOODLAND_MANSION_ID =
-            new Identifier("minecraft", "chests/woodland_mansion");
+    private static final Identifier EVOKER_ID =
+            new Identifier("minecraft", "minecraft:entities/evoker");
 
     private static final Identifier JUNGLE_TEMPLE_ID =
             new Identifier("minecraft", "chests/jungle_temple");
@@ -20,6 +20,11 @@ public class ModLootTableModifier {
     private static final Identifier STRONGHOLD_ID=
             new Identifier("minecraft", "chests/stronghold_corridor");
 
+    private static final Identifier STRONGHOLD2_ID=
+            new Identifier("minecraft", "chests/stronghold_crossing");
+
+    private static final Identifier STRONGHOLD3_ID=
+            new Identifier("minecraft", "chests/stronghold_library");
 
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, Source) -> {
@@ -28,6 +33,26 @@ public class ModLootTableModifier {
                 LootPool.Builder poolBuilder = LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(0.001f))
+                        .with(ItemEntry.builder(ModItems.GLORIOUS))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
+
+            if (STRONGHOLD2_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.002f))
+                        .with(ItemEntry.builder(ModItems.GLORIOUS))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
+
+            if (STRONGHOLD3_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.003f))
                         .with(ItemEntry.builder(ModItems.GLORIOUS))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
@@ -44,10 +69,10 @@ public class ModLootTableModifier {
                 tableBuilder.pool(poolBuilder.build());
             }
 
-            if (WOODLAND_MANSION_ID.equals(id)) {
+            if (EVOKER_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.01f))
+                        .conditionally(RandomChanceLootCondition.builder(0.001f))
                         .with(ItemEntry.builder(ModItems.GOLDENSCRAP))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
