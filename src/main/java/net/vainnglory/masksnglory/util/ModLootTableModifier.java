@@ -12,7 +12,10 @@ import net.vainnglory.masksnglory.item.ModItems;
 
 public class ModLootTableModifier {
     private static final Identifier EVOKER_ID =
-            new Identifier("minecraft", "minecraft:entities/evoker");
+            new Identifier("minecraft", "entities/evoker");
+
+    private static final Identifier DARK_OAK_ID =
+            new Identifier("minecraft", "blocks/dark_oak_log");
 
     private static final Identifier JUNGLE_TEMPLE_ID =
             new Identifier("minecraft", "chests/jungle_temple");
@@ -74,6 +77,16 @@ public class ModLootTableModifier {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(0.001f))
                         .with(ItemEntry.builder(ModItems.GOLDENSCRAP))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
+
+            if (DARK_OAK_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.001f))
+                        .with(ItemEntry.builder(ModItems.HSSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
                 tableBuilder.pool(poolBuilder.build());

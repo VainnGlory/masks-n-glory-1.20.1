@@ -11,6 +11,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.vainnglory.masksnglory.MasksNGlory;
+import net.vainnglory.masksnglory.block.ModBlocks;
 import net.vainnglory.masksnglory.item.custom.ModArmorItem;
 
 public class ModItemGroups {
@@ -23,6 +24,7 @@ public class ModItemGroups {
                         entries.add(ModItems.OSHARD);
                         entries.add(ModItems.PSHARD);
                         entries.add(ModItems.TSHARD);
+                        entries.add(ModItems.HSSHARD);
                         entries.add(ModItems.RUSTED);
                         entries.add(ModItems.RAWPALEINGOT);
                         entries.add(ModItems.GILDEDINGOT);
@@ -35,6 +37,7 @@ public class ModItemGroups {
                         entries.add(ModItems.OJI_MASK);
                         entries.add(ModItems.PIKO_MASK);
                         entries.add(ModItems.TOG_MASK);
+                        entries.add(ModItems.HS_MASK);
                         entries.add(ModItems.BLANK_MASK);
                         entries.add(ModItems.GRIN_MASK);
                         entries.add(ModItems.SAD_MASK);
@@ -51,6 +54,9 @@ public class ModItemGroups {
                         entries.add(ModItems.PALE_TEMPLATE);
 
                         entries.add(ModItems.GLORIOUS);
+
+                        entries.add(ModBlocks.PALE_STEEL_BLOCK);
+                        entries.add(ModBlocks.PALE_STEEL_TILES);
 
                     }).build());
 

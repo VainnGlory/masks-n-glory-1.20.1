@@ -4,6 +4,7 @@
   "item.masks-n-glory.oshard": "Mysterious Rusted Shard",
   "item.masks-n-glory.pshard": "Mysterious Two Faced Shard",
   "item.masks-n-glory.tshard": "§6Beautiful Reflective Gem",
+  "item.masks-n-glory.hsshard": "Mysterious Old Wooden Shard",
   "item.masks-n-glory.rawpale": "Raw Pale Steel Ingot",
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
   "item.masks-n-glory.bone": "Bone Alloy Ingot",
@@ -18,6 +19,7 @@
   "item.masks-n-glory.oji_mask": "Oji's Mask",
   "item.masks-n-glory.piko_mask": "Piko's Mask",
   "item.masks-n-glory.tog_mask": "§6Ciemność",
+  "item.masks-n-glory.hs_mask": "HS's Wooden Mask",
   "item.masks-n-glory.blank_mask": "Blank Mask",
   "item.masks-n-glory.happy_mask": "Happy Face Mask",
   "item.masks-n-glory.sad_mask": "Sad Face Mask",
@@ -45,6 +47,9 @@
 
   "item.masks-n-glory.golden_pan": "§6Golden War-Pan",
   "tooltip.masks-n-glory.golden_pan": "§7*A pan? For cooking? No, a pan, for breaking teeth*",
+
+  "block.masks-n-glory.pale_steel_block": "Block Of Pale Steel",
+  "block.masks-n-glory.pale_steel_tiles": "Pale Steel Tiles",
 
   "itemgroup.shards": "Masks N Glory"
 }

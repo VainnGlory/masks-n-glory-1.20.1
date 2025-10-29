@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+ "ingredients": [
+   {
+      "item": "masks-n-glory:pale_steel_block"
+    }
+  ],
+  "result": {
+    "item": "masks-n-glory:rust",
+    "count": 9
+  }
+}

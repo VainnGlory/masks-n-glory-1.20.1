@@ -24,6 +24,8 @@ public class ModArmorItem extends ArmorItem {
                             false, false, true))
                     .put(ModArmorMaterials.TSHARD, new StatusEffectInstance(StatusEffects.ABSORPTION, 300, 3,
                             false, false, true))
+                    .put(ModArmorMaterials.HSSHARD, new StatusEffectInstance(StatusEffects.JUMP_BOOST, 400, 3,
+                            false, false, true))
                     .put(ModArmorMaterials.HMASKS, new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 400, 0,
                             false, false, true))
                     .put(ModArmorMaterials.GMASKS, new StatusEffectInstance(StatusEffects.BAD_OMEN, 400, 0,
