@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 150,
+  "experience": 5,
+  "ingredient": {
+    "item": "masks-n-glory:echo_dust_and_sugar"
+  },
+  "result": "masks-n-glory:echo_caramel"
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "masks-n-glory:chiseled_pale_steel_block"
+    },
+      "A": {
+        "item": "masks-n-glory:rust"
+      }
+    },
+    "pattern": [
+      "#A"
+    ],
+    "result": {
+      "item": "masks-n-glory:crimped_chiseled_pale_steel_block",
+      "count": 2
+    }
+  }

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "masks-n-glory:block/chiseled_pale_steel_block"
+  }
+}

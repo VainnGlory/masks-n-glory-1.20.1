@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "masks-n-glory:echodust"
+    },
+    "A": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "pattern": [
+    "#A"
+  ],
+  "result": {
+    "item": "masks-n-glory:echo_dust_and_sugar",
+    "count": 3
+  }
+}

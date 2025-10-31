@@ -19,6 +19,12 @@ public class ModBlocks {
     public static final Block PALE_STEEL_TILES = registerBlock("pale_steel_tiles",
             new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).sounds(BlockSoundGroup.NETHERITE)));
 
+    public static final Block CRIMPED_CHISELED_PALE_STEEL_BLOCK = registerBlock("crimped_chiseled_pale_steel_block",
+            new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).sounds(BlockSoundGroup.NETHERITE)));
+
+    public static final Block CHISELED_PALE_STEEL_BLOCK = registerBlock("chiseled_pale_steel_block",
+            new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).sounds(BlockSoundGroup.NETHERITE)));
+
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, new Identifier(MasksNGlory.MOD_ID, name), block);

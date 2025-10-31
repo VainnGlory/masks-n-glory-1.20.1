@@ -30,6 +30,7 @@ public class ModItemGroups {
                         entries.add(ModItems.GILDEDINGOT);
                         entries.add(ModItems.BONE);
                         entries.add(ModItems.ECHODUST);
+                        entries.add(ModItems.ECHODUSTSUGAR);
                         entries.add(ModItems.GOLDENSCRAP);
 
                         entries.add(ModItems.EGO_MASK);
@@ -57,6 +58,13 @@ public class ModItemGroups {
 
                         entries.add(ModBlocks.PALE_STEEL_BLOCK);
                         entries.add(ModBlocks.PALE_STEEL_TILES);
+                        entries.add(ModBlocks.CRIMPED_CHISELED_PALE_STEEL_BLOCK);
+                        entries.add(ModBlocks.CHISELED_PALE_STEEL_BLOCK);
+
+                        entries.add(ModItems.GILDED_SOUP);
+                        entries.add(ModItems.ECHO_CARAMEL);
+
+
 
                     }).build());
 

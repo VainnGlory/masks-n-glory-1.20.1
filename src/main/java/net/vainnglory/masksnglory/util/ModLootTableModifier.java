@@ -1,6 +1,7 @@
 package net.vainnglory.masksnglory.util;
 
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
@@ -16,6 +17,9 @@ public class ModLootTableModifier {
 
     private static final Identifier DARK_OAK_ID =
             new Identifier("minecraft", "blocks/dark_oak_log");
+
+    private static final Identifier ECHO_SHARD_ID =
+            new Identifier("minecraft", "blocks/sculk");
 
     private static final Identifier JUNGLE_TEMPLE_ID =
             new Identifier("minecraft", "chests/jungle_temple");
@@ -87,6 +91,16 @@ public class ModLootTableModifier {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(0.001f))
                         .with(ItemEntry.builder(ModItems.HSSHARD))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
+
+            if (ECHO_SHARD_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.5f))
+                        .with(ItemEntry.builder(Items.ECHO_SHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
                 tableBuilder.pool(poolBuilder.build());

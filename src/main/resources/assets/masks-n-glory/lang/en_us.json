@@ -9,6 +9,7 @@
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
   "item.masks-n-glory.bone": "Bone Alloy Ingot",
   "item.masks-n-glory.echodust": "Echo Dust",
+  "item.masks-n-glory.echo_dust_and_sugar": "Echo Dust And Sugar",
   "item.masks-n-glory.void": "Error:Null",
 
   "item.masks-n-glory.goldenscrap": "Golden Scrap",
@@ -19,7 +20,7 @@
   "item.masks-n-glory.oji_mask": "Oji's Mask",
   "item.masks-n-glory.piko_mask": "Piko's Mask",
   "item.masks-n-glory.tog_mask": "§6Ciemność",
-  "item.masks-n-glory.hs_mask": "HS's Wooden Mask",
+  "item.masks-n-glory.hs_mask": "HS' Wooden Mask",
   "item.masks-n-glory.blank_mask": "Blank Mask",
   "item.masks-n-glory.happy_mask": "Happy Face Mask",
   "item.masks-n-glory.sad_mask": "Sad Face Mask",
@@ -28,10 +29,10 @@
   "item.masks-n-glory.null_mask": "Null Mask",
   "item.masks-n-glory.knight_mask": "Knight Mask",
 
-  "item.masks-n-glory.rusted_sword": "§6Pale Bone Alloy Saber",
+  "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
   "tooltip.masks-n-glory.rusted_sword": "§7*You can see your own death reflected in the blade*",
 
-  "item.masks-n-glory.pale_sword": "§6Pale Steel Greatsword",
+  "item.masks-n-glory.pale_sword": "Pale Steel Greatsword",
   "tooltip.masks-n-glory.pale_sword": "§7*A shiny weapon, hard to use in combat*",
 
 
@@ -50,6 +51,12 @@
 
   "block.masks-n-glory.pale_steel_block": "Block Of Pale Steel",
   "block.masks-n-glory.pale_steel_tiles": "Pale Steel Tiles",
+  "block.masks-n-glory.chiseled_pale_steel_block": "Chiseled Pale Steel Block",
+  "block.masks-n-glory.crimped_chiseled_pale_steel_block": "Crimped Chiseled Pale Steel Block",
+
+  "item.masks-n-glory.gilded_soup": "Gilded Soup",
+  "item.masks-n-glory.echo_caramel": "Echo Caramel",
+
 
   "itemgroup.shards": "Masks N Glory"
 }
