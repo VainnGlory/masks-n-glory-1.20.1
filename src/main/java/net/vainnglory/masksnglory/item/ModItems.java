@@ -19,6 +19,7 @@ public class ModItems {
     public static final Item PSHARD = registerItem("pshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item TSHARD = registerItem("tshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item HSSHARD = registerItem("hsshard", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item DOSHARD = registerItem("doshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item MASKS = registerItem("masks", new Item(new FabricItemSettings()));
     public static final Item HMASKS = registerItem("hmasks", new Item(new FabricItemSettings()));
     public static final Item GMASKS = registerItem("gmasks", new Item(new FabricItemSettings()));
@@ -61,6 +62,9 @@ public class ModItems {
             new ModArmorItem(ModArmorMaterials.TSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item HS_MASK = registerItem("hs_mask",
             new ModArmorItem(ModArmorMaterials.HSSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item DOG_MASK = registerItem("dog_mask",
+            new ModArmorItem(ModArmorMaterials.DOSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+
 
     public static final Item RUSTED_SWORD = registerItem("rusted_sword",
             new RustedSwordItem(ModToolMaterial.RUSTED, 3 , -2.2f, new FabricItemSettings().rarity(Rarity.EPIC)));
@@ -79,6 +83,7 @@ public class ModItems {
 
     public static final Item GILDED_SOUP = registerItem("gilded_soup", new Item(new FabricItemSettings().food(ModFoodComponents.GILDED_SOUP)));
     public static final Item ECHO_CARAMEL = registerItem("echo_caramel", new Item(new FabricItemSettings().rarity(Rarity.RARE).food(ModFoodComponents.ECHO_CARAMEL)));
+    public static final Item CHOGLOWBERRY = registerItem("choglowberry", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(ModFoodComponents.CHOGLOWBERRY)));
 
 
     private static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
@@ -89,6 +94,7 @@ public class ModItems {
         entries.add(HSSHARD);
         entries.add(PSHARD);
         entries.add(OSHARD);
+        entries.add(DOSHARD);
     }
 
     private static Item registerItem(String name, Item item) {

@@ -15,8 +15,14 @@ public class ModLootTableModifier {
     private static final Identifier EVOKER_ID =
             new Identifier("minecraft", "entities/evoker");
 
+    private static final Identifier WITHER_SKELETON_ID =
+            new Identifier("minecraft", "entities/wither_skeleton");
+
     private static final Identifier DARK_OAK_ID =
             new Identifier("minecraft", "blocks/dark_oak_log");
+
+    private static final Identifier SEA_PICKLE_ID =
+            new Identifier("minecraft", "blocks/sea_pickle");
 
     private static final Identifier ECHO_SHARD_ID =
             new Identifier("minecraft", "blocks/sculk");
@@ -101,6 +107,26 @@ public class ModLootTableModifier {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(0.5f))
                         .with(ItemEntry.builder(Items.ECHO_SHARD))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
+
+            if (WITHER_SKELETON_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.01f))
+                        .with(ItemEntry.builder(ModItems.ESHARD))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
+
+            if (SEA_PICKLE_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.009f))
+                        .with(ItemEntry.builder(ModItems.DSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
                 tableBuilder.pool(poolBuilder.build());

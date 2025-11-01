@@ -1,10 +1,11 @@
 {
-  "item.masks-n-glory.eshard": "Mysterious Amber Shard",
+  "item.masks-n-glory.eshard": "Mysterious Netherite Plated Shard",
   "item.masks-n-glory.dshard": "Mysterious Pickle Scented Shard",
   "item.masks-n-glory.oshard": "Mysterious Rusted Shard",
   "item.masks-n-glory.pshard": "Mysterious Two Faced Shard",
   "item.masks-n-glory.tshard": "§6Beautiful Reflective Gem",
   "item.masks-n-glory.hsshard": "Mysterious Old Wooden Shard",
+  "item.masks-n-glory.doshard": "Mysterious Golden Pin",
   "item.masks-n-glory.rawpale": "Raw Pale Steel Ingot",
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
   "item.masks-n-glory.bone": "Bone Alloy Ingot",
@@ -15,12 +16,13 @@
   "item.masks-n-glory.goldenscrap": "Golden Scrap",
   "tooltip.masks-n-glory.goldenscrap": "§7*seems to be a part of a greater whole...*",
 
-  "item.masks-n-glory.ego_mask": "Ego's Amber Mask",
+  "item.masks-n-glory.ego_mask": "Ego's Netherite Plated Mask",
   "item.masks-n-glory.d_man_mask": "D_Man's Clown Mask",
   "item.masks-n-glory.oji_mask": "Oji's Mask",
   "item.masks-n-glory.piko_mask": "Piko's Mask",
   "item.masks-n-glory.tog_mask": "§6Ciemność",
   "item.masks-n-glory.hs_mask": "HS' Wooden Mask",
+  "item.masks-n-glory.dog_mask": "DogScout's Patriotic Mask",
   "item.masks-n-glory.blank_mask": "Blank Mask",
   "item.masks-n-glory.happy_mask": "Happy Face Mask",
   "item.masks-n-glory.sad_mask": "Sad Face Mask",
@@ -56,6 +58,7 @@
 
   "item.masks-n-glory.gilded_soup": "Gilded Soup",
   "item.masks-n-glory.echo_caramel": "Echo Caramel",
+  "item.masks-n-glory.choglowberry": "Choglowberry",
 
 
   "itemgroup.shards": "Masks N Glory"

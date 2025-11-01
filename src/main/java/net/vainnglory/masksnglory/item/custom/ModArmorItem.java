@@ -38,8 +38,11 @@ public class ModArmorItem extends ArmorItem {
                             false, false, true))
                     .put(ModArmorMaterials.NMASKS, new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 1000, 0,
                             false, false, true))
+                    .put(ModArmorMaterials.DOSHARD, new StatusEffectInstance(StatusEffects.SPEED, 600, 4,
+                            false, false, true))
                     .put(ModArmorMaterials.DSHARD, new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1,
                             false, false, true)).build();
+
 
     public ModArmorItem(ArmorMaterial material, Type type, Settings settings) {
         super(material, type, settings);

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " # ",
+    "#S#",
+    " A "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:cocoa_beans"
+    },
+    "S": {
+      "item": "minecraft:milk_bucket"
+    },
+    "A": {
+      "item": "minecraft:glow_berries"
+    }
+  },
+  "result": {
+    "item": "masks-n-glory:choglowberry",
+    "count": 4
+  }
+}
