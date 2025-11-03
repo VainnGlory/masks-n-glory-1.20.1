@@ -10,6 +10,7 @@ import net.vainnglory.masksnglory.entity.ModEntities;
 import net.vainnglory.masksnglory.entity.custom.MaelstromEntity;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
+import net.vainnglory.masksnglory.painting.ModPaintings;
 import net.vainnglory.masksnglory.util.ModLootTableModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ public class MasksNGlory implements ModInitializer {
         ModItemGroups.registerItemGroups();
         ModItems.registerModItems();
         ModBlocks.registerModBlocks();
+        ModPaintings.registerPaintings();
 
         ModLootTableModifier.modifyLootTables();
         ModEntities.registerModEntities();

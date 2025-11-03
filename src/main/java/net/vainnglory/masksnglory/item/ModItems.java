@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.item.custom.*;
+import net.vainnglory.masksnglory.painting.ModPaintings;
 
 
 public class ModItems {
@@ -84,7 +85,6 @@ public class ModItems {
     public static final Item GILDED_SOUP = registerItem("gilded_soup", new Item(new FabricItemSettings().food(ModFoodComponents.GILDED_SOUP)));
     public static final Item ECHO_CARAMEL = registerItem("echo_caramel", new Item(new FabricItemSettings().rarity(Rarity.RARE).food(ModFoodComponents.ECHO_CARAMEL)));
     public static final Item CHOGLOWBERRY = registerItem("choglowberry", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(ModFoodComponents.CHOGLOWBERRY)));
-
 
     private static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
         entries.add(ESHARD);

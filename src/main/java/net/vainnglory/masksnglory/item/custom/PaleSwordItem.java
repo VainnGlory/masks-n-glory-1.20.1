@@ -5,11 +5,14 @@ import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -17,6 +20,8 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.Vanishable;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -91,9 +96,8 @@ public class PaleSwordItem extends SwordItem implements Vanishable {
         tooltip.add(Text.translatable("tooltip.masks-n-glory.pale_sword"));
         super.appendTooltip(stack, world, tooltip, context);
     }
-    public int getEnchantability()
 
-    {
+    public int getEnchantability() {
 
         return 1;
 

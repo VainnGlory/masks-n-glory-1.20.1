@@ -22,7 +22,7 @@
   "item.masks-n-glory.piko_mask": "Piko's Mask",
   "item.masks-n-glory.tog_mask": "§6Ciemność",
   "item.masks-n-glory.hs_mask": "HS' Wooden Mask",
-  "item.masks-n-glory.dog_mask": "DogScout's Patriotic Mask",
+  "item.masks-n-glory.dog_mask": "DogSout's Patriotic Mask",
   "item.masks-n-glory.blank_mask": "Blank Mask",
   "item.masks-n-glory.happy_mask": "Happy Face Mask",
   "item.masks-n-glory.sad_mask": "Sad Face Mask",
@@ -59,6 +59,13 @@
   "item.masks-n-glory.gilded_soup": "Gilded Soup",
   "item.masks-n-glory.echo_caramel": "Echo Caramel",
   "item.masks-n-glory.choglowberry": "Choglowberry",
+
+  "painting.masks-n-glory.husk.author": "VainGlory",
+  "painting.masks-n-glory.husk.title": "Husk",
+  "painting.masks-n-glory.rats.author": "VainGlory",
+  "painting.masks-n-glory.rats.title": "500 Rats",
+  "painting.masks-n-glory.stop.author": "VainGlory",
+  "painting.masks-n-glory.stop.title": "Stop Impressing The Dead",
 
 
   "itemgroup.shards": "Masks N Glory"
