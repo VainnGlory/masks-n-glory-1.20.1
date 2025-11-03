@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": [
+    "B/B",
+    "#*#",
+    "#A#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:nautilus_shell"
+    },
+    "/": {
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "A": {
+      "item": "minecraft:netherite_block"
+    },
+    "B": {
+      "item": "masks-n-glory:goldenscrap"
+    },
+    "*": {
+      "item": "minecraft:totem_of_undying"
+    }
+  },
+  "result": {
+    "item": "masks-n-glory:gilded_heart",
+    "count": 1
+  }
+}

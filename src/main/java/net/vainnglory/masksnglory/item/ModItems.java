@@ -85,6 +85,7 @@ public class ModItems {
     public static final Item GILDED_SOUP = registerItem("gilded_soup", new Item(new FabricItemSettings().food(ModFoodComponents.GILDED_SOUP)));
     public static final Item ECHO_CARAMEL = registerItem("echo_caramel", new Item(new FabricItemSettings().rarity(Rarity.RARE).food(ModFoodComponents.ECHO_CARAMEL)));
     public static final Item CHOGLOWBERRY = registerItem("choglowberry", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(ModFoodComponents.CHOGLOWBERRY)));
+    public static final Item GILDED_HEART = registerItem("gilded_heart", new GildedHeartItem(new FabricItemSettings().maxCount(1).food(ModFoodComponents.GILDED_HEART).rarity(Rarity.EPIC)));
 
     private static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
         entries.add(ESHARD);

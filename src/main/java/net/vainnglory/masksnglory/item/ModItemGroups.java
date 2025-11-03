@@ -1,18 +1,13 @@
 package net.vainnglory.masksnglory.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.block.ModBlocks;
-import net.vainnglory.masksnglory.item.custom.ModArmorItem;
 
 public class ModItemGroups {
     public static final ItemGroup SHARDS_GROUP = Registry.register(Registries.ITEM_GROUP,
@@ -66,7 +61,7 @@ public class ModItemGroups {
                         entries.add(ModItems.GILDED_SOUP);
                         entries.add(ModItems.ECHO_CARAMEL);
                         entries.add(ModItems.CHOGLOWBERRY);
-
+                        entries.add(ModItems.GILDED_HEART);
 
 
                     }).build());
