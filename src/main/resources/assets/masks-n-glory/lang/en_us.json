@@ -6,6 +6,7 @@
   "item.masks-n-glory.tshard": "§6Beautiful Reflective Gem",
   "item.masks-n-glory.hsshard": "Mysterious Old Wooden Shard",
   "item.masks-n-glory.doshard": "Mysterious Golden Pin",
+  "item.masks-n-glory.cshard": "Mysterious Golden Heart",
   "item.masks-n-glory.rawpale": "Raw Pale Steel Ingot",
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
   "item.masks-n-glory.bone": "Bone Alloy Ingot",
@@ -15,14 +16,14 @@
 
   "item.masks-n-glory.goldenscrap": "Golden Scrap",
   "tooltip.masks-n-glory.goldenscrap": "§7*seems to be a part of a greater whole...*",
-
-  "item.masks-n-glory.ego_mask": "Ego's Netherite Plated Mask",
+  "item.masks-n-glory.ego_mask": "Ego's Nice Side",
   "item.masks-n-glory.d_man_mask": "D_Man's Clown Mask",
   "item.masks-n-glory.oji_mask": "Oji's Mask",
   "item.masks-n-glory.piko_mask": "Piko's Mask",
   "item.masks-n-glory.tog_mask": "§6Ciemność",
   "item.masks-n-glory.hs_mask": "HS' Wooden Mask",
   "item.masks-n-glory.dog_mask": "DogSout's Patriotic Mask",
+  "item.masks-n-glory.corv_mask": "Corvoks' Eye Mask",
   "item.masks-n-glory.blank_mask": "Blank Mask",
   "item.masks-n-glory.happy_mask": "Happy Face Mask",
   "item.masks-n-glory.sad_mask": "Sad Face Mask",
@@ -32,10 +33,10 @@
   "item.masks-n-glory.knight_mask": "Knight Mask",
 
   "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
-  "tooltip.masks-n-glory.rusted_sword": "§7*You can see your own death reflected in the blade*",
+  "tooltip.masks-n-glory.rusted_sword": "§7*Seems to shroud your soul*",
 
   "item.masks-n-glory.pale_sword": "Pale Steel Greatsword",
-  "tooltip.masks-n-glory.pale_sword": "§7*A shiny weapon, hard to use in combat*",
+  "tooltip.masks-n-glory.pale_sword": "§7*Deep breaths, heavy blows.*",
 
 
   "item.masks-n-glory.rust": "Pale Steel Ingot",
@@ -60,7 +61,7 @@
   "item.masks-n-glory.echo_caramel": "Echo Caramel",
   "item.masks-n-glory.choglowberry": "Choglowberry",
   "item.masks-n-glory.gilded_heart": "§6Gilded Heart",
-  "tooltip.masks-n-glory.gilded_heart": "§7*One Heart, for One Soul*",
+  "tooltip.masks-n-glory.gilded_heart": "§7*Are you really willing to pay such a price for them*",
 
   "painting.masks-n-glory.husk.author": "VainGlory",
   "painting.masks-n-glory.husk.title": "Husk",

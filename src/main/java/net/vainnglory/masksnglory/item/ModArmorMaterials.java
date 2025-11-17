@@ -37,7 +37,10 @@ public enum ModArmorMaterials implements ArmorMaterial {
     HSSHARD("hsshard", 25, new int[] { 3, 8, 6, 3 }, 19,
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HSSHARD)),
     DOSHARD("doshard", 25, new int[] { 3, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DOSHARD));
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DOSHARD)),
+    CSHARD("cshard", 25, new int[] { 3, 8, 6, 3 }, 19,
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.CSHARD));
+
 
 
     private final String name;

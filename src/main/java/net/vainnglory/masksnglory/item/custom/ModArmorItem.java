@@ -16,9 +16,9 @@ import java.util.Map;
 public class ModArmorItem extends ArmorItem {
     private static final Map<ArmorMaterial, StatusEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, StatusEffectInstance>())
-                    .put(ModArmorMaterials.ESHARD, new StatusEffectInstance(StatusEffects.REGENERATION, 400, 0,
+                    .put(ModArmorMaterials.ESHARD, new StatusEffectInstance(StatusEffects.REGENERATION, 400, 1,
                             false, false, true))
-                    .put(ModArmorMaterials.OSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0,
+                    .put(ModArmorMaterials.OSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 1,
                             false, false, true))
                     .put(ModArmorMaterials.PSHARD, new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 2,
                             false, false, true))
@@ -32,13 +32,15 @@ public class ModArmorItem extends ArmorItem {
                             false, false, true))
                     .put(ModArmorMaterials.SMASKS, new StatusEffectInstance(StatusEffects.HASTE, 600, 0,
                             false, false, true))
-                    .put(ModArmorMaterials.KMASKS, new StatusEffectInstance(StatusEffects.ABSORPTION, 200, 2,
+                    .put(ModArmorMaterials.KMASKS, new StatusEffectInstance(StatusEffects.ABSORPTION, 550, 2,
                             false, false, true))
                     .put(ModArmorMaterials.EMASKS, new StatusEffectInstance(StatusEffects.NIGHT_VISION, 5000, 0,
                             false, false, true))
                     .put(ModArmorMaterials.NMASKS, new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 1000, 0,
                             false, false, true))
                     .put(ModArmorMaterials.DOSHARD, new StatusEffectInstance(StatusEffects.SPEED, 600, 4,
+                            false, false, true))
+                    .put(ModArmorMaterials.CSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0,
                             false, false, true))
                     .put(ModArmorMaterials.DSHARD, new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1,
                             false, false, true)).build();

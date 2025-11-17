@@ -85,7 +85,7 @@ public class ModLootTableModifier {
             if (EVOKER_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.001f))
+                        .conditionally(RandomChanceLootCondition.builder(0.01f))
                         .with(ItemEntry.builder(ModItems.GOLDENSCRAP))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 

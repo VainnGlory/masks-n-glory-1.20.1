@@ -21,6 +21,7 @@ public class ModItems {
     public static final Item TSHARD = registerItem("tshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item HSSHARD = registerItem("hsshard", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
     public static final Item DOSHARD = registerItem("doshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
+    public static final Item CSHARD = registerItem("cshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item MASKS = registerItem("masks", new Item(new FabricItemSettings()));
     public static final Item HMASKS = registerItem("hmasks", new Item(new FabricItemSettings()));
     public static final Item GMASKS = registerItem("gmasks", new Item(new FabricItemSettings()));
@@ -65,6 +66,8 @@ public class ModItems {
             new ModArmorItem(ModArmorMaterials.HSSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
     public static final Item DOG_MASK = registerItem("dog_mask",
             new ModArmorItem(ModArmorMaterials.DOSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item CORV_MASK = registerItem("corv_mask",
+            new ModArmorItem(ModArmorMaterials.CSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
 
 
     public static final Item RUSTED_SWORD = registerItem("rusted_sword",
@@ -96,6 +99,7 @@ public class ModItems {
         entries.add(PSHARD);
         entries.add(OSHARD);
         entries.add(DOSHARD);
+        entries.add(CSHARD);
     }
 
     private static Item registerItem(String name, Item item) {
