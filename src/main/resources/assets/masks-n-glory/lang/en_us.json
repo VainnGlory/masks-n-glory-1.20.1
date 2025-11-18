@@ -7,6 +7,7 @@
   "item.masks-n-glory.hsshard": "Mysterious Old Wooden Shard",
   "item.masks-n-glory.doshard": "Mysterious Golden Pin",
   "item.masks-n-glory.cshard": "Mysterious Golden Heart",
+  "item.masks-n-glory.crshard": "Mysterious Null Emblem",
   "item.masks-n-glory.rawpale": "Raw Pale Steel Ingot",
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
   "item.masks-n-glory.bone": "Bone Alloy Ingot",
@@ -24,6 +25,7 @@
   "item.masks-n-glory.hs_mask": "HS' Wooden Mask",
   "item.masks-n-glory.dog_mask": "DogSout's Patriotic Mask",
   "item.masks-n-glory.corv_mask": "Corvoks' Eye Mask",
+  "item.masks-n-glory.crash_mask": "Crasher's Ornament",
   "item.masks-n-glory.blank_mask": "Blank Mask",
   "item.masks-n-glory.happy_mask": "Happy Face Mask",
   "item.masks-n-glory.sad_mask": "Sad Face Mask",
@@ -69,6 +71,11 @@
   "painting.masks-n-glory.rats.title": "500 Rats",
   "painting.masks-n-glory.stop.author": "VainGlory",
   "painting.masks-n-glory.stop.title": "Stop Impressing The Dead",
+
+  "enchantment.masks-n-glory.fear": "Atychiphobia",
+  "enchantment.masks-n-glory.discombobulated": "Discombobulated",
+  "enchantment.masks-n-glory.blunt": "Blunt",
+  "enchantment.masks-n-glory.lethal": "Lethal",
 
 
   "itemgroup.shards": "Masks N Glory"

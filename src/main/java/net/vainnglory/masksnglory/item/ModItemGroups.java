@@ -22,6 +22,7 @@ public class ModItemGroups {
                         entries.add(ModItems.HSSHARD);
                         entries.add(ModItems.DOSHARD);
                         entries.add(ModItems.CSHARD);
+                        entries.add(ModItems.CRSHARD);
                         entries.add(ModItems.RUSTED);
                         entries.add(ModItems.RAWPALEINGOT);
                         entries.add(ModItems.GILDEDINGOT);
@@ -38,6 +39,7 @@ public class ModItemGroups {
                         entries.add(ModItems.HS_MASK);
                         entries.add(ModItems.DOG_MASK);
                         entries.add(ModItems.CORV_MASK);
+                        entries.add(ModItems.CRASH_MASK);
                         entries.add(ModItems.BLANK_MASK);
                         entries.add(ModItems.GRIN_MASK);
                         entries.add(ModItems.SAD_MASK);

@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.vainnglory.masksnglory.block.ModBlocks;
+import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.entity.ModEntities;
 import net.vainnglory.masksnglory.entity.custom.MaelstromEntity;
 import net.vainnglory.masksnglory.item.ModItemGroups;
@@ -31,6 +32,8 @@ public class MasksNGlory implements ModInitializer {
 
         ModLootTableModifier.modifyLootTables();
         ModEntities.registerModEntities();
+
+        ModEnchantments.registerEnchantments();
 
 
 		LOGGER.info("Starting The 9/5");

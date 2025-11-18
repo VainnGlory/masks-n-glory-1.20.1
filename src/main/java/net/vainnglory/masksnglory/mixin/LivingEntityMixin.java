@@ -4,14 +4,20 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.item.ModItems;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
+
+import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -53,5 +59,8 @@ public abstract class LivingEntityMixin extends Entity {
             dropStack(new ItemStack(ModItems.DSHARD));
         }
     }
+    @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
 
+    @Shadow
+    public abstract boolean hasStatusEffect(StatusEffect effect);
 }

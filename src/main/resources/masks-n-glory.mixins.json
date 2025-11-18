@@ -9,7 +9,9 @@
       "ItemRendererAccessor",
       "ItemRendererMixin",
       "ModelLoaderMixin",
-      "LivingEntityMixin"
+      "LivingEntityMixin",
+      "LivingEntityRendererMixin",
+      "LivingEntityAccessor"
     ],
 	"injectors": {
 		"defaultRequire": 1
