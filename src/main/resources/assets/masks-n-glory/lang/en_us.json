@@ -75,7 +75,11 @@
   "enchantment.masks-n-glory.fear": "Atychiphobia",
   "enchantment.masks-n-glory.discombobulated": "Discombobulated",
   "enchantment.masks-n-glory.blunt": "Blunt",
-  "enchantment.masks-n-glory.lethal": "Lethal",
+  "enchantment.masks-n-glory.lethal": "Disoriented",
+  "enchantment.masks-n-glory.serial": "Thrill",
+  "enchantment.masks-n-glory.skull": "Skull Breaker",
+  "enchantment.masks-n-glory.impact": "Impact",
+  "enchantment.masks-n-glory.death": "Guillotine",
 
 
   "itemgroup.shards": "Masks N Glory"

@@ -9,9 +9,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.item.ModItems;
-import net.vainnglory.masksnglory.item.custom.RustedSwordItem;
 
 public class FearEnchantment extends Enchantment {
 

@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.vainnglory.masksnglory.MasksNGlory;
 
 public class ModEnchantments {
 
@@ -11,6 +12,10 @@ public class ModEnchantments {
     public static Enchantment STUNNED = new DiscombobulatedEnchantment();
     public static Enchantment BLUNT = new BluntEnchantment();
     public static Enchantment LETHAL = new LethalEnchantment();
+    public static Enchantment SERIAL = new SerialEnchantment();
+    public static Enchantment SKULL = new SkullBreakerEnchantment();
+    public static Enchantment IMPACT = new ImpactEnchantment();
+    public static Enchantment DEATH = new GuillotineEnchantment();
 
 
     public static void registerEnchantments(){
@@ -18,7 +23,13 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "discombobulated"), STUNNED);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "blunt"), BLUNT);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "lethal"), LETHAL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "serial"), SERIAL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "skull"), SKULL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "death"), DEATH);
+
+        }
+
 
 
     }
-}
+
