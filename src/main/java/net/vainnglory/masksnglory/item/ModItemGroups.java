@@ -23,6 +23,8 @@ public class ModItemGroups {
                         entries.add(ModItems.DOSHARD);
                         entries.add(ModItems.CSHARD);
                         entries.add(ModItems.CRSHARD);
+                        entries.add(ModItems.HHSHARD);
+                        entries.add(ModItems.DVSHARD);
                         entries.add(ModItems.RUSTED);
                         entries.add(ModItems.RAWPALEINGOT);
                         entries.add(ModItems.GILDEDINGOT);
@@ -40,6 +42,8 @@ public class ModItemGroups {
                         entries.add(ModItems.DOG_MASK);
                         entries.add(ModItems.CORV_MASK);
                         entries.add(ModItems.CRASH_MASK);
+                        entries.add(ModItems.HOUND_MASK);
+                        entries.add(ModItems.DAVE_MASK);
                         entries.add(ModItems.BLANK_MASK);
                         entries.add(ModItems.GRIN_MASK);
                         entries.add(ModItems.SAD_MASK);
@@ -65,6 +69,8 @@ public class ModItemGroups {
                         entries.add(ModItems.GILDED_SOUP);
                         entries.add(ModItems.ECHO_CARAMEL);
                         entries.add(ModItems.CHOGLOWBERRY);
+                        entries.add(ModItems.CAPPLE);
+                        entries.add(ModItems.GCAPPLE);
                         entries.add(ModItems.GILDED_HEART);
 
 

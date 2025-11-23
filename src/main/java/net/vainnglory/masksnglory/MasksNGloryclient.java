@@ -7,8 +7,6 @@ import net.vainnglory.masksnglory.entity.ModEntities;
 import net.vainnglory.masksnglory.entity.client.MaelstromModel;
 import net.vainnglory.masksnglory.entity.client.MaelstromRenderer;
 import net.vainnglory.masksnglory.entity.client.ModModelLayers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MasksNGloryclient implements ClientModInitializer {
     @Override

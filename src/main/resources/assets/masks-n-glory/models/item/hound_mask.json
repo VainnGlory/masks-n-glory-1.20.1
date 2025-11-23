@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "masks-n-glory:item/pale_template"
+    "layer0": "masks-n-glory:item/hound_mask"
   }
 }

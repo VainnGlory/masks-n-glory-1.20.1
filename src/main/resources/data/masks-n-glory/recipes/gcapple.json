@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:golden_apple"
+    },
+    {
+      "item": "masks-n-glory:echo_caramel"
+    }
+  ],
+  "result": {
+    "item": "masks-n-glory:gcapple"
+  }
+}

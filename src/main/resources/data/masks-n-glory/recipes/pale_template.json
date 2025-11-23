@@ -14,11 +14,11 @@
       "item": "masks-n-glory:rust"
     },
     "A": {
-      "item": "masks-n-glory:pale_template"
+      "item": "masks-n-glory:pale_upgrade_template"
     }
   },
   "result": {
-    "item": "masks-n-glory:pale_template",
+    "item": "masks-n-glory:pale_upgrade_template",
     "count": 2
   }
 }

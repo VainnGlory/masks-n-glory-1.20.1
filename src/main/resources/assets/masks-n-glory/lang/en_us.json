@@ -8,6 +8,8 @@
   "item.masks-n-glory.doshard": "Mysterious Golden Pin",
   "item.masks-n-glory.cshard": "Mysterious Golden Heart",
   "item.masks-n-glory.crshard": "Mysterious Null Emblem",
+  "item.masks-n-glory.hhshard": "Mysterious Gilded Dagger",
+  "item.masks-n-glory.dvshard": "Mysterious Rotten Eye",
   "item.masks-n-glory.rawpale": "Raw Pale Steel Ingot",
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
   "item.masks-n-glory.bone": "Bone Alloy Ingot",
@@ -26,6 +28,8 @@
   "item.masks-n-glory.dog_mask": "DogSout's Patriotic Mask",
   "item.masks-n-glory.corv_mask": "Corvoks' Eye Mask",
   "item.masks-n-glory.crash_mask": "Crasher's Ornament",
+  "item.masks-n-glory.hound_mask": "Hound's Festival Mask",
+  "item.masks-n-glory.dave_mask": "Dave's Flesh Face",
   "item.masks-n-glory.blank_mask": "Blank Mask",
   "item.masks-n-glory.happy_mask": "Happy Face Mask",
   "item.masks-n-glory.sad_mask": "Sad Face Mask",
@@ -38,16 +42,17 @@
   "tooltip.masks-n-glory.rusted_sword": "§7*Seems to shroud your soul*",
 
   "item.masks-n-glory.pale_sword": "Pale Steel Greatsword",
-  "tooltip.masks-n-glory.pale_sword": "§7*Deep breaths, heavy blows.*",
+  "tooltip.masks-n-glory.pale_sword": "§7*Slow breath, heavy blow.*",
 
 
   "item.masks-n-glory.rust": "Pale Steel Ingot",
-  "item.masks-n-glory.pale_template": "Pale Steel Smithing Template",
-  "upgrade.masks-n-glory.pale_template": "Pale Steel Upgrade",
-  "item.masks-n-glory.pale_template.base_slot_description": "Add netherite sword",
-  "item.masks-n-glory.pale_template.applies_to": "Netherite Sword",
-  "item.masks-n-glory.pale_template.additions_slot_description": "Add Pale Steel Ingot",
-  "item.masks-n-glory.pale_template.ingredients": "Pale Steel Ingot",
+
+  "item.masks-n-glory.pale_upgrade_template": "§6Pale Steel Smithing Template",
+  "upgrade.minecraft.pale_upgrade": "Pale Steel Upgrade",
+  "item.minecraft.smithing_template.pale_upgrade.additions_slot_description": "Add Pale Steel Ingot/Bone Alloy",
+  "item.minecraft.smithing_template.pale_upgrade.base_slot_description": "Add netherite sword",
+  "item.minecraft.smithing_template.pale_upgrade.applies_to": "Netherite Sword/Netherite Axe",
+  "item.minecraft.smithing_template.pale_upgrade.ingredients": "Pale Steel Ingot/Bone Alloy",
 
   "item.masks-n-glory.maelstrom": "Maelstrom",
 
@@ -61,6 +66,8 @@
 
   "item.masks-n-glory.gilded_soup": "Gilded Soup",
   "item.masks-n-glory.echo_caramel": "Echo Caramel",
+  "item.masks-n-glory.capple": "Echo Caramel Apple",
+  "item.masks-n-glory.gcapple": "Echo Caramel Golden Apple",
   "item.masks-n-glory.choglowberry": "Choglowberry",
   "item.masks-n-glory.gilded_heart": "§6Gilded Heart",
   "tooltip.masks-n-glory.gilded_heart": "§7*Are you really willing to pay such a price for them*",
@@ -73,13 +80,21 @@
   "painting.masks-n-glory.stop.title": "Stop Impressing The Dead",
 
   "enchantment.masks-n-glory.fear": "Atychiphobia",
+  "enchantment.masks-n-glory.fear.desc": "Give the opponent weakness 1 on hit",
   "enchantment.masks-n-glory.discombobulated": "Discombobulated",
+  "enchantment.masks-n-glory.discombobulated.desc": "Makes the opponent slower on hit",
   "enchantment.masks-n-glory.blunt": "Blunt",
+  "enchantment.masks-n-glory.blunt.desc": "Blind the opponent on hit",
   "enchantment.masks-n-glory.lethal": "Disoriented",
+  "enchantment.masks-n-glory.lethal.desc": "Makes the opponent nauseous on hit",
   "enchantment.masks-n-glory.serial": "Thrill",
+  "enchantment.masks-n-glory.serial.desc": "slowly heals you with each hit you land, and add extra magic damage in your hits.",
   "enchantment.masks-n-glory.skull": "Skull Breaker",
+  "enchantment.masks-n-glory.skull.desc": "Deals additional damage scaling with blocks fallen.",
   "enchantment.masks-n-glory.impact": "Impact",
+  "enchantment.masks-n-glory.impact.desc": "Create a small shockwave which damages nearby entity if you manages to hit something on your landing.",
   "enchantment.masks-n-glory.death": "Guillotine",
+  "enchantment.masks-n-glory.death.desc": "If the opponent is under 3 hearts, you have a 15% chance to simply execute them.",
 
 
   "itemgroup.shards": "Masks N Glory"

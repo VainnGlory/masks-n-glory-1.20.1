@@ -13,6 +13,18 @@ public class ModFoodComponents {
             .statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 400), 1.0f)
             .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 400), 1.0f).alwaysEdible().build();
 
+    public static final FoodComponent CAPPLE = new FoodComponent.Builder().hunger(4).saturationModifier(1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 600), 1.0f)
+            .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600), 1.0f).alwaysEdible().build();
+
+    public static final FoodComponent GCAPPLE = new FoodComponent.Builder().hunger(6).saturationModifier(1.4F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 250, 1), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 4000, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 600), 1.0f)
+            .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600), 1.0f)
+            .alwaysEdible()
+            .build();
+
     public static final FoodComponent CHOGLOWBERRY = new FoodComponent.Builder().hunger(2).saturationModifier(0.5f)
             .statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 200), 0.3f)
             .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 200), 0.4f)

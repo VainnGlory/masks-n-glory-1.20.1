@@ -44,6 +44,10 @@ public class ModArmorItem extends ArmorItem {
                             false, false, true))
                     .put(ModArmorMaterials.CRSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0,
                             false, false, true))
+                    .put(ModArmorMaterials.HHSHARD, new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1,
+                            false, false, true))
+                    .put(ModArmorMaterials.DVSHARD, new StatusEffectInstance(StatusEffects.REGENERATION, 400, 1,
+                            false, false, true))
                     .put(ModArmorMaterials.DSHARD, new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1,
                             false, false, true)).build();
 

@@ -44,6 +44,7 @@ public class RustedSwordItem extends SwordItem implements Vanishable {
         return this.attackDamage;
     }
 
+
     @Override
     public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
         return !miner.isCreative();

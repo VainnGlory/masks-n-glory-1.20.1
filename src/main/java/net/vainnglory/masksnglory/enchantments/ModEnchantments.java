@@ -26,6 +26,7 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "serial"), SERIAL);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "skull"), SKULL);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "death"), DEATH);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "impact"), IMPACT);
 
         }
 

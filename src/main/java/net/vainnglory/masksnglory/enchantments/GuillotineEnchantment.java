@@ -83,8 +83,8 @@ public class GuillotineEnchantment extends Enchantment {
 
     private static float getExecutionChance(int level) {
         switch (level) {
-            case 1: return 0.5f;
-            default: return 0.5f;
+            case 1: return 0.15f;
+            default: return 0.15f;
         }
     }
 

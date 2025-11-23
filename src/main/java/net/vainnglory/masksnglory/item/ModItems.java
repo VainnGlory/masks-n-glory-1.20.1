@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.*;
+import net.minecraft.item.SmithingTemplateItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -23,6 +24,8 @@ public class ModItems {
     public static final Item DOSHARD = registerItem("doshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item CSHARD = registerItem("cshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item CRSHARD = registerItem("crshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
+    public static final Item HHSHARD = registerItem("hhshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
+    public static final Item DVSHARD = registerItem("dvshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item MASKS = registerItem("masks", new Item(new FabricItemSettings()));
     public static final Item HMASKS = registerItem("hmasks", new Item(new FabricItemSettings()));
     public static final Item GMASKS = registerItem("gmasks", new Item(new FabricItemSettings()));
@@ -71,6 +74,12 @@ public class ModItems {
             new ModArmorItem(ModArmorMaterials.CSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
     public static final Item CRASH_MASK = registerItem("crash_mask",
             new ModArmorItem(ModArmorMaterials.CRSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item HOUND_MASK = registerItem("hound_mask",
+            new ModArmorItem(ModArmorMaterials.HHSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item DAVE_MASK = registerItem("dave_mask",
+            new ModArmorItem(ModArmorMaterials.DVSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+
+
 
     public static final Item RUSTED_SWORD = registerItem("rusted_sword",
             new RustedSwordItem(ModToolMaterial.RUSTED, 3 , -2.2f, new FabricItemSettings().rarity(Rarity.EPIC)));
@@ -85,11 +94,13 @@ public class ModItems {
             new PaleSwordItem(ModToolMaterial.RUSTED, 4 , -2.8f, new FabricItemSettings().rarity(Rarity.RARE)));
 
 
-    public static final Item PALE_TEMPLATE = registerItem("pale_template", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item PALE_TEMPLATE = PaleTemplateItem.createPaleUpgrade();
 
     public static final Item GILDED_SOUP = registerItem("gilded_soup", new Item(new FabricItemSettings().food(ModFoodComponents.GILDED_SOUP)));
     public static final Item ECHO_CARAMEL = registerItem("echo_caramel", new Item(new FabricItemSettings().rarity(Rarity.RARE).food(ModFoodComponents.ECHO_CARAMEL)));
     public static final Item CHOGLOWBERRY = registerItem("choglowberry", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(ModFoodComponents.CHOGLOWBERRY)));
+    public static final Item GCAPPLE = registerItem("gcapple", new Item(new FabricItemSettings().rarity(Rarity.EPIC).food(ModFoodComponents.GCAPPLE)));
+    public static final Item CAPPLE = registerItem("capple", new Item(new FabricItemSettings().rarity(Rarity.RARE).food(ModFoodComponents.CAPPLE)));
     public static final Item GILDED_HEART = registerItem("gilded_heart", new GildedHeartItem(new FabricItemSettings().maxCount(1).food(ModFoodComponents.GILDED_HEART).rarity(Rarity.EPIC)));
 
     private static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
@@ -103,6 +114,8 @@ public class ModItems {
         entries.add(DOSHARD);
         entries.add(CSHARD);
         entries.add(CRSHARD);
+        entries.add(DVSHARD);
+        entries.add(HHSHARD);
     }
 
     private static Item registerItem(String name, Item item) {

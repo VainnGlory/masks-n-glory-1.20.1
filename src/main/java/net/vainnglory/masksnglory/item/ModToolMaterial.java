@@ -1,8 +1,5 @@
 package net.vainnglory.masksnglory.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.yarn.constants.MiningLevels;
-import net.minecraft.item.Item;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 
