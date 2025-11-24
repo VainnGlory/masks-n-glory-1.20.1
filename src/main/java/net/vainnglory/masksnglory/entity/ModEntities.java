@@ -2,10 +2,10 @@ package net.vainnglory.masksnglory.entity;
 
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -19,9 +19,9 @@ public class ModEntities {
             FabricEntityTypeBuilder.<MaelstromEntity>create(SpawnGroup.MISC, MaelstromEntity::new)
                     .dimensions(EntityDimensions.fixed(1f, 1f)).build());
 
+
     public static void registerModEntities() {
         MasksNGlory.LOGGER.info("Registering Entities for " + MasksNGlory.MOD_ID);
     }
-
 
 }

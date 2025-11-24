@@ -71,6 +71,7 @@ public class ModItemGroups {
                         entries.add(ModItems.CHOGLOWBERRY);
                         entries.add(ModItems.CAPPLE);
                         entries.add(ModItems.GCAPPLE);
+                        entries.add(ModItems.PAPPLE);
                         entries.add(ModItems.GILDED_HEART);
 
 

@@ -6,7 +6,7 @@
       "item": "masks-n-glory:chiseled_pale_steel_block"
     },
       "A": {
-        "item": "masks-n-glory:rust"
+        "item": "minecraft:amethyst_shard"
       }
     },
     "pattern": [
@@ -14,6 +14,6 @@
     ],
     "result": {
       "item": "masks-n-glory:crimped_chiseled_pale_steel_block",
-      "count": 2
+      "count": 1
     }
   }

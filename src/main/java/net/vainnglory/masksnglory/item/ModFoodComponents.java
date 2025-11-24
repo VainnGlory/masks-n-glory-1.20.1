@@ -25,6 +25,15 @@ public class ModFoodComponents {
             .alwaysEdible()
             .build();
 
+    public static final FoodComponent PAPPLE = new FoodComponent.Builder().hunger(8).saturationModifier(1.7F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 450, 7), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 650, 5), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 650, 5), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 650, 0), 1.0F)
+            .statusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 650, 2), 1.0F)
+            .alwaysEdible()
+            .build();
+
     public static final FoodComponent CHOGLOWBERRY = new FoodComponent.Builder().hunger(2).saturationModifier(0.5f)
             .statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 200), 0.3f)
             .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 200), 0.4f)

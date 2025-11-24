@@ -27,6 +27,9 @@ public class ModLootTableModifier {
     private static final Identifier ECHO_SHARD_ID =
             new Identifier("minecraft", "blocks/sculk");
 
+    private static final Identifier CRIMPED =
+            new Identifier("masks-n-glory", "blocks/crimped_chiseled_pale_steel_block");
+
     private static final Identifier JUNGLE_TEMPLE_ID =
             new Identifier("minecraft", "chests/jungle_temple");
 
@@ -111,6 +114,17 @@ public class ModLootTableModifier {
 
                 tableBuilder.pool(poolBuilder.build());
             }
+
+            if (CRIMPED.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(1.0f))
+                        .with(ItemEntry.builder(Items.AMETHYST_SHARD))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
+
 
             if (WITHER_SKELETON_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()

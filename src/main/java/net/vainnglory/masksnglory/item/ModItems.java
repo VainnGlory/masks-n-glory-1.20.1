@@ -4,14 +4,12 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.*;
-import net.minecraft.item.SmithingTemplateItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.item.custom.*;
-import net.vainnglory.masksnglory.painting.ModPaintings;
 
 
 public class ModItems {
@@ -101,6 +99,7 @@ public class ModItems {
     public static final Item CHOGLOWBERRY = registerItem("choglowberry", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(ModFoodComponents.CHOGLOWBERRY)));
     public static final Item GCAPPLE = registerItem("gcapple", new Item(new FabricItemSettings().rarity(Rarity.EPIC).food(ModFoodComponents.GCAPPLE)));
     public static final Item CAPPLE = registerItem("capple", new Item(new FabricItemSettings().rarity(Rarity.RARE).food(ModFoodComponents.CAPPLE)));
+    public static final Item PAPPLE = registerItem("papple", new Item(new FabricItemSettings().rarity(Rarity.EPIC).food(ModFoodComponents.PAPPLE)));
     public static final Item GILDED_HEART = registerItem("gilded_heart", new GildedHeartItem(new FabricItemSettings().maxCount(1).food(ModFoodComponents.GILDED_HEART).rarity(Rarity.EPIC)));
 
     private static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
@@ -123,7 +122,7 @@ public class ModItems {
     }
 
     public static void registerModItems() {
-        MasksNGlory.LOGGER.info("Registering Mod Items for " + MasksNGlory.MOD_ID);
+        MasksNGlory.LOGGER.info("That one rat jumping at your face " + MasksNGlory.MOD_ID);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(ModItems::addItemsToIngredientItemGroup);
     }

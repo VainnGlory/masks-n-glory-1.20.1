@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smithing_transform",
   "addition": {
-    "item": "minecraft:quartz"
+    "item": "minecraft:gunpowder"
   },
   "base": {
     "item": "masks-n-glory:gildedingot"
