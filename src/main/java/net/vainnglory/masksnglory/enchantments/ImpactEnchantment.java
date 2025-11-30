@@ -88,9 +88,9 @@ public class ImpactEnchantment extends Enchantment {
 
                                     for (LivingEntity nearby : entities) {
                                         if (nearby != target && nearby != player && nearby.isAlive()) {
-                                            float nearbyDamage = totalDamage * 0.60f;
+                                            float nearbyDamage = totalDamage * 0.80f;
                                             if (axeMaceLevel > 0) {
-                                                float axeMaceBonus = fallDistance * 0.10f * axeMaceLevel * 0.35f;
+                                                float axeMaceBonus = fallDistance * 0.10f * axeMaceLevel * 0.90f;
                                                 nearbyDamage += axeMaceBonus;
                                             }
                                             nearby.damage(source, nearbyDamage);

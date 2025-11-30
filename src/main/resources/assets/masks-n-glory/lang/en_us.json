@@ -39,7 +39,7 @@
   "item.masks-n-glory.knight_mask": "Knight Mask",
 
   "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
-  "tooltip.masks-n-glory.rusted_sword": "§7*Seems to shroud your soul*",
+  "tooltip.masks-n-glory.rusted_sword": "§7*Remembrance of a calcite tower overlooking a cliff, facing the calm sea.*",
 
   "item.masks-n-glory.pale_sword": "Pale Steel Greatsword",
   "tooltip.masks-n-glory.pale_sword": "§7*Slow breath, heavy blow.*",
@@ -71,7 +71,7 @@
   "item.masks-n-glory.papple": "Pale Apple",
   "item.masks-n-glory.choglowberry": "Choglowberry",
   "item.masks-n-glory.gilded_heart": "§6Gilded Heart",
-  "tooltip.masks-n-glory.gilded_heart": "§7*Are you really willing to pay such a price for them*",
+  "tooltip.masks-n-glory.gilded_heart": "§7*Are you really willing to pay such a price for them ?*",
 
   "painting.masks-n-glory.husk.author": "VainGlory",
   "painting.masks-n-glory.husk.title": "Husk",
@@ -93,9 +93,9 @@
   "enchantment.masks-n-glory.skull": "Skull Breaker",
   "enchantment.masks-n-glory.skull.desc": "Deals additional damage scaling with blocks fallen.",
   "enchantment.masks-n-glory.impact": "Impact",
-  "enchantment.masks-n-glory.impact.desc": "Create a small shockwave which damages nearby entity if you manages to hit something on your landing.",
+  "enchantment.masks-n-glory.impact.desc": "Create a small shockwave which damages nearby entity if you manages to hit something on your landing. (gets boosted by 'Skull Breaker')",
   "enchantment.masks-n-glory.death": "Guillotine",
-  "enchantment.masks-n-glory.death.desc": "If the opponent is under 3 hearts, you have a 15% chance to simply execute them.",
+  "enchantment.masks-n-glory.death.desc": "If the opponent is under 5 hearts, you have a 8% chance to simply execute them.",
 
 
   "itemgroup.shards": "Masks N Glory"

@@ -6,6 +6,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
@@ -64,7 +65,9 @@ public class GuillotineEnchantment extends Enchantment {
                     int level = EnchantmentHelper.getLevel(ModEnchantments.DEATH, weapon);
 
                     if (level > 0 && canExecute(target, level, world.random)) {
-                        target.kill();
+                        DamageSources damageSources = world.getDamageSources();
+                        float amount = 100000.0f * level;
+                        target.damage(damageSources.magic(), amount);
                     }
                 }
             }
@@ -73,7 +76,7 @@ public class GuillotineEnchantment extends Enchantment {
     }
 
     private static boolean canExecute(LivingEntity target, int level, Random random) {
-        if (target.getHealth() > 6.0f) {
+        if (target.getHealth() > 10.0f) {
             return false;
         }
 
@@ -83,8 +86,8 @@ public class GuillotineEnchantment extends Enchantment {
 
     private static float getExecutionChance(int level) {
         switch (level) {
-            case 1: return 0.15f;
-            default: return 0.15f;
+            case 1: return 0.08f;
+            default: return 0.08f;
         }
     }
 
