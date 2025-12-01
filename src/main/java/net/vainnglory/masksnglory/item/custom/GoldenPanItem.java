@@ -12,19 +12,21 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.vainnglory.masksnglory.item.custom.CustomHitSoundItem;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GoldenPanItem extends SwordItem implements Vanishable {
+public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSoundItem {
     private final float attackDamage;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-    public GoldenPanItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Item.Settings settings) {
+    public GoldenPanItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
         this.attackDamage = (float) attackDamage + toolMaterial.getAttackDamage();
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
@@ -42,6 +44,11 @@ public class GoldenPanItem extends SwordItem implements Vanishable {
 
     public float getAttackDamage() {
         return this.attackDamage;
+    }
+
+    @Override
+    public void playHitSound(PlayerEntity player) {
+        player.playSound(MasksNGlorySounds.ITEM_PAN_HIT, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
     }
 
     @Override

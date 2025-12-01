@@ -97,6 +97,8 @@
   "enchantment.masks-n-glory.death": "Guillotine",
   "enchantment.masks-n-glory.death.desc": "If the opponent is under 5 hearts, you have a 8% chance to simply execute them.",
 
+  "masks-n-glory.subtitles.item.pan.hit": "Pan hits",
+  "masks-n-glory.subtitles.item.rusted.hit": "Saber hits",
 
   "itemgroup.shards": "Masks N Glory"
 }

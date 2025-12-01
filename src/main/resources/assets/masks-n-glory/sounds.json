@@ -1,0 +1,16 @@
+{
+  "item.rusted.hit": {
+    "sounds": [
+      "masks-n-glory:item/rusted_hit_3",
+      "masks-n-glory:item/rusted_hit_2"
+    ],
+    "subtitle": "masks-n-glory.subtitles.item.rusted.hit"
+  },
+  "item.pan.hit": {
+    "sounds": [
+      "masks-n-glory:item/pan_hit_1",
+      "masks-n-glory:item/pan_hit_2"
+    ],
+    "subtitle": "masks-n-glory.subtitles.item.pan.hit"
+  }
+}

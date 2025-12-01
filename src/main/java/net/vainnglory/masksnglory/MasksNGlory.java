@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import net.vainnglory.masksnglory.block.ModBlocks;
 import net.vainnglory.masksnglory.enchantments.*;
 import net.vainnglory.masksnglory.entity.ModEntities;
+import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.painting.ModPaintings;
@@ -23,6 +24,8 @@ public class MasksNGlory implements ModInitializer {
         ModItems.registerModItems();
         ModBlocks.registerModBlocks();
         ModPaintings.registerPaintings();
+
+        MasksNGlorySounds.initialize();
 
         ModLootTableModifier.modifyLootTables();
         ModEntities.registerModEntities();

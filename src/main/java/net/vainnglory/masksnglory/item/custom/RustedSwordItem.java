@@ -16,11 +16,12 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RustedSwordItem extends SwordItem implements Vanishable {
+public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitSoundItem {
     private final float attackDamage;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
@@ -42,6 +43,11 @@ public class RustedSwordItem extends SwordItem implements Vanishable {
 
     public float getAttackDamage() {
         return this.attackDamage;
+    }
+
+    @Override
+    public void playHitSound(PlayerEntity player) {
+        player.playSound(MasksNGlorySounds.ITEM_RUSTED_HIT, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
     }
 
 

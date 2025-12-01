@@ -9,10 +9,10 @@
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
-    "ModelLoaderMixin"
+    "ModelLoaderMixin",
+    "PlayerEntityMixin"
   ],
   "client": [
-
   ],
   "injectors": {
     "defaultRequire": 1
