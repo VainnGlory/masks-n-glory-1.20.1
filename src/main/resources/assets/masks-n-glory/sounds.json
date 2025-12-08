@@ -15,6 +15,15 @@
     ],
     "subtitle": "masks-n-glory.subtitles.item.pan.hit"
   },
+  "item.bone.hit": {
+    "sounds": [
+      "masks-n-glory:item/bone_hit_1",
+      "masks-n-glory:item/bone_hit_2",
+      "masks-n-glory:item/bone_hit_3",
+      "masks-n-glory:item/bone_hit_4"
+    ],
+    "subtitle": "masks-n-glory.subtitles.item.bone.hit"
+  },
   "item.pale.hit": {
     "sounds": [
       "masks-n-glory:item/pale_hit_1",

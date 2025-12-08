@@ -105,8 +105,9 @@
   "enchantment.masks-n-glory.antiseptic.desc": "Immune to most poison, and bad statues effects when holding the knife",
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hits",
-  "masks-n-glory.subtitles.item.pale.hit": "Pale hits",
+  "masks-n-glory.subtitles.item.pale.hit": "Greatsword hits",
   "masks-n-glory.subtitles.item.rusted.hit": "Saber hits",
+  "masks-n-glory.subtitles.item.bone.hit": "Knife hits",
 
   "itemgroup.shards": "Masks N Glory"
 }

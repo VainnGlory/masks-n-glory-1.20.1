@@ -67,7 +67,7 @@ public class ComboEnchantment extends Enchantment {
                 ItemStack weapon = player.getMainHandStack();
                 int level = EnchantmentHelper.getLevel(ModEnchantments.COMBO, weapon);
 
-                if (level > 0 && cooldown >= 0.9f && player.isOnGround()) {
+                if (level > 0 && cooldown >= 0.2f && player.isOnGround()) {
                     LivingEntity currentTarget = currentTargets.get(player);
                     if (currentTarget != target) {
                         currentTargets.put(player, target);
