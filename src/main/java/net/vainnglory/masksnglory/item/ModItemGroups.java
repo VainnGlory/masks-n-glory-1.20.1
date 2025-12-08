@@ -56,6 +56,7 @@ public class ModItemGroups {
                         entries.add(ModItems.MAELSTROM);
                         entries.add(ModItems.GOLDEN_PAN);
                         entries.add(ModItems.PALE_SWORD);
+                        entries.add(ModItems.BONE_KNIFE);
 
                         entries.add(ModItems.PALE_TEMPLATE);
 

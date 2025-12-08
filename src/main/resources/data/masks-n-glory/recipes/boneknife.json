@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " E ",
+    " S ",
+    " A "
+  ],
+  "key": {
+    "S": {
+      "item": "masks-n-glory:rust"
+    },
+    "E": {
+      "item": "masks-n-glory:bone"
+    },
+    "A": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "masks-n-glory:bone_knife",
+    "count": 1
+  }
+}

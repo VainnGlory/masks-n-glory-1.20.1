@@ -14,6 +14,7 @@ public interface MasksNGlorySounds {
 
     SoundEvent ITEM_PAN_HIT = createSoundEvent("item.pan.hit");
     SoundEvent ITEM_RUSTED_HIT = createSoundEvent("item.rusted.hit");
+    SoundEvent ITEM_PALE_HIT = createSoundEvent("item.pale.hit");
 
     static void initialize() {
         SOUND_EVENTS.keySet().forEach(soundEvent -> Registry.register(Registries.SOUND_EVENT, SOUND_EVENTS.get(soundEvent), soundEvent));

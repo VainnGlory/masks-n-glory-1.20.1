@@ -24,21 +24,21 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSoundItem {
+public class BoneKnifeItem extends SwordItem implements Vanishable, CustomHitSoundItem {
     private final float attackDamage;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-    public PaleSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
+    public BoneKnifeItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
         this.attackDamage = (float) attackDamage + toolMaterial.getAttackDamage();
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_DAMAGE,
-                new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", 9, EntityAttributeModifier.Operation.ADDITION)
+                new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", 4, EntityAttributeModifier.Operation.ADDITION)
         );
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_SPEED,
-                new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -3F, EntityAttributeModifier.Operation.ADDITION)
+                new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -1F, EntityAttributeModifier.Operation.ADDITION)
         );
         this.attributeModifiers = builder.build();
     }
@@ -50,7 +50,7 @@ public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSou
 
     @Override
     public void playHitSound(PlayerEntity player) {
-        player.playSound(MasksNGlorySounds.ITEM_PALE_HIT, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
+        player.playSound(MasksNGlorySounds.ITEM_PAN_HIT, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
     }
 
     @Override
@@ -94,14 +94,14 @@ public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSou
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.translatable("tooltip.masks-n-glory.pale_sword"));
+        tooltip.add(Text.translatable("tooltip.masks-n-glory.bone_knife"));
         super.appendTooltip(stack, world, tooltip, context);
     }
+    public int getEnchantability()
 
-    public int getEnchantability() {
+    {
 
         return 1;
 
     }
 }
-

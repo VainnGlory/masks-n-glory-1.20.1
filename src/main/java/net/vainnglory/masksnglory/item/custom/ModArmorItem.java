@@ -20,7 +20,7 @@ public class ModArmorItem extends ArmorItem {
                             false, false, true))
                     .put(ModArmorMaterials.OSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 1,
                             false, false, true))
-                    .put(ModArmorMaterials.PSHARD, new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 2,
+                    .put(ModArmorMaterials.PSHARD, new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 1,
                             false, false, true))
                     .put(ModArmorMaterials.TSHARD, new StatusEffectInstance(StatusEffects.ABSORPTION, 300, 3,
                             false, false, true))
@@ -93,6 +93,11 @@ public class ModArmorItem extends ArmorItem {
     }
 
     private boolean hasCorrectArmorOn(ArmorMaterial material, PlayerEntity player) {
+        for (ItemStack armorStack: player.getInventory().armor) {
+            if (!(armorStack.getItem() instanceof ArmorItem)) {
+                return false;
+            }
+        }
         ArmorItem helmet = ((ArmorItem)player.getInventory().getArmorStack(3).getItem());
 
         return helmet.getMaterial() == material;

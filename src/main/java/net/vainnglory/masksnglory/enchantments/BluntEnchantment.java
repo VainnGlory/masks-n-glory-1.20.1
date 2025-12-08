@@ -44,7 +44,7 @@ public class BluntEnchantment extends Enchantment {
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
         if (target instanceof LivingEntity targetEntity) {
-            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 150 * level, 1, false, false, false)); // L'aura visibile dura 10 secondi
+            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 50 * level, 1, false, false, false)); // L'aura visibile dura 10 secondi
         }
     }
 }

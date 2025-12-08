@@ -17,7 +17,7 @@ public class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
         getOrCreateTagBuilder(ItemTags.SWORDS)
-                .add(RUSTED_SWORD, GOLDEN_PAN, MAELSTROM, PALE_SWORD
+                .add(RUSTED_SWORD, GOLDEN_PAN, MAELSTROM, PALE_SWORD, BONE_KNIFE
                 );
     }
 }

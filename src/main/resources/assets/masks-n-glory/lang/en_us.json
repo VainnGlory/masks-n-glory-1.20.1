@@ -41,6 +41,9 @@
   "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
   "tooltip.masks-n-glory.rusted_sword": "§7*Remembrance of a calcite tower overlooking a cliff, facing the calm sea.*",
 
+  "item.masks-n-glory.bone_knife": "Bone Alloy Knife",
+  "tooltip.masks-n-glory.bone_knife": "§7*He's burning the kitchen*",
+
   "item.masks-n-glory.pale_sword": "Pale Steel Greatsword",
   "tooltip.masks-n-glory.pale_sword": "§7*Slow breath, heavy blow.*",
 
@@ -96,8 +99,13 @@
   "enchantment.masks-n-glory.impact.desc": "Create a small shockwave which damages nearby entity if you manages to hit something on your landing. (gets boosted by 'Skull Breaker')",
   "enchantment.masks-n-glory.death": "Guillotine",
   "enchantment.masks-n-glory.death.desc": "If the opponent is under 5 hearts, you have a 8% chance to simply execute them.",
+  "enchantment.masks-n-glory.combo": "Combo",
+  "enchantment.masks-n-glory.combo.desc": "Quickly attack your opponent, if you manage to kill them in the same combo, all the hits you've landed will be turned into absorption for you.",
+  "enchantment.masks-n-glory.antiseptic": "Antiseptic",
+  "enchantment.masks-n-glory.antiseptic.desc": "Immune to most poison, and bad statues effects when holding the knife",
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hits",
+  "masks-n-glory.subtitles.item.pale.hit": "Pale hits",
   "masks-n-glory.subtitles.item.rusted.hit": "Saber hits",
 
   "itemgroup.shards": "Masks N Glory"

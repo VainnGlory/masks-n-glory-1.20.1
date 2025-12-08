@@ -2,15 +2,25 @@
   "item.rusted.hit": {
     "sounds": [
       "masks-n-glory:item/rusted_hit_3",
-      "masks-n-glory:item/rusted_hit_2"
+      "masks-n-glory:item/rusted_hit_2",
+      "masks-n-glory:item/rusted_hit_4"
     ],
     "subtitle": "masks-n-glory.subtitles.item.rusted.hit"
   },
   "item.pan.hit": {
     "sounds": [
       "masks-n-glory:item/pan_hit_1",
-      "masks-n-glory:item/pan_hit_2"
+      "masks-n-glory:item/pan_hit_2",
+      "masks-n-glory:item/pan_hit_3"
     ],
     "subtitle": "masks-n-glory.subtitles.item.pan.hit"
+  },
+  "item.pale.hit": {
+    "sounds": [
+      "masks-n-glory:item/pale_hit_1",
+      "masks-n-glory:item/pale_hit_2",
+      "masks-n-glory:item/pale_hit_3"
+    ],
+    "subtitle": "masks-n-glory.subtitles.item.pale.hit"
   }
 }

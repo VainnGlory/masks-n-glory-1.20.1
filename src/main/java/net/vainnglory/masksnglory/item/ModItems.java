@@ -91,6 +91,9 @@ public class ModItems {
     public static final Item PALE_SWORD = registerItem("pale_sword",
             new PaleSwordItem(ModToolMaterial.RUSTED, 4 , -2.8f, new FabricItemSettings().rarity(Rarity.RARE)));
 
+    public static final Item BONE_KNIFE = registerItem("bone_knife",
+            new BoneKnifeItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().rarity(Rarity.RARE)));
+
 
     public static final Item PALE_TEMPLATE = PaleTemplateItem.createPaleUpgrade();
 

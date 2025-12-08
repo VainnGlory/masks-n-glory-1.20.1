@@ -50,6 +50,15 @@ public abstract class ItemRendererMixin {
 
         return value;
     }
+
+    @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
+
+    public BakedModel useBoneKnifeModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        if (stack.isOf(ModItems.BONE_KNIFE) && renderMode != ModelTransformationMode.GUI)
+            return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "bone_knife_detail", "inventory"));
+
+        return value;
+    }
 }
 
 
