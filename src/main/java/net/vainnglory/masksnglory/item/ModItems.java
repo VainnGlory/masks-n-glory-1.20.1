@@ -24,6 +24,7 @@ public class ModItems {
     public static final Item CRSHARD = registerItem("crshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item HHSHARD = registerItem("hhshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item DVSHARD = registerItem("dvshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
+    public static final Item STSHARD = registerItem("stshard", new Item(new FabricItemSettings().rarity(Rarity.RARE)));
     public static final Item MASKS = registerItem("masks", new Item(new FabricItemSettings()));
     public static final Item HMASKS = registerItem("hmasks", new Item(new FabricItemSettings()));
     public static final Item GMASKS = registerItem("gmasks", new Item(new FabricItemSettings()));
@@ -76,6 +77,9 @@ public class ModItems {
             new ModArmorItem(ModArmorMaterials.HHSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
     public static final Item DAVE_MASK = registerItem("dave_mask",
             new ModArmorItem(ModArmorMaterials.DVSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+    public static final Item STONEI_MASK = registerItem("stonei_mask",
+            new ModArmorItem(ModArmorMaterials.STSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+
 
 
 
@@ -118,6 +122,7 @@ public class ModItems {
         entries.add(CRSHARD);
         entries.add(DVSHARD);
         entries.add(HHSHARD);
+        entries.add(STSHARD);
     }
 
     private static Item registerItem(String name, Item item) {

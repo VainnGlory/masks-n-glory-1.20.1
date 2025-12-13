@@ -21,6 +21,9 @@ public class ModLootTableModifier {
     private static final Identifier DARK_OAK_ID =
             new Identifier("minecraft", "blocks/dark_oak_log");
 
+    private static final Identifier BLACKSTONE_ID =
+            new Identifier("minecraft", "blocks/blackstone");
+
     private static final Identifier SEA_PICKLE_ID =
             new Identifier("minecraft", "blocks/sea_pickle");
 
@@ -100,6 +103,16 @@ public class ModLootTableModifier {
                         .rolls(ConstantLootNumberProvider.create(1))
                         .conditionally(RandomChanceLootCondition.builder(0.01f))
                         .with(ItemEntry.builder(ModItems.HSSHARD))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+
+                tableBuilder.pool(poolBuilder.build());
+            }
+
+            if (BLACKSTONE_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.01f))
+                        .with(ItemEntry.builder(ModItems.STSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
                 tableBuilder.pool(poolBuilder.build());

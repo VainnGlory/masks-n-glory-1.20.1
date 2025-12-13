@@ -6,7 +6,7 @@ import net.minecraft.recipe.Ingredient;
 import java.util.function.Supplier;
 
 public enum ModToolMaterial implements ToolMaterial {
-    RUSTED(3, 700, 9.0f, 4.0f, 19,
+    RUSTED(3, 2500, 9.0f, 4.0f, 19,
     () -> Ingredient.ofItems(ModItems.RUSTED)),
 
     GLORIOUS(3, 1000, 9.0f, 4.0f, 19,
