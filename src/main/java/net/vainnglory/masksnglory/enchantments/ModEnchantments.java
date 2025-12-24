@@ -17,6 +17,7 @@ public class ModEnchantments {
     public static Enchantment DEATH = new GuillotineEnchantment();
     public static Enchantment COMBO = new ComboEnchantment();
     public static Enchantment ANTISEPTIC = new AntisepticEnchantment();
+    public static Enchantment SOUL = new SoulPhaseEnchantment();
 
 
     public static void registerEnchantments(){
@@ -30,6 +31,7 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "impact"), IMPACT);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "combo"), COMBO);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "antiseptic"), ANTISEPTIC);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "soul"), SOUL);
 
         }
 

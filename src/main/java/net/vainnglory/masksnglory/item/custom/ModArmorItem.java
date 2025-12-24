@@ -16,11 +16,11 @@ import java.util.Map;
 public class ModArmorItem extends ArmorItem {
     private static final Map<ArmorMaterial, StatusEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, StatusEffectInstance>())
-                    .put(ModArmorMaterials.ESHARD, new StatusEffectInstance(StatusEffects.REGENERATION, 400, 1,
+                    .put(ModArmorMaterials.ESHARD, new StatusEffectInstance(StatusEffects.UNLUCK, 400, 5,
                             false, false, true))
                     .put(ModArmorMaterials.OSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 1,
                             false, false, true))
-                    .put(ModArmorMaterials.PSHARD, new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 1,
+                    .put(ModArmorMaterials.PSHARD, new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 0,
                             false, false, true))
                     .put(ModArmorMaterials.TSHARD, new StatusEffectInstance(StatusEffects.ABSORPTION, 300, 3,
                             false, false, true))

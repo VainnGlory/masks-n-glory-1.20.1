@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " ES",
+    " AM",
+    "A  "
+  ],
+  "key": {
+    "M": {
+      "item": "masks-n-glory:bone"
+    },
+    "E": {
+      "item": "masks-n-glory:rust"
+    },
+    "A": {
+      "item": "minecraft:stick"
+    },
+    "S": {
+      "item": "minecraft:netherite_sword"
+    }
+  },
+  "result": {
+    "item": "masks-n-glory:glaive",
+    "count": 1
+  }
+}

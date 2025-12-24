@@ -20,7 +20,7 @@
 
   "item.masks-n-glory.goldenscrap": "Golden Scrap",
   "tooltip.masks-n-glory.goldenscrap": "§7*seems to be a part of a greater whole...*",
-  "item.masks-n-glory.ego_mask": "Ego's Nice Side",
+  "item.masks-n-glory.ego_mask": "Ego's Unlucky Charm",
   "item.masks-n-glory.d_man_mask": "D_Man's Clown Mask",
   "item.masks-n-glory.oji_mask": "Oji's Mask",
   "item.masks-n-glory.piko_mask": "Piko's Mask",
@@ -41,13 +41,16 @@
   "item.masks-n-glory.knight_mask": "Knight Mask",
 
   "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
-  "tooltip.masks-n-glory.rusted_sword": "§7*Remembrance of a calcite tower overlooking a cliff, facing the calm sea.*",
+  "tooltip.masks-n-glory.rusted_sword": "§7*Made from the blueprints found in an abandoned base inside a calcite cliff.*",
 
   "item.masks-n-glory.bone_knife": "Bone Alloy Knife",
   "tooltip.masks-n-glory.bone_knife": "§7*He's burning the kitchen*",
 
   "item.masks-n-glory.pale_sword": "Pale Steel Greatsword",
   "tooltip.masks-n-glory.pale_sword": "§7*Slow breath, heavy blow.*",
+
+  "item.masks-n-glory.glaive": "Pale Glaive",
+  "tooltip.masks-n-glory.glaive": "§7*A certain husk's favorite weapon.*",
 
 
   "item.masks-n-glory.rust": "Pale Steel Ingot",
@@ -94,7 +97,7 @@
   "enchantment.masks-n-glory.lethal": "Disoriented",
   "enchantment.masks-n-glory.lethal.desc": "Makes the opponent nauseous on hit",
   "enchantment.masks-n-glory.serial": "Thrill",
-  "enchantment.masks-n-glory.serial.desc": "slowly heals you with each hit you land, and add extra magic damage in your hits.",
+  "enchantment.masks-n-glory.serial.desc": "slowly heals you with each hit you land, and add extra magic damage in your hits. (Also deals small damage through shields)",
   "enchantment.masks-n-glory.skull": "Skull Breaker",
   "enchantment.masks-n-glory.skull.desc": "Deals additional damage scaling with blocks fallen.",
   "enchantment.masks-n-glory.impact": "Impact",
@@ -105,11 +108,13 @@
   "enchantment.masks-n-glory.combo.desc": "Quickly attack your opponent, if you manage to kill them in the same combo, all the hits you've landed will be turned into absorption for you.",
   "enchantment.masks-n-glory.antiseptic": "Antiseptic",
   "enchantment.masks-n-glory.antiseptic.desc": "Immune to most poison, and bad statues effects when holding the knife",
+  "enchantment.masks-n-glory.soul": "Soul Phase",
+  "enchantment.masks-n-glory.soul.desc": "Sacrifice your sweeping and knockback for a hit that ignore the armor of the opponent and deals additional damage",
 
-  "masks-n-glory.subtitles.item.pan.hit": "Pan hits",
-  "masks-n-glory.subtitles.item.pale.hit": "Greatsword hits",
-  "masks-n-glory.subtitles.item.rusted.hit": "Saber hits",
-  "masks-n-glory.subtitles.item.bone.hit": "Knife hits",
+  "masks-n-glory.subtitles.item.pan.hit": "Pan hit",
+  "masks-n-glory.subtitles.item.pale.hit": "Greatsword hit",
+  "masks-n-glory.subtitles.item.rusted.hit": "Saber/glaive hit",
+  "masks-n-glory.subtitles.item.bone.hit": "Knife hit",
 
   "itemgroup.shards": "Masks N Glory"
 }

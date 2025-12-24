@@ -41,6 +41,7 @@ public class MasksNGlory implements ModInitializer {
         ComboEnchantment.registerAttackCallback();
         ComboEnchantment.registerKillCallback();
         AntisepticEnchantment.registerTickCallback();
+        SoulPhaseEnchantment.registerAttackCallback();
 
         RegisterMNGItems.registerPaleItems();
 

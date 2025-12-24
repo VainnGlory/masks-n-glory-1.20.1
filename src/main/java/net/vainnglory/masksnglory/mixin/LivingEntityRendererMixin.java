@@ -1,6 +1,7 @@
 package net.vainnglory.masksnglory.mixin;
 
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.vainnglory.masksnglory.item.ModItems;
@@ -15,6 +16,16 @@ public class LivingEntityRendererMixin<T extends LivingEntity> {
     public void hasLabel(T entity, CallbackInfoReturnable<Boolean> cir) {
         if (entity instanceof PlayerEntity player) {
             if (player.getMainHandStack().isOf(ModItems.RUSTED_SWORD)) {
+                cir.setReturnValue(false);
+            }
+        }
+        if (entity instanceof PlayerEntity player) {
+            if (player.getEquippedStack(EquipmentSlot.HEAD).isOf(ModItems.EGO_MASK)) {
+                cir.setReturnValue(false);
+            }
+        }
+        if (entity instanceof PlayerEntity player) {
+            if (player.getEquippedStack(EquipmentSlot.HEAD).isOf(ModItems.TOG_MASK)) {
                 cir.setReturnValue(false);
             }
         }

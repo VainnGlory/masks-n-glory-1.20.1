@@ -1,7 +1,6 @@
 package net.vainnglory.masksnglory.enchantments;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentTarget;
@@ -69,12 +68,13 @@ public class AntisepticEnchantment extends Enchantment {
         int level = EnchantmentHelper.getLevel(ModEnchantments.ANTISEPTIC, weapon);
 
         if (level > 0) {
-            if (player.hasStatusEffect(StatusEffects.POISON) || player.hasStatusEffect(StatusEffects.WITHER) || player.hasStatusEffect(StatusEffects.WEAKNESS) || player.hasStatusEffect(StatusEffects.BLINDNESS) || player.hasStatusEffect(StatusEffects.SLOWNESS)) {
+            if (player.hasStatusEffect(StatusEffects.POISON) || player.hasStatusEffect(StatusEffects.WITHER) || player.hasStatusEffect(StatusEffects.WEAKNESS) || player.hasStatusEffect(StatusEffects.BLINDNESS) || player.hasStatusEffect(StatusEffects.SLOWNESS) || player.hasStatusEffect(StatusEffects.DARKNESS)) {
                 player.removeStatusEffect(StatusEffects.POISON);
                 player.removeStatusEffect(StatusEffects.WITHER);
                 player.removeStatusEffect(StatusEffects.WEAKNESS);
                 player.removeStatusEffect(StatusEffects.BLINDNESS);
                 player.removeStatusEffect(StatusEffects.SLOWNESS);
+                player.removeStatusEffect(StatusEffects.DARKNESS);
             }
         }
     }
