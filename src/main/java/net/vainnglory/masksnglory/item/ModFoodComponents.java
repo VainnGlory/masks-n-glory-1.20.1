@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.FoodComponent;
 
 public class ModFoodComponents {
-    public static final FoodComponent GILDED_SOUP = new FoodComponent.Builder().hunger(5).saturationModifier(1.5f)
+    public static final FoodComponent GILDED_SOUP = new FoodComponent.Builder().hunger(6).saturationModifier(1.5f)
             .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200), 0.75f).build();
 
 
@@ -50,5 +50,8 @@ public class ModFoodComponents {
             .statusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, 3), 1.0f)
             .alwaysEdible()
             .build();
+
+    public static final FoodComponent DSHARD = new FoodComponent.Builder().hunger(7).saturationModifier(1.7f)
+            .statusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 2500), 1.0f).build();
 
 }

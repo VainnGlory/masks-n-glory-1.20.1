@@ -152,7 +152,7 @@ public class ModLootTableModifier {
             if (SEA_PICKLE_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.009f))
+                        .conditionally(RandomChanceLootCondition.builder(0.005f))
                         .with(ItemEntry.builder(ModItems.DSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 

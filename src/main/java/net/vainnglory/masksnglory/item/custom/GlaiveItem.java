@@ -11,26 +11,28 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.item.Vanishable;
+import net.minecraft.item.*;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
+import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundItem {
     private final float attackDamage;
+    private final ModRarities rarity;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-    public GlaiveItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
+    public GlaiveItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, ModRarities rarity) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
         this.attackDamage = (float) attackDamage + toolMaterial.getAttackDamage();
+        this.rarity = rarity;
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_DAMAGE,
@@ -46,6 +48,13 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
 
     public float getAttackDamage() {
         return this.attackDamage;
+    }
+
+    @Override
+    public Text getName(ItemStack stack) {
+        Text baseName = super.getName(stack);
+
+        return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
 
     @Override
@@ -70,9 +79,10 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-        return true;
-
+        if(attacker instanceof PlayerEntity) {
+            target.damage(target.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE), 4);
+        }
+        return super.postHit(stack, target, attacker);
     }
 
     @Override

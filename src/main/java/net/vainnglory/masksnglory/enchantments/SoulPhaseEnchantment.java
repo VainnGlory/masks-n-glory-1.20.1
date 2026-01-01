@@ -22,7 +22,7 @@ public class SoulPhaseEnchantment extends Enchantment {
 
     @Override
     public int getMinPower(int level) {
-        return 7;
+        return 5;
     }
 
     @Override
@@ -44,14 +44,6 @@ public class SoulPhaseEnchantment extends Enchantment {
     public boolean isAvailableForRandomSelection() {
         return true;
     }
-
-    @Override
-    public boolean canAccept(Enchantment other) {
-        return !(other instanceof SerialEnchantment) &&
-                !(other instanceof FearEnchantment);
-    }
-
-    @Override
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.isOf(ModItems.GLAIVE) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
     }
@@ -60,37 +52,27 @@ public class SoulPhaseEnchantment extends Enchantment {
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (hand == Hand.MAIN_HAND && !world.isClient && entity instanceof LivingEntity target) {
                 float cooldown = player.getAttackCooldownProgress(0.0f);
-                if (cooldown >= 0.8f) {
-                    ItemStack weapon = player.getMainHandStack();
-                    int level = EnchantmentHelper.getLevel(ModEnchantments.SOUL, weapon);
+                ItemStack weapon = player.getMainHandStack();
+                int level = EnchantmentHelper.getLevel(ModEnchantments.SOUL, weapon);
 
-                    if (level > 0 && canExecute(target, level, world.random)) {
-                        DamageSources damageSources = world.getDamageSources();
-                        float amount = 2.5f * level;
-                        target.damage(damageSources.magic(), amount);
+                if (level > 0 && cooldown >= 0.85f) {
+                    Random random = world.getRandom();
+                    if (random.nextFloat() < 0.60f) {
+                        float amount = 1.5f * level;
+                        world.getServer().execute(() -> {
+                            target.hurtTime = 0;
+                            target.timeUntilRegen = 0;
+
+                            player.heal(amount);
+
+                            DamageSources damageSources = world.getDamageSources();
+                            target.damage(damageSources.magic(), amount);
+                        });
                     }
                 }
             }
             return ActionResult.PASS;
         });
-    }
-
-    private static boolean canExecute(LivingEntity target, int level, Random random) {
-        if (target.getHealth() > 10000.0f) {
-            return false;
-        }
-
-        float chance = getExecutionChance(level);
-        return random.nextFloat() < chance;
-    }
-
-    private static float getExecutionChance(int level) {
-        switch (level) {
-            case 1:
-                return 1.0f;
-            default:
-                return 1.0f;
-        }
     }
 }
 

@@ -9,6 +9,7 @@ import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.painting.ModPaintings;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.util.ModLootTableModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,8 @@ public class MasksNGlory implements ModInitializer {
         ModEntities.registerModEntities();
 
         ModEnchantments.registerEnchantments();
+
+        ModDamageTypes.initialize();
 
         SerialEnchantment.registerAttackCallback();
         SkullBreakerEnchantment.registerAttackCallback();

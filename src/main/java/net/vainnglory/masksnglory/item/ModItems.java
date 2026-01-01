@@ -10,11 +10,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.item.custom.*;
+import net.vainnglory.masksnglory.util.ModRarities;
 
 
 public class ModItems {
     public static final Item ESHARD = registerItem("eshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
-    public static final Item DSHARD = registerItem("dshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
+    public static final Item DSHARD = registerItem("dshard", new Item(new FabricItemSettings().food(ModFoodComponents.DSHARD).rarity(Rarity.EPIC)));
     public static final Item OSHARD = registerItem("oshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item PSHARD = registerItem("pshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item TSHARD = registerItem("tshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
@@ -84,22 +85,22 @@ public class ModItems {
 
 
     public static final Item RUSTED_SWORD = registerItem("rusted_sword",
-            new RustedSwordItem(ModToolMaterial.RUSTED, 3 , -2.2f, new FabricItemSettings().rarity(Rarity.EPIC)));
+            new RustedSwordItem(ModToolMaterial.RUSTED, 3 , -2.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.BONE));
 
     public static final Item MAELSTROM = registerItem("maelstrom",
             new MaelstromItem(ModToolMaterial.GLORIOUS, 5 , -2f, new FabricItemSettings()));
 
     public static final Item GOLDEN_PAN = registerItem("golden_pan",
-            new GoldenPanItem(ModToolMaterial.RUSTED,1, -1.8f, new FabricItemSettings().rarity(Rarity.RARE)));
+            new GoldenPanItem(ModToolMaterial.RUSTED,1, -1.8f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.GOLDEN));
 
     public static final Item PALE_SWORD = registerItem("pale_sword",
-            new PaleSwordItem(ModToolMaterial.RUSTED, 4 , -2.8f, new FabricItemSettings().rarity(Rarity.RARE)));
+            new PaleSwordItem(ModToolMaterial.RUSTED, 4 , -2.8f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
 
     public static final Item BONE_KNIFE = registerItem("bone_knife",
-            new BoneKnifeItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().rarity(Rarity.RARE)));
+            new BoneKnifeItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.BONE));
 
     public static final Item GLAIVE = registerItem("glaive",
-            new GlaiveItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().rarity(Rarity.EPIC)));
+            new GlaiveItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
 
 
     public static final Item PALE_TEMPLATE = PaleTemplateItem.createPaleUpgrade();

@@ -64,7 +64,7 @@
 
   "item.masks-n-glory.maelstrom": "Maelstrom",
 
-  "item.masks-n-glory.golden_pan": "§6Golden War-Pan",
+  "item.masks-n-glory.golden_pan": "Golden War-Pan",
   "tooltip.masks-n-glory.golden_pan": "§7*A pan? For cooking? No, a pan, for breaking teeth*",
 
   "block.masks-n-glory.pale_steel_block": "Block Of Pale Steel",
@@ -108,13 +108,16 @@
   "enchantment.masks-n-glory.combo.desc": "Quickly attack your opponent, if you manage to kill them in the same combo, all the hits you've landed will be turned into absorption for you.",
   "enchantment.masks-n-glory.antiseptic": "Antiseptic",
   "enchantment.masks-n-glory.antiseptic.desc": "Immune to most poison, and bad statues effects when holding the knife",
-  "enchantment.masks-n-glory.soul": "Soul Phase",
-  "enchantment.masks-n-glory.soul.desc": "Sacrifice your sweeping and knockback for a hit that ignore the armor of the opponent and deals additional damage",
+  "enchantment.masks-n-glory.soul": "Strength of the Damned",
+  "enchantment.masks-n-glory.soul.desc": "empower your hits and bypass shields, the more you hit, the more you heal",
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hit",
   "masks-n-glory.subtitles.item.pale.hit": "Greatsword hit",
   "masks-n-glory.subtitles.item.rusted.hit": "Saber/glaive hit",
   "masks-n-glory.subtitles.item.bone.hit": "Knife hit",
+
+  "death.attack.soul": "%1$s' soul was cleaved by... someone.",
+  "death.attack.soul.player": "%1$s' soul was cleaved by... someone.",
 
   "itemgroup.shards": "Masks N Glory"
 }
