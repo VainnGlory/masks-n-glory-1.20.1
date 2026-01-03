@@ -44,7 +44,7 @@ public class FearEnchantment extends Enchantment {
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
         if (target instanceof LivingEntity targetEntity) {
-            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 120 * level, 0, false, false, false)); // L'aura visibile dura 10 secondi
+            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 90 * level, 0, false, false, false)); // L'aura visibile dura 10 secondi
         }
     }
 }

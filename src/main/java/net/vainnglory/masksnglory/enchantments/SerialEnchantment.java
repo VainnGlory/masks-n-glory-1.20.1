@@ -59,7 +59,7 @@ public class SerialEnchantment extends Enchantment {
                 if (level > 0 && cooldown >= 0.85f) {
                     Random random = world.getRandom();
                     if (random.nextFloat() < 0.60f) {
-                        float amount = 0.90f * level;
+                        float amount = 1.5f * level;
                         world.getServer().execute(() -> {
                             target.hurtTime = 0;
                             target.timeUntilRegen = 0;

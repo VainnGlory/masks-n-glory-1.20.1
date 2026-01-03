@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "masks-n-glory:rust"
+  },
+  "base": {
+    "item": "minecraft:chainmail_helmet"
+  },
+  "result": {
+    "item": "masks-n-glory:pale_helmet"
+  },
+  "template": {
+    "item": "masks-n-glory:pale_upgrade_template"
+  }
+}
