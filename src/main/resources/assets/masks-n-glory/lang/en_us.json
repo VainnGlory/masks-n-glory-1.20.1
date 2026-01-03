@@ -125,5 +125,18 @@
   "death.attack.soul.player": "%1$s's soul was cleaved by... someone.",
   "death.attack.soul.item": "%1$s's soul was cleaved by... someone using %3$s",
 
+  "advancements.Masks N Glory.pale_armor.description": "An Alchemist's Dream",
+  "advancements.Masks N Glory.pale_armor.title": "Cover Me in Nostalgia",
+  "advancements.Masks N Glory.rust.description": "Synthesize your first pale steel ingot",
+  "advancements.Masks N Glory.rust.title": "Masks N Glory",
+  "advancements.Masks N Glory.pale_sword.description": "A Big Sword with Big Dreams",
+  "advancements.Masks N Glory.pale_sword.title": "The Biggest Bird",
+  "advancements.Masks N Glory.rusted_sword.description": "Most Reliable Weapon",
+  "advancements.Masks N Glory.rusted_sword.title": "You Found the Blueprints",
+  "advancements.Masks N Glory.glaive.description": "My Personal Favorite",
+  "advancements.Masks N Glory.glaive.title": "Better Than it Seems",
+  "advancements.Masks N Glory.golden_pan.description": "Absolute Bonk",
+  "advancements.Masks N Glory.golden_pan.title": "For a Dear Friend",
+
   "itemgroup.shards": "Masks N Glory"
 }

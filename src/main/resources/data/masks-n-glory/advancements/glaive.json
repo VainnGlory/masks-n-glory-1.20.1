@@ -1,0 +1,42 @@
+{
+  "parent": "masks-n-glory:masks_n_glory",
+  "criteria": {
+    "Masks N Glory": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "masks-n-glory:glaive"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.Masks N Glory.glaive.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "masks-n-glory:glaive",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.Masks N Glory.glaive.title"
+    }
+  },
+  "requirements": [
+    [
+      "Masks N Glory"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

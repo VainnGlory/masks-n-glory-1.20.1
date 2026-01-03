@@ -1,0 +1,57 @@
+{
+  "parent": "masks-n-glory:masks_n_glory",
+  "criteria": {
+    "pale_armor": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "masks-n-glory:pale_helmet"
+            ]
+          },
+          {
+            "items": [
+              "masks-n-glory:pale_chestplate"
+            ]
+          },
+          {
+            "items": [
+              "masks-n-glory:pale_leggings"
+            ]
+          },
+          {
+            "items": [
+              "masks-n-glory:pale_boots"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.Masks N Glory.pale_armor.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "masks-n-glory:pale_chestplate",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.Masks N Glory.pale_armor.title"
+    }
+  },
+  "requirements": [
+    [
+      "pale_armor"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

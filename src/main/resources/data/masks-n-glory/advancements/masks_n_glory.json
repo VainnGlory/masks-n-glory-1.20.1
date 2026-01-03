@@ -1,0 +1,42 @@
+{
+  "criteria": {
+    "Masks N Glory": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "masks-n-glory:rust"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/block/blackstone.png",
+    "description": {
+      "translate": "advancements.Masks N Glory.rust.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "masks-n-glory:rust",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.Masks N Glory.rust.title"
+    }
+  },
+  "requirements": [
+    [
+      "Masks N Glory"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}
