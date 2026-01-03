@@ -40,6 +40,11 @@
   "item.masks-n-glory.null_mask": "Null Mask",
   "item.masks-n-glory.knight_mask": "Knight Mask",
 
+  "item.masks-n-glory.pale_helmet": "Pale Steel Helmet",
+  "item.masks-n-glory.pale_chestplate": "Pale Steel Chestplate",
+  "item.masks-n-glory.pale_leggings": "Pale Steel Leggings",
+  "item.masks-n-glory.pale_boots": "Pale Steel Boots",
+
   "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
   "tooltip.masks-n-glory.rusted_sword": "§7*Made from the blueprints found in an abandoned base inside a calcite cliff.*",
 
@@ -118,6 +123,7 @@
 
   "death.attack.soul": "%1$s' soul was cleaved by... someone.",
   "death.attack.soul.player": "%1$s' soul was cleaved by... someone.",
+  "death.attack.soul.item": "%1$s' soul was cleaved by... someone using %3$s",
 
   "itemgroup.shards": "Masks N Glory"
 }

@@ -9,8 +9,8 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.vainnglory.masksnglory.item.ModItems.*;
 
-public class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
-    public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
+    public ModItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
         super(output, completableFuture);
     }
 
@@ -19,5 +19,8 @@ public class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
         getOrCreateTagBuilder(ItemTags.SWORDS)
                 .add(RUSTED_SWORD, GOLDEN_PAN, MAELSTROM, PALE_SWORD, BONE_KNIFE, GLAIVE
                 );
+
+        getOrCreateTagBuilder(ItemTags.TRIMMABLE_ARMOR)
+                .add(PALE_HELMET,PALE_CHESTPLATE,PALE_LEGGINGS,PALE_BOOTS);
     }
 }

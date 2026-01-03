@@ -82,6 +82,15 @@ public class ModItems {
             new ModArmorItem(ModArmorMaterials.STSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
 
 
+    public static final Item PALE_HELMET = registerItem("pale_helmet",
+            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.HELMET, new FabricItemSettings()));
+    public static final Item PALE_CHESTPLATE = registerItem("pale_chestplate",
+            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.CHESTPLATE, new FabricItemSettings()));
+    public static final Item PALE_LEGGINGS = registerItem("pale_leggings",
+            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.LEGGINGS, new FabricItemSettings()));
+    public static final Item PALE_BOOTS = registerItem("pale_boots",
+            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.BOOTS, new FabricItemSettings()));
+
 
 
     public static final Item RUSTED_SWORD = registerItem("rusted_sword",

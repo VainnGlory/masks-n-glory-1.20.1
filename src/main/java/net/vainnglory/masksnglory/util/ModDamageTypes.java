@@ -12,6 +12,6 @@ public class ModDamageTypes {
 
     public static void initialize() {
 
-        MasksNGlory.LOGGER.info("Registered Soul DamageType");
+        MasksNGlory.LOGGER.info("Registered Player's Souls");
     }
 }

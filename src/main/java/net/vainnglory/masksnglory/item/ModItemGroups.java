@@ -54,6 +54,11 @@ public class ModItemGroups {
                         entries.add(ModItems.EYE_MASK);
                         entries.add(ModItems.NULL_MASK);
 
+                        entries.add(ModItems.PALE_HELMET);
+                        entries.add(ModItems.PALE_CHESTPLATE);
+                        entries.add(ModItems.PALE_LEGGINGS);
+                        entries.add(ModItems.PALE_BOOTS);
+
                         entries.add(ModItems.RUSTED_SWORD);
                         entries.add(ModItems.MAELSTROM);
                         entries.add(ModItems.GOLDEN_PAN);
