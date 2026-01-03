@@ -3,6 +3,7 @@
   "package": "net.vainnglory.masksnglory.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "EffectMixin",
     "ExampleMixin",
     "ItemRendererAccessor",
     "ItemRendererMixin",

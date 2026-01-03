@@ -16,11 +16,8 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        getOrCreateTagBuilder(ItemTags.SWORDS)
-                .add(RUSTED_SWORD, GOLDEN_PAN, MAELSTROM, PALE_SWORD, BONE_KNIFE, GLAIVE
-                );
 
         getOrCreateTagBuilder(ItemTags.TRIMMABLE_ARMOR)
-                .add(PALE_HELMET,PALE_CHESTPLATE,PALE_LEGGINGS,PALE_BOOTS);
+                .add(ModItems.PALE_HELMET,ModItems.PALE_CHESTPLATE,ModItems.PALE_LEGGINGS,ModItems.PALE_BOOTS);
     }
 }
