@@ -7,8 +7,6 @@ import net.minecraft.registry.tag.ItemTags;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.vainnglory.masksnglory.item.ModItems.*;
-
 public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
     public ModItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
         super(output, completableFuture);

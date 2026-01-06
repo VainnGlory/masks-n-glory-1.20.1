@@ -43,53 +43,53 @@ public class ModItems {
     public static final Item GOLDENSCRAP = registerItem("goldenscrap", new GoldenScrapItem(new FabricItemSettings().rarity(Rarity.EPIC)));
 
     public static final Item EGO_MASK = registerItem("ego_mask",
-        new ModArmorItem(ModArmorMaterials.ESHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+        new ModArmorItem(ModArmorMaterials.ESHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
     public static final Item DMAN_MASK = registerItem("d_man_mask",
-            new ModArmorItem(ModArmorMaterials.DSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.DSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item BLANK_MASK = registerItem("blank_mask",
-            new ModArmorItem(ModArmorMaterials.MASKS, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+            new ModArmorItem(ModArmorMaterials.MASKS, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.WOODEN));
     public static final Item HAPPY_MASK = registerItem("happy_mask",
-            new ModArmorItem(ModArmorMaterials.HMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.HMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.WOODEN));
     public static final Item GRIN_MASK = registerItem("grin_mask",
-            new ModArmorItem(ModArmorMaterials.GMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.GMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.WOODEN));
     public static final Item SAD_MASK = registerItem("sad_mask",
-            new ModArmorItem(ModArmorMaterials.SMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.SMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.WOODEN));
     public static final Item KNIGHT_MASK = registerItem("knight_mask",
-            new ModArmorItem(ModArmorMaterials.KMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.KMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.WOODEN));
     public static final Item EYE_MASK = registerItem("eye_mask",
-            new ModArmorItem(ModArmorMaterials.EMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.EMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.WOODEN));
     public static final Item NULL_MASK = registerItem("null_mask",
-            new ModArmorItem(ModArmorMaterials.NMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.EPIC)));
+            new ModArmorItem(ModArmorMaterials.NMASKS, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.WOODEN));
     public static final Item OJI_MASK = registerItem("oji_mask",
-            new ModArmorItem(ModArmorMaterials.OSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.OSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item PIKO_MASK = registerItem("piko_mask",
-            new ModArmorItem(ModArmorMaterials.PSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.PSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item TOG_MASK = registerItem("tog_mask",
-            new ModArmorItem(ModArmorMaterials.TSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.EPIC)));
+            new ModArmorItem(ModArmorMaterials.TSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.GOLDEN));
     public static final Item HS_MASK = registerItem("hs_mask",
-            new ModArmorItem(ModArmorMaterials.HSSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.HSSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item DOG_MASK = registerItem("dog_mask",
-            new ModArmorItem(ModArmorMaterials.DOSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.DOSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item CORV_MASK = registerItem("corv_mask",
-            new ModArmorItem(ModArmorMaterials.CSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.CSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item CRASH_MASK = registerItem("crash_mask",
-            new ModArmorItem(ModArmorMaterials.CRSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.CRSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item HOUND_MASK = registerItem("hound_mask",
-            new ModArmorItem(ModArmorMaterials.HHSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.HHSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item DAVE_MASK = registerItem("dave_mask",
-            new ModArmorItem(ModArmorMaterials.DVSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.DVSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item STONEI_MASK = registerItem("stonei_mask",
-            new ModArmorItem(ModArmorMaterials.STSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.RARE)));
+            new ModArmorItem(ModArmorMaterials.STSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
 
 
     public static final Item PALE_HELMET = registerItem("pale_helmet",
-            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.HELMET, new FabricItemSettings()));
+            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
     public static final Item PALE_CHESTPLATE = registerItem("pale_chestplate",
-            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.CHESTPLATE, new FabricItemSettings()));
+            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
     public static final Item PALE_LEGGINGS = registerItem("pale_leggings",
-            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.LEGGINGS, new FabricItemSettings()));
+            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.LEGGINGS, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
     public static final Item PALE_BOOTS = registerItem("pale_boots",
-            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.BOOTS, new FabricItemSettings()));
+            new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.BOOTS, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
 
 
 

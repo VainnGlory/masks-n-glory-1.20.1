@@ -63,7 +63,7 @@ public enum ModArmorMaterials implements ArmorMaterial {
     private final float knockbackResistance;
     private final Supplier<Ingredient> repairIngredient;
 
-    private static final int[] BASE_DURABILITY = {55, 16, 15, 13 };
+    private static final int[] BASE_DURABILITY = {30, 45, 40, 35 };
 
     ModArmorMaterials(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
         this.name = name;

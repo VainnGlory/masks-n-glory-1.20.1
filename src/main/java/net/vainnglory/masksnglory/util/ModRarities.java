@@ -8,7 +8,9 @@ public enum ModRarities {
 
     PALE(TextColor.fromRgb(0xFDDC97)),
     BONE(TextColor.fromRgb(0xB2A583)),
-    GOLDEN(TextColor.fromRgb(0xE8AB55));
+    GOLDEN(TextColor.fromRgb(0xE8AB55)),
+    WOODEN(TextColor.fromRgb(0x845959)),
+    SPECIAL(TextColor.fromRgb(0x4089DF));
 
     public final TextColor color;
 

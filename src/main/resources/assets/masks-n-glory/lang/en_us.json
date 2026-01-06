@@ -24,7 +24,7 @@
   "item.masks-n-glory.d_man_mask": "D_Man's Clown Mask",
   "item.masks-n-glory.oji_mask": "Oji's Mask",
   "item.masks-n-glory.piko_mask": "Piko's Mask",
-  "item.masks-n-glory.tog_mask": "§6Ciemność",
+  "item.masks-n-glory.tog_mask": "Ciemność",
   "item.masks-n-glory.hs_mask": "HS' Wooden Mask",
   "item.masks-n-glory.dog_mask": "DogSout's Patriotic Mask",
   "item.masks-n-glory.corv_mask": "Corvoks' Eye Mask",
@@ -40,10 +40,10 @@
   "item.masks-n-glory.null_mask": "Null Mask",
   "item.masks-n-glory.knight_mask": "Knight Mask",
 
-  "item.masks-n-glory.pale_helmet": "§6Pale Steel Helmet",
-  "item.masks-n-glory.pale_chestplate": "§6Pale Steel Chestplate",
-  "item.masks-n-glory.pale_leggings": "§6Pale Steel Leggings",
-  "item.masks-n-glory.pale_boots": "§6Pale Steel Boots",
+  "item.masks-n-glory.pale_helmet": "Pale Steel Helmet",
+  "item.masks-n-glory.pale_chestplate": "Pale Steel Chestplate",
+  "item.masks-n-glory.pale_leggings": "Pale Steel Leggings",
+  "item.masks-n-glory.pale_boots": "Pale Steel Boots",
 
   "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
   "tooltip.masks-n-glory.rusted_sword": "§7*Made from the blueprints found in an abandoned base inside a calcite cliff.*",

@@ -7,13 +7,17 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
+import net.vainnglory.masksnglory.util.ModRarities;
 import org.spongepowered.include.com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
 public class ModArmorItem extends ArmorItem {
+    private final ModRarities rarity;
     private static final Map<ArmorMaterial, StatusEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, StatusEffectInstance>())
                     .put(ModArmorMaterials.ESHARD, new StatusEffectInstance(StatusEffects.UNLUCK, 400, 5,
@@ -54,8 +58,16 @@ public class ModArmorItem extends ArmorItem {
                             false, false, true)).build();
 
 
-    public ModArmorItem(ArmorMaterial material, Type type, Settings settings) {
+    public ModArmorItem(ArmorMaterial material, Type type, Settings settings, ModRarities rarity) {
         super(material, type, settings);
+        this.rarity = rarity;
+    }
+
+    @Override
+    public Text getName(ItemStack stack) {
+        Text baseName = super.getName(stack);
+
+        return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
 
     @Override
