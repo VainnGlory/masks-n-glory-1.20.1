@@ -2,8 +2,7 @@
   "item.rusted.hit": {
     "sounds": [
       "masks-n-glory:item/rusted_hit_3",
-      "masks-n-glory:item/rusted_hit_2",
-      "masks-n-glory:item/rusted_hit_4"
+      "masks-n-glory:item/rusted_hit_2"
     ],
     "subtitle": "masks-n-glory.subtitles.item.rusted.hit"
   },

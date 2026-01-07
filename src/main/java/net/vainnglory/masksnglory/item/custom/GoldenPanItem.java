@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -17,6 +18,7 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
@@ -52,13 +54,15 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     @Override
     public Text getName(ItemStack stack) {
         Text baseName = super.getName(stack);
-
+        if (EnchantmentHelper.getLevel(ModEnchantments.SKULL, stack) > 0) {
+            return super.getName(stack).copy().styled(style -> style.withColor(0xE3BCF5));
+        }
         return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
 
     @Override
     public void playHitSound(PlayerEntity player) {
-        player.playSound(MasksNGlorySounds.ITEM_PAN_HIT, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
+        player.playSound(MasksNGlorySounds.ITEM_PAN_HIT, 0.5F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
     }
 
     @Override

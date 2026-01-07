@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -18,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
@@ -53,7 +55,12 @@ public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitS
     @Override
     public Text getName(ItemStack stack) {
         Text baseName = super.getName(stack);
-
+        if (EnchantmentHelper.getLevel(ModEnchantments.DEATH, stack) > 0) {
+            return super.getName(stack).copy().styled(style -> style.withColor(0xCC4200));
+        }
+        if (EnchantmentHelper.getLevel(ModEnchantments.SERIAL, stack) > 0) {
+            return super.getName(stack).copy().styled(style -> style.withColor(0x7A94AC));
+        }
         return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
 

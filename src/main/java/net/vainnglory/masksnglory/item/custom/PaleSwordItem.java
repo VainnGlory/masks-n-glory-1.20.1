@@ -61,7 +61,7 @@ public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSou
 
     @Override
     public void playHitSound(PlayerEntity player) {
-        player.playSound(MasksNGlorySounds.ITEM_PALE_HIT, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
+        player.playSound(MasksNGlorySounds.ITEM_PALE_HIT, 0.5F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
     }
 
     @Override
