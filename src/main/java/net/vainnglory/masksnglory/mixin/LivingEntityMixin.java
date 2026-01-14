@@ -27,7 +27,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "dropEquipment", at = @At(value = "TAIL"))
     private void masksnglory$dropEshard(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
         if (source.getAttacker() instanceof PlayerEntity && getUuidAsString().equals("d1848a30-b4c9-4f64-817d-0d09377b125c")) {
-            dropStack(new ItemStack(ModItems.GILDED_HEART));
+            dropStack(new ItemStack(ModItems.ESHARD));
         }
     }
 

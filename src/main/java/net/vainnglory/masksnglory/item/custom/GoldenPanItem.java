@@ -11,6 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.tag.BlockTags;
@@ -20,12 +21,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.util.ModRarities;
+import net.vainnglory.masksnglory.util.ModDeathSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSoundItem {
+public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSoundItem, ModDeathSource {
     private final float attackDamage;
     private final ModRarities rarity;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
@@ -82,7 +85,12 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-        return true;
+        return super.postHit(stack, target, attacker);
+    }
+
+    @Override
+    public DamageSource getKillSource(LivingEntity livingEntity) {
+        return ModDamageTypes.pan(livingEntity);
     }
 
     @Override

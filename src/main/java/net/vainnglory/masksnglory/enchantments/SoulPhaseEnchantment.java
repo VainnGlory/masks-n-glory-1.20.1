@@ -44,7 +44,7 @@ public class SoulPhaseEnchantment extends Enchantment {
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
         if (target instanceof LivingEntity targetEntity) {
-            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 50 * level, 0, false, false, false)); // L'aura visibile dura 10 secondi
+            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 200 * level, 1, false, false, false)); // L'aura visibile dura 10 secondi
         }
     }
 }

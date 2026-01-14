@@ -12,6 +12,7 @@
   "item.masks-n-glory.dvshard": "Mysterious Rotten Eye",
   "item.masks-n-glory.stshard": "Mysterious Black Shard",
   "item.masks-n-glory.rawpale": "Unstable Pale Steel Ingot",
+  "item.masks-n-glory.nugget": "Unstable Pale Steel Nugget",
   "item.masks-n-glory.gildedingot": "Gilded Ingot",
   "item.masks-n-glory.bone": "Bone Alloy Ingot",
   "item.masks-n-glory.echodust": "Echo Dust",
@@ -56,6 +57,9 @@
 
   "item.masks-n-glory.glaive": "Pale Glaive",
   "tooltip.masks-n-glory.glaive": "§7*A certain husk's favorite weapon.*",
+
+  "item.masks-n-glory.pride": "Prideful Husk",
+  "masks-n-glory.tooltip.pride.imbued_hits": "Imbued Hits: %s",
 
 
   "item.masks-n-glory.rust": "Pale Steel Ingot",
@@ -114,16 +118,29 @@
   "enchantment.masks-n-glory.antiseptic": "Antiseptic",
   "enchantment.masks-n-glory.antiseptic.desc": "Immune to most poison, and bad statues effects when holding the knife",
   "enchantment.masks-n-glory.soul": "Legions of the Undead",
-  "enchantment.masks-n-glory.soul.desc": "empower your hits a withering effect",
+  "enchantment.masks-n-glory.soul.desc": "empower your hits a hunger effect",
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hit",
   "masks-n-glory.subtitles.item.pale.hit": "Greatsword hit",
   "masks-n-glory.subtitles.item.rusted.hit": "Saber/glaive hit",
   "masks-n-glory.subtitles.item.bone.hit": "Knife hit",
+  "masks-n-glory.subtitles.item.pride.hit": "Pride hit",
 
-  "death.attack.soul": "%1$s' soul was claimed by the undead's legions.",
-  "death.attack.soul.player": "%1$s's soul was cleaved by... someone.",
-  "death.attack.soul.item": "%1$s's soul was cleaved by... someone using %3$s",
+  "death.attack.soul": "%1$s's soul was claimed by the undead legion.",
+  "death.attack.soul.player": "%1$s's soul was cleaved by... §kYours Truly§r.",
+  "death.attack.soul.player.item": "%1$s's soul was cleaved by... §kYours Truly§r using %3$s",
+
+  "death.attack.death": "%1$s's head rolled",
+  "death.attack.death.player": "%1$s was executed in the public square by %2$s",
+  "death.attack.death.player.item": "%1$s was executed in the public square by %2$s using %3$s",
+
+  "death.attack.pan": "%1$s got fried",
+  "death.attack.pan.player": "%1$s was served their eggs and bakey by %2$s",
+  "death.attack.pan.player.item": "%1$s was served their eggs and bakey by %2$s using %3$s",
+
+  "death.attack.rusted": "%1$s forgot how to pump blood in their veins",
+  "death.attack.rusted.player": "%1$s was sliced and diced by %2$s",
+  "death.attack.rusted.player.item": "%1$s was sliced and diced by %2$s using %3$s",
 
   "advancements.Masks N Glory.pale_armor.description": "An Alchemist's Dream",
   "advancements.Masks N Glory.pale_armor.title": "Cover Me in Nostalgia",

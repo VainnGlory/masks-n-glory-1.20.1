@@ -37,6 +37,7 @@ public class ModItems {
     public static final Item GLORIOUS = registerItem("void", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item BONE = registerItem("bone", new Item(new FabricItemSettings()));
     public static final Item RAWPALEINGOT = registerItem("rawpale", new Item(new FabricItemSettings()));
+    public static final Item NUGGET = registerItem("nugget", new NuggetItem(new FabricItemSettings()));
     public static final Item GILDEDINGOT = registerItem("gildedingot", new Item(new FabricItemSettings()));
     public static final Item ECHODUST = registerItem("echodust", new Item(new FabricItemSettings()));
     public static final Item ECHODUSTSUGAR = registerItem("echo_dust_and_sugar", new Item(new FabricItemSettings()));
@@ -100,7 +101,7 @@ public class ModItems {
             new MaelstromItem(ModToolMaterial.GLORIOUS, 5 , -2f, new FabricItemSettings()));
 
     public static final Item GOLDEN_PAN = registerItem("golden_pan",
-            new GoldenPanItem(ModToolMaterial.RUSTED,1, -1.8f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.GOLDEN));
+            new GoldenPanItem(ModToolMaterial.RUSTED,0, -1.8f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.GOLDEN));
 
     public static final Item PALE_SWORD = registerItem("pale_sword",
             new PaleSwordItem(ModToolMaterial.RUSTED, 4 , -2.8f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
@@ -110,6 +111,9 @@ public class ModItems {
 
     public static final Item GLAIVE = registerItem("glaive",
             new GlaiveItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
+
+    public static final Item PRIDE = registerItem("pride",
+            new PrideItem(ModToolMaterial.RUSTED,3, -2.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE, 3));
 
 
     public static final Item PALE_TEMPLATE = PaleTemplateItem.createPaleUpgrade();

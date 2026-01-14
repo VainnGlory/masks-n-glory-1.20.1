@@ -11,8 +11,8 @@ import java.util.function.Supplier;
 
 public enum ModArmorMaterials implements ArmorMaterial {
     ESHARD("eshard", 25, new int[] { 3, 8, 6, 3 }, 19,
-            SoundEvents.ENTITY_WARDEN_DEATH, 4f, 0.1f, () -> Ingredient.ofItems(ModItems.ESHARD)),
-    DSHARD("dshard", 25, new int[] { 3, 8, 6, 3 }, 19,
+            SoundEvents.ENTITY_WARDEN_DEATH, 3f, 0.1f, () -> Ingredient.ofItems(ModItems.ESHARD)),
+    DSHARD("dshard", 25, new int[] { 1, 8, 6, 3 }, 19,
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DSHARD)),
     MASKS("masks", 25, new int[] { 3, 8, 6, 3 }, 19,
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.MASKS)),
@@ -30,11 +30,11 @@ public enum ModArmorMaterials implements ArmorMaterial {
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.NMASKS)),
     OSHARD("oshard", 25, new int[] { 3, 8, 6, 3 }, 19,
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.OSHARD)),
-    PSHARD("pshard", 25, new int[] { 3, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.PSHARD)),
-    TSHARD("tshard", 25, new int[] { 3, 8, 6, 3 }, 19,
+    PSHARD("pshard", 25, new int[] { 2, 8, 6, 3 }, 19,
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.1f, () -> Ingredient.ofItems(ModItems.PSHARD)),
+    TSHARD("tshard", 25, new int[] { 2, 8, 6, 3 }, 19,
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.TSHARD)),
-    HSSHARD("hsshard", 25, new int[] { 3, 8, 6, 3 }, 19,
+    HSSHARD("hsshard", 25, new int[] { 2, 8, 6, 3 }, 19,
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HSSHARD)),
     DOSHARD("doshard", 25, new int[] { 3, 8, 6, 3 }, 19,
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DOSHARD)),
@@ -42,13 +42,13 @@ public enum ModArmorMaterials implements ArmorMaterial {
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.CSHARD)),
     CRSHARD("crshard", 25, new int[] { 3, 8, 6, 3 }, 19,
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.CRSHARD)),
-    HHSHARD("hhshard", 25, new int[] { 3, 8, 6, 3 }, 19,
+    HHSHARD("hhshard", 25, new int[] { 2, 8, 6, 3 }, 19,
     SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HHSHARD)),
     DVSHARD("dvshard", 25, new int[] { 3, 8, 6, 3 }, 19,
             SoundEvents.BLOCK_MUD_STEP, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DVSHARD)),
     RUSTED("rust", 25, new int[] { 3, 8, 6, 3 }, 25,
             SoundEvents.BLOCK_CHAIN_BREAK, 1f, 0.2f, () -> Ingredient.ofItems(ModItems.RUSTED)),
-    STSHARD("stshard", 25, new int[] { 3, 8, 6, 3 }, 19,
+    STSHARD("stshard", 25, new int[] { 2, 8, 6, 3 }, 19,
     SoundEvents.BLOCK_SCULK_CHARGE, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.STSHARD));
 
 

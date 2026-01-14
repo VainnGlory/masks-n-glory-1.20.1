@@ -11,22 +11,24 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
+import net.vainnglory.masksnglory.util.ModDeathSource;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitSoundItem {
+public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitSoundItem, ModDeathSource {
     private final ModRarities rarity;
     private final float attackDamage;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
@@ -90,6 +92,12 @@ public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitS
         return true;
 
     }
+
+    @Override
+    public DamageSource getKillSource(LivingEntity livingEntity) {
+        return ModDamageTypes.rusted(livingEntity);
+    }
+
 
     @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {

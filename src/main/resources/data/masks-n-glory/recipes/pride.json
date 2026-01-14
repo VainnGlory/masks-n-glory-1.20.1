@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "masks-n-glory:void"
+  },
+  "base": {
+    "item": "masks-n-glory:rusted_sword"
+  },
+  "result": {
+    "item": "masks-n-glory:pride"
+  },
+  "template": {
+    "item": "masks-n-glory:pale_upgrade_template"
+  }
+}

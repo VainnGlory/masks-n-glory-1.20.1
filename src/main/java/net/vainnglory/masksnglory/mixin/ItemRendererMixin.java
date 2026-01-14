@@ -68,6 +68,15 @@ public abstract class ItemRendererMixin {
 
         return value;
     }
+
+    @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
+
+    public BakedModel usePrideModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        if (stack.isOf(ModItems.PRIDE) && renderMode != ModelTransformationMode.GUI)
+            return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "pride_detail", "inventory"));
+
+        return value;
+    }
 }
 
 

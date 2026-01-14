@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "masks-n-glory:rawpale"
+    }
+  ],
+  "result": {
+    "item": "masks-n-glory:nugget",
+    "count": 4
+  }
+}

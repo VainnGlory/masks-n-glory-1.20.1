@@ -3,6 +3,7 @@
   "package": "net.vainnglory.masksnglory.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "DeathMixin",
     "EffectMixin",
     "ExampleMixin",
     "ItemRendererAccessor",
@@ -11,6 +12,7 @@
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
     "ModelLoaderMixin",
+    "NuggetMixin",
     "PlayerEntityMixin"
   ],
   "client": [

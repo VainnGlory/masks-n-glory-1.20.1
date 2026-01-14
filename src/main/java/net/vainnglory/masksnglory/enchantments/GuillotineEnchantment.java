@@ -13,6 +13,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.minecraft.util.math.random.Random;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
 
 
 public class GuillotineEnchantment extends Enchantment {
@@ -53,7 +54,7 @@ public class GuillotineEnchantment extends Enchantment {
     }
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.isOf(ModItems.RUSTED_SWORD) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
+        return stack.isOf(ModItems.RUSTED_SWORD) || stack.isOf(ModItems.PRIDE) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
     }
 
     public static void registerAttackCallback() {
@@ -67,7 +68,7 @@ public class GuillotineEnchantment extends Enchantment {
                     if (level > 0 && canExecute(target, level, world.random)) {
                         DamageSources damageSources = world.getDamageSources();
                         float amount = 100000.0f * level;
-                        target.damage(damageSources.magic(), amount);
+                        target.damage(target.getDamageSources().create(ModDamageTypes.DEATH_DAMAGE), amount);
                     }
                 }
             }

@@ -84,6 +84,7 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         if(attacker instanceof PlayerEntity) {
             target.damage(target.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE), 6);
         }

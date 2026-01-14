@@ -26,13 +26,15 @@ public class ModItemGroups {
                         entries.add(ModItems.HHSHARD);
                         entries.add(ModItems.DVSHARD);
                         entries.add(ModItems.STSHARD);
-                        entries.add(ModItems.RUSTED);
-                        entries.add(ModItems.RAWPALEINGOT);
                         entries.add(ModItems.GILDEDINGOT);
+                        entries.add(ModItems.RAWPALEINGOT);
+                        entries.add(ModItems.NUGGET);
+                        entries.add(ModItems.RUSTED);
                         entries.add(ModItems.BONE);
                         entries.add(ModItems.ECHODUST);
                         entries.add(ModItems.ECHODUSTSUGAR);
                         entries.add(ModItems.GOLDENSCRAP);
+
 
                         entries.add(ModItems.EGO_MASK);
                         entries.add(ModItems.DMAN_MASK);
@@ -59,12 +61,13 @@ public class ModItemGroups {
                         entries.add(ModItems.PALE_LEGGINGS);
                         entries.add(ModItems.PALE_BOOTS);
 
-                        entries.add(ModItems.RUSTED_SWORD);
-                        entries.add(ModItems.MAELSTROM);
-                        entries.add(ModItems.GOLDEN_PAN);
-                        entries.add(ModItems.PALE_SWORD);
                         entries.add(ModItems.BONE_KNIFE);
+                        entries.add(ModItems.RUSTED_SWORD);
+                        entries.add(ModItems.PRIDE);
+                        entries.add(ModItems.PALE_SWORD);
                         entries.add(ModItems.GLAIVE);
+                        entries.add(ModItems.GOLDEN_PAN);
+                        entries.add(ModItems.MAELSTROM);
 
                         entries.add(ModItems.PALE_TEMPLATE);
 
