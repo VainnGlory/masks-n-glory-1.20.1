@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "masks-n-glory:bone"
+  },
+  "base": {
+    "item": "masks-n-glory:pale_sword"
+  },
+  "result": {
+    "item": "masks-n-glory:maelstrom"
+  },
+  "template": {
+    "item": "masks-n-glory:pale_upgrade_template"
+  }
+}

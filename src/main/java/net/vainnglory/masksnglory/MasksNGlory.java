@@ -8,6 +8,7 @@ import net.minecraft.world.GameRules;
 import net.vainnglory.masksnglory.block.ModBlocks;
 import net.vainnglory.masksnglory.enchantments.*;
 import net.vainnglory.masksnglory.entity.ModEntities;
+import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
@@ -52,6 +53,8 @@ public class MasksNGlory implements ModInitializer {
         AntisepticEnchantment.registerTickCallback();
 
         RegisterMNGItems.registerPaleItems();
+
+        ModEntityTypes.registerEntityTypes();
 
         LOGGER.info("Starting The 9/5");
 

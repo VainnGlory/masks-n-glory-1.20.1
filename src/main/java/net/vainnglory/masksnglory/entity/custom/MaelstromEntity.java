@@ -1,226 +1,182 @@
 package net.vainnglory.masksnglory.entity.custom;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
+import net.vainnglory.masksnglory.item.ModItems;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.vainnglory.masksnglory.MasksNGlory;
-import net.vainnglory.masksnglory.item.ModItems;
-import org.jetbrains.annotations.Nullable;
 
 public class MaelstromEntity extends PersistentProjectileEntity {
-    private static final TrackedData<Byte> LOYALTY = DataTracker.registerData(MaelstromEntity.class, TrackedDataHandlerRegistry.BYTE);
-    private static final TrackedData<Boolean> ENCHANTED = DataTracker.registerData(MaelstromEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private ItemStack MaelstromStack = new ItemStack(ModItems.MAELSTROM);
-    private boolean dealtDamage;
-    public int returnTimer;
+    private static final TrackedData<Boolean> RETURNING = DataTracker.registerData(MaelstromEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final int MAX_DISTANCE = 35; // blocks before returning
+    private ItemStack swordStack;
+    private Vec3d startPos;
+    private int ticksInAir = 0;
 
-    public MaelstromEntity(EntityType<MaelstromEntity> entityType, World world) {
+    public MaelstromEntity(EntityType<? extends MaelstromEntity> entityType, World world) {
         super(entityType, world);
+        this.swordStack = new ItemStack(ModItems.MAELSTROM);
     }
 
     public MaelstromEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityType.TRIDENT, owner, world);
-        this.MaelstromStack = stack.copy();
-        this.dataTracker.set(LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
-        this.dataTracker.set(ENCHANTED, stack.hasGlint());
+        super(ModEntityTypes.MAELSTROM_ENTITY_ENTITY_TYPE, owner, world);
+        this.swordStack = stack.copy();
+        this.startPos = owner.getPos();
+        this.setNoGravity(true);
     }
-
-
-
-    public static void registerModEntities() {
-        MasksNGlory.LOGGER.info("Registering Entities for " + MasksNGlory.MOD_ID);
-    }
-
-
 
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(LOYALTY, (byte)0);
-        this.dataTracker.startTracking(ENCHANTED, false);
+        this.dataTracker.startTracking(RETURNING, false);
+    }
+
+    public boolean isReturning() {
+        return this.dataTracker.get(RETURNING);
+    }
+
+    public void setReturning(boolean returning) {
+        this.dataTracker.set(RETURNING, returning);
     }
 
     @Override
     public void tick() {
-        if (this.inGroundTime > 4) {
-            this.dealtDamage = true;
+
+
+        if (startPos == null) {
+            startPos = this.getPos();
         }
 
-        Entity entity = this.getOwner();
-        int i = this.dataTracker.get(LOYALTY);
-        if (i > 0 && (this.dealtDamage || this.isNoClip()) && entity != null) {
-            if (!this.isOwnerAlive()) {
-                if (!this.getWorld().isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
-                    this.dropStack(this.asItemStack(), 0.1F);
-                }
+        this.inGround = false;
 
-                this.discard();
-            } else {
-                this.setNoClip(true);
-                Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
-                this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * (double)i, this.getZ());
-                if (this.getWorld().isClient) {
-                    this.lastRenderY = this.getY();
-                }
+        if (isReturning()) {
+            this.noClip = true;
+        }
 
-                double d = 0.05 * (double)i;
-                this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
-                if (this.returnTimer == 0) {
-                    this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
-                }
+        ticksInAir++;
 
-                this.returnTimer++;
+
+        if (!isReturning() && startPos != null && (this.distanceTo(startPos) > MAX_DISTANCE || ticksInAir > 40)) {
+            setReturning(true);
+        }
+
+
+        if (isReturning() && this.getOwner() instanceof PlayerEntity owner) {
+            if (!this.getWorld().isClient) {
+
+                Vec3d currentPos = this.getPos();
+                this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.5),
+                                entity -> entity instanceof LivingEntity && entity != this.getOwner())
+                        .forEach(entity -> {
+                            entity.damage(this.getDamageSources().trident(this, this.getOwner()), 8.0F);
+                        });
+
+                Vec3d ownerPos = owner.getPos().add(0, owner.getStandingEyeHeight() / 2, 0);
+
+                Vec3d direction = ownerPos.subtract(currentPos).normalize();
+
+                double speed = 0.8;
+                this.setVelocity(direction.multiply(speed));
+
+
+                if (this.distanceTo(owner) < 2.0) {
+                    this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 1.0F, 1.0F);
+                    if (!owner.getInventory().insertStack(swordStack)) {
+                        owner.dropItem(swordStack, false);
+                    }
+                    this.discard();
+                    return;
+                }
             }
         }
 
         super.tick();
     }
 
-    private boolean isOwnerAlive() {
-        Entity entity = this.getOwner();
-        return entity == null || !entity.isAlive() ? false : !(entity instanceof ServerPlayerEntity) || !entity.isSpectator();
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return this.MaelstromStack.copy();
-    }
-
-    public boolean isEnchanted() {
-        return this.dataTracker.get(ENCHANTED);
-    }
-
-    @Nullable
-    @Override
-    protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
-        return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);
+    private double distanceTo(Vec3d pos) {
+        return this.getPos().distanceTo(pos);
     }
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        Entity entity = entityHitResult.getEntity();
-        float f = 8.0F;
-        if (entity instanceof LivingEntity livingEntity) {
-            f += EnchantmentHelper.getAttackDamage(this.MaelstromStack, livingEntity.getGroup());
-        }
+        if (!this.getWorld().isClient) {
 
-        Entity entity2 = this.getOwner();
-        DamageSource damageSource = this.getDamageSources().trident(this, (Entity)(entity2 == null ? this : entity2));
-        this.dealtDamage = true;
-        SoundEvent soundEvent = SoundEvents.ENTITY_WITHER_SPAWN;
-        if (entity.damage(damageSource, f)) {
-            if (entity.getType() == EntityType.ENDERMAN) {
-                return;
-            }
+            entityHitResult.getEntity().damage(this.getDamageSources().trident(this, this.getOwner()), 8.0F);
 
-            if (entity instanceof LivingEntity livingEntity2) {
-                if (entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
-                    EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
-                }
+            if (isReturning() && this.getOwner() instanceof PlayerEntity owner) {
 
-                this.onHit(livingEntity2);
+                this.noClip = true;
+
+            } else {
+
+                this.noClip = false;
             }
         }
-
-        this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
-        float g = 1.0F;
-        if (this.getWorld() instanceof ServerWorld && this.getWorld().isThundering() && this.hasChanneling()) {
-            BlockPos blockPos = entity.getBlockPos();
-            if (this.getWorld().isSkyVisible(blockPos)) {
-                LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
-                if (lightningEntity != null) {
-                    lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
-                    lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);
-                    this.getWorld().spawnEntity(lightningEntity);
-                    soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER;
-                    g = 5.0F;
-                }
-            }
-        }
-
-        this.playSound(soundEvent, g, 1.0F);
     }
 
-    public boolean hasChanneling() {
-        return EnchantmentHelper.hasChanneling(this.MaelstromStack);
+    @Override
+    protected void onBlockHit(net.minecraft.util.hit.BlockHitResult blockHitResult) {
+
+        if (isReturning()) {
+            return;
+        }
+
+        this.setVelocity(this.getVelocity().multiply(-0.25));
+        setReturning(true);
+    }
+
+    @Override
+    public boolean shouldRender(double distance) {
+
+        return true;
+    }
+
+    @Override
+    protected ItemStack asItemStack() {
+        return swordStack.copy();
     }
 
     @Override
     protected boolean tryPickup(PlayerEntity player) {
-        return super.tryPickup(player) || this.isNoClip() && this.isOwner(player) && player.getInventory().insertStack(this.asItemStack());
+        return false;
     }
 
     @Override
-    protected SoundEvent getHitSound() {
-        return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
-    }
-
-    @Override
-    public void onPlayerCollision(PlayerEntity player) {
-        if (this.isOwner(player) || this.getOwner() == null) {
-            super.onPlayerCollision(player);
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.put("SwordStack", swordStack.writeNbt(new NbtCompound()));
+        nbt.putBoolean("Returning", isReturning());
+        nbt.putInt("TicksInAir", ticksInAir);
+        if (startPos != null) {
+            nbt.putDouble("StartX", startPos.x);
+            nbt.putDouble("StartY", startPos.y);
+            nbt.putDouble("StartZ", startPos.z);
         }
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("maelstrom", NbtElement.COMPOUND_TYPE)) {
-            this.MaelstromStack = ItemStack.fromNbt(nbt.getCompound("maelstrom"));
+        if (nbt.contains("SwordStack")) {
+            this.swordStack = ItemStack.fromNbt(nbt.getCompound("SwordStack"));
         }
-
-        this.dealtDamage = nbt.getBoolean("DealtDamage");
-        this.dataTracker.set(LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.MaelstromStack));
-    }
-
-    @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.put("maelstrom", this.MaelstromStack.writeNbt(new NbtCompound()));
-        nbt.putBoolean("DealtDamage", this.dealtDamage);
-    }
-
-    @Override
-    public void age() {
-        int i = this.dataTracker.get(LOYALTY);
-        if (this.pickupType != PersistentProjectileEntity.PickupPermission.ALLOWED || i <= 0) {
-            super.age();
+        setReturning(nbt.getBoolean("Returning"));
+        ticksInAir = nbt.getInt("TicksInAir");
+        if (nbt.contains("StartX")) {
+            this.startPos = new Vec3d(
+                    nbt.getDouble("StartX"),
+                    nbt.getDouble("StartY"),
+                    nbt.getDouble("StartZ")
+            );
         }
-    }
-
-    @Override
-    protected float getDragInWater() {
-        return 0.99F;
-    }
-
-    @Override
-    public boolean shouldRender(double cameraX, double cameraY, double cameraZ) {
-        return true;
     }
 }

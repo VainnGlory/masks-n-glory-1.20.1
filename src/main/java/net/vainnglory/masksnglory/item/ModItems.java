@@ -98,7 +98,7 @@ public class ModItems {
             new RustedSwordItem(ModToolMaterial.RUSTED, 3 , -2.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.BONE));
 
     public static final Item MAELSTROM = registerItem("maelstrom",
-            new MaelstromItem(ModToolMaterial.GLORIOUS, 5 , -2f, new FabricItemSettings()));
+            new MaelstromItem(ModToolMaterial.RUSTED, 5 , -2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
 
     public static final Item GOLDEN_PAN = registerItem("golden_pan",
             new GoldenPanItem(ModToolMaterial.RUSTED,0, -1.8f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.GOLDEN));
