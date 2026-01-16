@@ -14,48 +14,100 @@ import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.spongepowered.include.com.google.common.collect.ImmutableMap;
 
+import java.util.List;
 import java.util.Map;
 
 public class ModArmorItem extends ArmorItem {
     private final ModRarities rarity;
-    private static final Map<ArmorMaterial, StatusEffectInstance> MATERIAL_TO_EFFECT_MAP =
-            (new ImmutableMap.Builder<ArmorMaterial, StatusEffectInstance>())
-                    .put(ModArmorMaterials.ESHARD, new StatusEffectInstance(StatusEffects.UNLUCK, 400, 5,
-                            false, false, true))
-                    .put(ModArmorMaterials.OSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 1,
-                            false, false, true))
-                    .put(ModArmorMaterials.PSHARD, new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.TSHARD, new StatusEffectInstance(StatusEffects.ABSORPTION, 300, 3,
-                            false, false, true))
-                    .put(ModArmorMaterials.HSSHARD, new StatusEffectInstance(StatusEffects.JUMP_BOOST, 400, 3,
-                            false, false, true))
-                    .put(ModArmorMaterials.HMASKS, new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 400, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.GMASKS, new StatusEffectInstance(StatusEffects.BAD_OMEN, 400, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.SMASKS, new StatusEffectInstance(StatusEffects.HASTE, 600, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.KMASKS, new StatusEffectInstance(StatusEffects.ABSORPTION, 550, 2,
-                            false, false, true))
-                    .put(ModArmorMaterials.EMASKS, new StatusEffectInstance(StatusEffects.NIGHT_VISION, 5000, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.NMASKS, new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 1000, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.DOSHARD, new StatusEffectInstance(StatusEffects.SPEED, 600, 4,
-                            false, false, true))
-                    .put(ModArmorMaterials.CSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.CRSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.HHSHARD, new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1,
-                            false, false, true))
-                    .put(ModArmorMaterials.DVSHARD, new StatusEffectInstance(StatusEffects.REGENERATION, 400, 1,
-                            false, false, true))
-                    .put(ModArmorMaterials.STSHARD, new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0,
-                            false, false, true))
-                    .put(ModArmorMaterials.DSHARD, new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1,
-                            false, false, true)).build();
+
+
+    private static final Map<ArmorMaterial, List<StatusEffectInstance>> MATERIAL_TO_EFFECT_MAP =
+            (new ImmutableMap.Builder<ArmorMaterial, List<StatusEffectInstance>>())
+
+                    .put(ModArmorMaterials.ESHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.UNLUCK, 150, 254, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.OSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 1, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.PSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 0, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.TSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.ABSORPTION, 300, 3, false, false, true),
+                            new StatusEffectInstance(StatusEffects.HUNGER, 100, 10, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.HSSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.JUMP_BOOST, 400, 3, false, false, true),
+                            new StatusEffectInstance(StatusEffects.HUNGER, 400, 2, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.HMASKS, List.of(
+                            new StatusEffectInstance(StatusEffects.GLOWING, 400, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 400, 1, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.GMASKS, List.of(
+                            new StatusEffectInstance(StatusEffects.BAD_OMEN, 400, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.HUNGER, 150, 254, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.SMASKS, List.of(
+                            new StatusEffectInstance(StatusEffects.HASTE, 600, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.UNLUCK, 600, 1, false, false, true),
+                            new StatusEffectInstance(StatusEffects.REGENERATION, 600, 0, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.KMASKS, List.of(
+                            new StatusEffectInstance(StatusEffects.ABSORPTION, 550, 2, false, false, true),
+                            new StatusEffectInstance(StatusEffects.SLOWNESS, 150, 1, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.EMASKS, List.of(
+                            new StatusEffectInstance(StatusEffects.NIGHT_VISION, 5000, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.HASTE, 150, 0, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.NMASKS, List.of(
+                            new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 1000, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.LUCK, 1000, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 1000, 0, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.DOSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.SPEED, 600, 4, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.CSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.CRSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.HHSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.DVSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.REGENERATION, 400, 1, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.STSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.HUNGER, 400, 0, false, false, true)
+                    ))
+
+                    .put(ModArmorMaterials.DSHARD, List.of(
+                            new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1, false, false, true),
+                            new StatusEffectInstance(StatusEffects.HUNGER, 400, 4, false, false, true)
+                    ))
+                    .build();
 
 
     public ModArmorItem(ArmorMaterial material, Type type, Settings settings, ModRarities rarity) {
@@ -73,8 +125,11 @@ public class ModArmorItem extends ArmorItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if(!world.isClient()) {
-            if(entity instanceof PlayerEntity player && hasFullSuitOfArmorOn(player)) {
-                evaluateArmorEffects(player);
+            if(entity instanceof PlayerEntity) {
+                PlayerEntity player = (PlayerEntity) entity;
+                if(hasHelmetEquipped(player)) {
+                    evaluateArmorEffects(player);
+                }
             }
         }
 
@@ -82,38 +137,33 @@ public class ModArmorItem extends ArmorItem {
     }
 
     private void evaluateArmorEffects(PlayerEntity player) {
-        for (Map.Entry<ArmorMaterial, StatusEffectInstance> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
-            ArmorMaterial mapArmorMaterial = entry.getKey();
-            StatusEffectInstance mapStatusEffect = entry.getValue();
+        ItemStack helmet = player.getInventory().getArmorStack(3);
 
-            if(hasCorrectArmorOn(mapArmorMaterial, player)) {
-                addStatusEffectForMaterial(player, mapArmorMaterial, mapStatusEffect);
+        if(helmet.getItem() instanceof ArmorItem) {
+            ArmorItem helmetItem = (ArmorItem) helmet.getItem();
+            ArmorMaterial helmetMaterial = helmetItem.getMaterial();
+
+            List<StatusEffectInstance> effectInstances = MATERIAL_TO_EFFECT_MAP.get(helmetMaterial);
+
+            if(effectInstances != null) {
+
+                for(StatusEffectInstance effect : effectInstances) {
+                    addStatusEffectForMaterial(player, effect);
+                }
             }
         }
     }
 
-    private void addStatusEffectForMaterial(PlayerEntity player, ArmorMaterial mapArmorMaterial, StatusEffectInstance mapStatusEffect) {
+    private void addStatusEffectForMaterial(PlayerEntity player, StatusEffectInstance mapStatusEffect) {
         boolean hasPlayerEffect = player.hasStatusEffect(mapStatusEffect.getEffectType());
 
-        if(hasCorrectArmorOn(mapArmorMaterial, player) && !hasPlayerEffect) {
+        if(!hasPlayerEffect) {
             player.addStatusEffect(new StatusEffectInstance(mapStatusEffect));
         }
     }
 
-    private boolean hasFullSuitOfArmorOn(PlayerEntity player) {
+    private boolean hasHelmetEquipped(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
-
         return !helmet.isEmpty();
-    }
-
-    private boolean hasCorrectArmorOn(ArmorMaterial material, PlayerEntity player) {
-        for (ItemStack armorStack: player.getInventory().armor) {
-            if (!(armorStack.getItem() instanceof ArmorItem)) {
-                return false;
-            }
-        }
-        ArmorItem helmet = ((ArmorItem)player.getInventory().getArmorStack(3).getItem());
-
-        return helmet.getMaterial() == material;
     }
 }

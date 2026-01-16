@@ -136,7 +136,7 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
                 target.addStatusEffect(new StatusEffectInstance(
                         effect.getEffectType(),
                         effect.getDuration(),
-                        effect.getAmplifier() + 1
+                        effect.getAmplifier()
                 ));
             }
         } else {
@@ -202,7 +202,7 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
                     .map(effect -> new StatusEffectInstance(
                             effect.getEffectType(),
                             effect.getDuration(),
-                            effect.getAmplifier() + 1
+                            effect.getAmplifier()
                     ))
                     .collect(Collectors.toList());
 
