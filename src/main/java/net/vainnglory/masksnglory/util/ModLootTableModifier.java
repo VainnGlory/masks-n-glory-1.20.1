@@ -34,7 +34,7 @@ public class ModLootTableModifier {
             new Identifier("masks-n-glory", "blocks/crimped_chiseled_pale_steel_block");
 
     private static final Identifier JUNGLE_TEMPLE_ID =
-            new Identifier("minecraft", "chests/jungle_temple");
+            new Identifier("minecraft", "chests/shipwreck_treasure");
 
     private static final Identifier STRONGHOLD_ID=
             new Identifier("minecraft", "chests/stronghold_corridor");
@@ -71,7 +71,7 @@ public class ModLootTableModifier {
             if (STRONGHOLD3_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.05f))
+                        .conditionally(RandomChanceLootCondition.builder(0.08f))
                         .with(ItemEntry.builder(ModItems.GLORIOUS))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 
@@ -111,7 +111,7 @@ public class ModLootTableModifier {
             if (BLACKSTONE_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.01f))
+                        .conditionally(RandomChanceLootCondition.builder(0.009f))
                         .with(ItemEntry.builder(ModItems.STSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
 

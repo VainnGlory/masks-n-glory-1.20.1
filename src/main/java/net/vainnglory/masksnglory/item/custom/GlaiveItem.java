@@ -20,7 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
-import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,9 +84,7 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-        if(attacker instanceof PlayerEntity) {
-            target.damage(target.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE), 6);
-        }
+
         return super.postHit(stack, target, attacker);
     }
 

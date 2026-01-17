@@ -47,16 +47,16 @@
   "item.masks-n-glory.pale_boots": "Pale Steel Boots",
 
   "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
-  "tooltip.masks-n-glory.rusted_sword": "§7*Made from the blueprints found in an abandoned base inside a calcite cliff.*",
+  "tooltip.masks-n-glory.rusted_sword": "§8*Made from the blueprints found in an abandoned base inside a calcite cliff.*",
 
   "item.masks-n-glory.bone_knife": "Bone Alloy Knife",
-  "tooltip.masks-n-glory.bone_knife": "§7*He's burning the kitchen*",
+  "tooltip.masks-n-glory.bone_knife": "§8*He's burning the kitchen*",
 
   "item.masks-n-glory.pale_sword": "Pale Steel Greatsword",
-  "tooltip.masks-n-glory.pale_sword": "§7*Slow breath, heavy blow.*",
+  "tooltip.masks-n-glory.pale_sword": "§8*Slow breath, heavy blow.*",
 
   "item.masks-n-glory.glaive": "Pale Glaive",
-  "tooltip.masks-n-glory.glaive": "§7*A certain husk's favorite weapon.*",
+  "tooltip.masks-n-glory.glaive": "§8*A certain husk's favorite weapon.*",
 
   "item.masks-n-glory.pride": "Prideful Husk",
   "masks-n-glory.tooltip.pride.imbued_hits": "Imbued Hits: %s",
@@ -72,10 +72,10 @@
   "item.minecraft.smithing_template.pale_upgrade.ingredients": "Pale Steel Ingot/Bone Alloy",
 
   "item.masks-n-glory.maelstrom": "Maelstrom",
-  "tooltip.masks-n-glory.maelstrom": "§7*Appeared to me in a dream*",
+  "tooltip.masks-n-glory.maelstrom": "§8*Appeared to me in a dream*",
 
   "item.masks-n-glory.golden_pan": "Golden War-Pan",
-  "tooltip.masks-n-glory.golden_pan": "§7*A pan? For cooking? No, a pan, for breaking teeth*",
+  "tooltip.masks-n-glory.golden_pan": "§8*A pan? For cooking? No, a pan, for breaking teeth*",
 
   "block.masks-n-glory.pale_steel_block": "Block Of Pale Steel",
   "block.masks-n-glory.pale_steel_tiles": "Pale Steel Tiles",
@@ -89,7 +89,7 @@
   "item.masks-n-glory.papple": "Pale Apple",
   "item.masks-n-glory.choglowberry": "Choglowberry",
   "item.masks-n-glory.gilded_heart": "§6Gilded Heart",
-  "tooltip.masks-n-glory.gilded_heart": "§7*Are you really willing to pay such a price for them ?*",
+  "tooltip.masks-n-glory.gilded_heart": "§8*Are you really willing to pay such a price for them ?*",
 
   "painting.masks-n-glory.husk.author": "VainGlory",
   "painting.masks-n-glory.husk.title": "Husk",
@@ -129,19 +129,18 @@
 
   "death.attack.soul": "%1$s's soul was claimed by the undead legion.",
   "death.attack.soul.player": "%1$s's soul was cleaved by... §kYours Truly§r.",
-  "death.attack.soul.player.item": "%1$s's soul was cleaved by... §kYours Truly§r using %3$s",
+  "death.attack.soul.item": "%1$s's soul was cleaved by... §kYours Truly§r using %3$s",
 
   "death.attack.death": "%1$s's head rolled",
   "death.attack.death.player": "%1$s was executed in the public square by %2$s",
-  "death.attack.death.player.item": "%1$s was executed in the public square by %2$s using %3$s",
+  "death.attack.death.item": "%1$s was executed in the public square by %2$s using %3$s",
 
   "death.attack.pan": "%1$s got fried",
-  "death.attack.pan.player": "%1$s was served their eggs and bakey by %2$s",
-  "death.attack.pan.player.item": "%1$s was served their eggs and bakey by %2$s using %3$s",
+  "death.attack.pan.player": "%1$s was served their eggs and bakey by %2$s using %3$s",
 
   "death.attack.rusted": "%1$s forgot how to pump blood in their veins",
   "death.attack.rusted.player": "%1$s was sliced and diced by %2$s",
-  "death.attack.rusted.player.item": "%1$s was sliced and diced by %2$s using %3$s",
+  "death.attack.rusted.item": "%1$s was sliced and diced by %2$s using %3$s",
 
   "advancements.Masks N Glory.pale_armor.description": "An Alchemist's Dream",
   "advancements.Masks N Glory.pale_armor.title": "Cover Me in Nostalgia",
