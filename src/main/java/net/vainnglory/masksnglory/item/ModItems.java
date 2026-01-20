@@ -10,7 +10,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.item.custom.*;
-import net.vainnglory.masksnglory.util.FlashAttackPacket;
 import net.vainnglory.masksnglory.util.ModRarities;
 
 

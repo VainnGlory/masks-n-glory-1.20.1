@@ -1,7 +1,6 @@
 package net.vainnglory.masksnglory.item.custom;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Vanishable;
 import net.minecraft.text.Style;
 import net.vainnglory.masksnglory.util.FlashEffectPacket;
 import net.minecraft.client.item.TooltipContext;
