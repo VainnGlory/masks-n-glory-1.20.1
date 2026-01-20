@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.item.custom.*;
+import net.vainnglory.masksnglory.util.FlashAttackPacket;
 import net.vainnglory.masksnglory.util.ModRarities;
 
 
@@ -91,6 +92,8 @@ public class ModItems {
             new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.LEGGINGS, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
     public static final Item PALE_BOOTS = registerItem("pale_boots",
             new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.BOOTS, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
+    public static final Item RET_HELMET = registerItem("ret_helmet",
+            new RetributionHelmet(ModArmorMaterials.GOLDEN, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.GOLDEN));
 
 
 
@@ -113,7 +116,7 @@ public class ModItems {
             new GlaiveItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
 
     public static final Item PRIDE = registerItem("pride",
-            new PrideItem(ModToolMaterial.RUSTED,3, -2.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE, 3));
+            new PrideItem(ModToolMaterial.RUSTED,3, -2.4f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE, 3));
 
 
     public static final Item PALE_TEMPLATE = PaleTemplateItem.createPaleUpgrade();

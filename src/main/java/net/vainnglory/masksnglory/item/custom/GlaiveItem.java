@@ -63,7 +63,16 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
 
     @Override
     public void playHitSound(PlayerEntity player) {
-        player.playSound(MasksNGlorySounds.ITEM_RUSTED_HIT, 0.5F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
+        player.getWorld().playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                MasksNGlorySounds.ITEM_RUSTED_HIT,
+                player.getSoundCategory(),
+                0.7F,
+                (float) (1.0F + player.getRandom().nextGaussian() / 10f)
+        );
     }
 
 

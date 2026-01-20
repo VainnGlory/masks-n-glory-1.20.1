@@ -48,6 +48,8 @@ public enum ModArmorMaterials implements ArmorMaterial {
             SoundEvents.BLOCK_MUD_STEP, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DVSHARD)),
     RUSTED("rust", 25, new int[] { 3, 8, 6, 3 }, 25,
             SoundEvents.BLOCK_CHAIN_BREAK, 1f, 0.2f, () -> Ingredient.ofItems(ModItems.RUSTED)),
+    GOLDEN("golden", 25, new int[] { 2, 8, 6, 3 }, 25,
+            SoundEvents.BLOCK_CHAIN_BREAK, 1f, 0.2f, () -> Ingredient.ofItems(ModItems.RUSTED)),
     STSHARD("stshard", 25, new int[] { 2, 8, 6, 3 }, 19,
     SoundEvents.BLOCK_SCULK_CHARGE, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.STSHARD));
 

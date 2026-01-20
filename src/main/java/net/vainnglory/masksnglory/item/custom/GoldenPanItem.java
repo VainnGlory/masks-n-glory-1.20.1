@@ -65,7 +65,16 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
 
     @Override
     public void playHitSound(PlayerEntity player) {
-        player.playSound(MasksNGlorySounds.ITEM_PAN_HIT, 0.5F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
+        player.getWorld().playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                MasksNGlorySounds.ITEM_PAN_HIT,
+                player.getSoundCategory(),
+                1F,
+                (float) (1.0F + player.getRandom().nextGaussian() / 10f)
+        );
     }
 
     @Override

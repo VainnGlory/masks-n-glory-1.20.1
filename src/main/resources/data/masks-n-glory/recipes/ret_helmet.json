@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "masks-n-glory:goldenscrap"
+  },
+  "base": {
+    "item": "masks-n-glory:pale_helmet"
+  },
+  "result": {
+    "item": "masks-n-glory:ret_helmet"
+  },
+  "template": {
+    "item": "masks-n-glory:pale_upgrade_template"
+  }
+}

@@ -46,6 +46,8 @@
   "item.masks-n-glory.pale_leggings": "Pale Steel Leggings",
   "item.masks-n-glory.pale_boots": "Pale Steel Boots",
 
+  "item.masks-n-glory.ret_helmet": "Golden Retribution Helmet",
+
   "item.masks-n-glory.rusted_sword": "Pale Bone Alloy Saber",
   "tooltip.masks-n-glory.rusted_sword": "§8*Made from the blueprints found in an abandoned base inside a calcite cliff.*",
 
@@ -88,7 +90,7 @@
   "item.masks-n-glory.gcapple": "Echo Caramel Golden Apple",
   "item.masks-n-glory.papple": "Pale Apple",
   "item.masks-n-glory.choglowberry": "Choglowberry",
-  "item.masks-n-glory.gilded_heart": "§6Gilded Heart",
+  "item.masks-n-glory.gilded_heart": "Gilded Heart",
   "tooltip.masks-n-glory.gilded_heart": "§8*Are you really willing to pay such a price for them ?*",
 
   "painting.masks-n-glory.husk.author": "VainGlory",
@@ -154,6 +156,9 @@
   "advancements.Masks N Glory.glaive.title": "Better Than it Seems",
   "advancements.Masks N Glory.golden_pan.description": "Absolute Bonk",
   "advancements.Masks N Glory.golden_pan.title": "For a Dear Friend",
+
+  "key.masks-n-glory.flash_attack": "Flash Attack",
+  "category.masks-n-glory.keybinds": "Masks N Glory",
 
   "itemgroup.shards": "Masks N Glory"
 }

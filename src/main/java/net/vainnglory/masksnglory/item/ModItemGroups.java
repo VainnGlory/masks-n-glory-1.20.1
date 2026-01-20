@@ -60,6 +60,7 @@ public class ModItemGroups {
                         entries.add(ModItems.PALE_CHESTPLATE);
                         entries.add(ModItems.PALE_LEGGINGS);
                         entries.add(ModItems.PALE_BOOTS);
+                        entries.add(ModItems.RET_HELMET);
 
                         entries.add(ModItems.BONE_KNIFE);
                         entries.add(ModItems.RUSTED_SWORD);

@@ -68,7 +68,16 @@ public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitS
 
     @Override
     public void playHitSound(PlayerEntity player) {
-        player.playSound(MasksNGlorySounds.ITEM_RUSTED_HIT, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10f));
+        player.getWorld().playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                MasksNGlorySounds.ITEM_RUSTED_HIT,
+                player.getSoundCategory(),
+                0.7F,
+                (float) (1.0F + player.getRandom().nextGaussian() / 10f)
+        );
     }
 
 

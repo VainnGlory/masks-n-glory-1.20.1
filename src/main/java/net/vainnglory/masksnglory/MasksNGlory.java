@@ -2,19 +2,22 @@ package net.vainnglory.masksnglory;
 
 import net.fabricmc.api.ModInitializer;
 
+
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.GameRules;
 import net.vainnglory.masksnglory.block.ModBlocks;
 import net.vainnglory.masksnglory.enchantments.*;
 import net.vainnglory.masksnglory.entity.ModEntities;
 import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
+import net.vainnglory.masksnglory.events.PlayerDeathEffects;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.painting.ModPaintings;
-import net.vainnglory.masksnglory.util.ModDamageTypes;
-import net.vainnglory.masksnglory.util.ModLootTableModifier;
+import net.vainnglory.masksnglory.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +58,27 @@ public class MasksNGlory implements ModInitializer {
         RegisterMNGItems.registerPaleItems();
 
         ModEntityTypes.registerEntityTypes();
+
+        FlashAttackPacket.registerReceiver();
+
+        ModKeybindings.register();
+
+
+        FlashEffectPacket.registerClientReceiver();
+
+
+        FlashOverlayRenderer.register();
+
+
+        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
+            if (entity instanceof ServerPlayerEntity player) {
+                PlayerDeathEffects.onPlayerDeath(player, damageSource);
+
+            }
+        });
+
+
+
 
         LOGGER.info("Starting The 9/5");
 

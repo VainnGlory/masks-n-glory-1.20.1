@@ -8,6 +8,9 @@ import net.vainnglory.masksnglory.entity.client.MaelstromModel;
 import net.vainnglory.masksnglory.entity.client.ModModelLayers;
 import net.vainnglory.masksnglory.entity.custom.MaelstromEntityRenderer;
 import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
+import net.vainnglory.masksnglory.util.FlashEffectPacket;
+import net.vainnglory.masksnglory.util.FlashOverlayRenderer;
+import net.vainnglory.masksnglory.util.ModKeybindings;
 
 public class MasksNGloryclient implements ClientModInitializer {
     @Override
@@ -17,4 +20,5 @@ public class MasksNGloryclient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntityTypes.MAELSTROM_ENTITY_ENTITY_TYPE, MaelstromEntityRenderer::new);
 
     }
-}
+    }
+

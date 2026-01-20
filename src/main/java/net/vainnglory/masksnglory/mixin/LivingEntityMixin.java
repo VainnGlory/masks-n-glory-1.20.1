@@ -2,6 +2,7 @@ package net.vainnglory.masksnglory.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
@@ -10,11 +11,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.item.ModItems;
+import net.vainnglory.masksnglory.item.custom.RetributionHelmet;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -58,6 +61,48 @@ public abstract class LivingEntityMixin extends Entity {
             dropStack(new ItemStack(ModItems.DSHARD));
         }
     }
+
+    @Inject(
+            method = "damage",
+            at = @At("TAIL")
+    )
+    private void onDamageApplied(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+
+        if (entity.getWorld().isClient) {
+            return;
+        }
+
+        if (!cir.getReturnValue()) {
+            return;
+        }
+
+        if (!(entity instanceof PlayerEntity player)) {
+            return;
+        }
+
+        ItemStack helmet = player.getEquippedStack(EquipmentSlot.HEAD);
+        if (helmet.isEmpty() || !(helmet.getItem() instanceof RetributionHelmet)) {
+            return;
+        }
+
+        if (source.getAttacker() == null) {
+            return;
+        }
+
+        boolean wasCharged = RetributionHelmet.canActivate(helmet);
+
+        RetributionHelmet.addStoredDamage(helmet, amount);
+        System.out.println("Stored damage! New total: " + RetributionHelmet.getStoredDamage(helmet));
+
+        boolean isNowCharged = RetributionHelmet.canActivate(helmet);
+
+        if (!wasCharged && isNowCharged) {
+            RetributionHelmet.playChargeSound(player);
+        }
+    }
+
+
     @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
 
     @Shadow
