@@ -1,6 +1,5 @@
 package net.vainnglory.masksnglory.util;
 
-import net.vainnglory.masksnglory.util.FlashAttackPacket;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
@@ -22,7 +21,7 @@ public class ModKeybindings {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (flashAttackKey.wasPressed()) {
                 if (client.player != null) {
-                    FlashAttackPacket.send();
+                    FlashAttackC2SPacket.send();
                 }
             }
         });

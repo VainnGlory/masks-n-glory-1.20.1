@@ -31,10 +31,12 @@ public class GlaiveDamageMixin {
 
 
                 float cooldownMultiplier = Math.min(1.0F, vanillaDamageWithCooldown / 1.0F);
-                float damage = 6.0F * cooldownMultiplier;
+                float damage = 4.0F * cooldownMultiplier;
 
 
-                entity.damage(entity.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE), damage);
+                DamageSource soulDamage = player.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE, player);
+
+                entity.damage(soulDamage, damage);
                 cir.setReturnValue(true);
             }
         }
