@@ -61,14 +61,6 @@ public class MasksNGlory implements ModInitializer {
 
         FlashAttackPacket.registerReceiver();
 
-        ModKeybindings.register();
-
-
-        FlashEffectPacket.registerClientReceiver();
-
-
-        FlashOverlayRenderer.register();
-
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (entity instanceof ServerPlayerEntity player) {

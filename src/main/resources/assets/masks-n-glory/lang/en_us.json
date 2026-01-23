@@ -122,6 +122,10 @@
   "enchantment.masks-n-glory.antiseptic.desc": "Immune to most poison, and bad statues effects when holding the knife",
   "enchantment.masks-n-glory.soul": "Legions of the Undead",
   "enchantment.masks-n-glory.soul.desc": "empower your hits a hunger effect",
+  "enchantment.masks-n-glory.ret": "Retribution",
+  "enchantment.masks-n-glory.ret.desc": "Trade your flashbang for a row of fangs exactly like an evoker",
+  "enchantment.masks-n-glory.undead": "Vexed",
+  "enchantment.masks-n-glory.undead.desc": "summon 4 vexes to aid you in combat for 15 seconds, be aware however, Evocation is a dangerous magic. Guess who they'll attack, if there's nobody but you around.",
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hit",
   "masks-n-glory.subtitles.item.pale.hit": "Greatsword hit",

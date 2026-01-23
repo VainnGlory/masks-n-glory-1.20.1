@@ -18,6 +18,8 @@ public class ModEnchantments {
     public static Enchantment COMBO = new ComboEnchantment();
     public static Enchantment ANTISEPTIC = new AntisepticEnchantment();
     public static Enchantment SOUL = new SoulPhaseEnchantment();
+    public static Enchantment RET = new RetributionEnchantment();
+    public static Enchantment UNDEAD = new UndeadArmyEnchantment();
 
 
     public static void registerEnchantments(){
@@ -32,6 +34,8 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "combo"), COMBO);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "antiseptic"), ANTISEPTIC);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "soul"), SOUL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "ret"), RET);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "undead"), UNDEAD);
 
         }
 

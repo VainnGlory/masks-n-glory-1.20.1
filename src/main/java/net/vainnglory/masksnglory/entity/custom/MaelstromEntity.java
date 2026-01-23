@@ -58,15 +58,15 @@ public class MaelstromEntity extends PersistentProjectileEntity {
 
         this.inGround = false;
 
-        if (isReturning()) {
-            this.noClip = true;
-        }
-
         ticksInAir++;
 
 
         if (!isReturning() && startPos != null && (this.distanceTo(startPos) > MAX_DISTANCE || ticksInAir > 40)) {
             setReturning(true);
+        }
+
+        if (isReturning()) {
+            this.noClip = true;
         }
 
 

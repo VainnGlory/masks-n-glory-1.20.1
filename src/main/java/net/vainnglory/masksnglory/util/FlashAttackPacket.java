@@ -28,7 +28,7 @@ public class FlashAttackPacket {
 
         if (RetributionHelmet.canActivate(helmet)) {
             RetributionHelmet.activateFlash(player, helmet);
-            player.sendMessage(Text.literal("FlashBanged!"), true);
+            player.sendMessage(Text.literal("Parry That You Filthy Casual!"), true);
         } else {
             float stored = RetributionHelmet.getStoredDamage(helmet);
             player.sendMessage(

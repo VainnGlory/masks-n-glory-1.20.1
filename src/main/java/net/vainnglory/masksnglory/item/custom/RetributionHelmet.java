@@ -1,7 +1,14 @@
 package net.vainnglory.masksnglory.item.custom;
 
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.EvokerFangsEntity;
+import net.minecraft.entity.mob.VexEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Style;
+import net.minecraft.util.Identifier;
 import net.vainnglory.masksnglory.util.FlashEffectPacket;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -19,6 +26,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.util.FollowOwnerAttackGoal;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
 
@@ -91,7 +99,7 @@ public class RetributionHelmet extends ArmorItem {
                     player.getX(),
                     player.getY(),
                     player.getZ(),
-                    SoundEvents.BLOCK_BEACON_DEACTIVATE,
+                    SoundEvents.ENTITY_EVOKER_PREPARE_ATTACK,
                     SoundCategory.PLAYERS,
                     1.0f,
                     1.5f
@@ -103,7 +111,7 @@ public class RetributionHelmet extends ArmorItem {
                 double offsetZ = (world.random.nextDouble() - 0.5) * 0.5;
 
                 world.spawnParticles(
-                        ParticleTypes.END_ROD,
+                        ParticleTypes.WAX_OFF,
                         player.getX() + offsetX,
                         player.getY() + 1.5 + offsetY,
                         player.getZ() + offsetZ,
@@ -113,7 +121,7 @@ public class RetributionHelmet extends ArmorItem {
                 );
             }
 
-            player.sendMessage(Text.literal("Retribution Helmet fully charged!").formatted(Formatting.GOLD), true);
+            player.sendMessage(Text.literal("Golden Retribution Helmet fully charged!").formatted(Formatting.GOLD), true);
         }
     }
 
@@ -127,7 +135,114 @@ public class RetributionHelmet extends ArmorItem {
         NbtCompound nbt = helmet.getOrCreateNbt();
         nbt.putFloat(STORED_DAMAGE_KEY, 0.0f);
 
-        Box area = new Box(
+        int undeadArmyLevel = EnchantmentHelper.getLevel(
+                Registries.ENCHANTMENT.get(new Identifier("masks-n-glory", "undead")),
+                helmet
+        );
+
+        int retributionLevel = EnchantmentHelper.getLevel(
+                Registries.ENCHANTMENT.get(new Identifier("masks-n-glory", "ret")),
+                helmet
+        );
+
+
+        if (undeadArmyLevel > 0) {
+            summonVexes(player, world);
+        } else if (retributionLevel > 0) {
+            summonEvokerFangs(player, world);
+        } else {
+
+            executeFlashAttack(player, world);
+        }
+    }
+
+    private static void summonVexes(ServerPlayerEntity player, ServerWorld world) {
+        int vexCount = 5;
+
+        for (int i = 0; i < vexCount; i++) {
+            VexEntity vex = EntityType.VEX.create(world);
+            if (vex != null) {
+                double angle = (2 * Math.PI * i) / vexCount;
+                double distance = 2.0;
+                double x = player.getX() + Math.cos(angle) * distance;
+                double z = player.getZ() + Math.sin(angle) * distance;
+
+                vex.refreshPositionAndAngles(x, player.getY() + 1, z, world.random.nextFloat() * 360, 0);
+
+                vex.setLifeTicks(300);
+
+
+                ((net.vainnglory.masksnglory.mixin.MobEntityAccessor) vex).getGoalSelector().add(1, new FollowOwnerAttackGoal(vex, player));
+
+                world.spawnEntity(vex);
+
+                world.spawnParticles(
+                        ParticleTypes.SOUL,
+                        x, player.getY() + 1, z,
+                        10,
+                        0.3, 0.3, 0.3,
+                        0.05
+                );
+            }
+        }
+
+        world.playSound(
+                null,
+                player.getX(), player.getY(), player.getZ(),
+                SoundEvents.ENTITY_VEX_AMBIENT,
+                SoundCategory.PLAYERS,
+                1.0f, 0.8f
+        );
+    }
+
+    private static void summonEvokerFangs(ServerPlayerEntity player, ServerWorld world) {
+
+        int[] ringFangCounts = {6, 8, 10};
+        double[] ringRadius = {1.5, 2.5, 3.5};
+
+        for (int ring = 0; ring < 3; ring++) {
+            int fangCount = ringFangCounts[ring];
+            double radius = ringRadius[ring];
+
+            for (int i = 0; i < fangCount; i++) {
+                double angle = (2 * Math.PI * i) / fangCount;
+                double x = player.getX() + Math.cos(angle) * radius;
+                double z = player.getZ() + Math.sin(angle) * radius;
+
+                EvokerFangsEntity fangs = new EvokerFangsEntity(world, x, player.getY(), z, (float) angle, 0, player);
+                world.spawnEntity(fangs);
+            }
+        }
+
+        world.playSound(
+                null,
+                player.getX(), player.getY(), player.getZ(),
+                SoundEvents.ENTITY_EVOKER_CAST_SPELL,
+                SoundCategory.PLAYERS,
+                1.0f, 1.0f
+        );
+
+
+        for (int i = 0; i < 60; i++) {
+            double angle = world.random.nextDouble() * Math.PI * 2;
+            double distance = 1.5 + world.random.nextDouble() * 2.0;
+            double x = player.getX() + Math.cos(angle) * distance;
+            double z = player.getZ() + Math.sin(angle) * distance;
+
+            world.spawnParticles(
+                    ParticleTypes.CRIT,
+                    x, player.getY(), z,
+                    1,
+                    0, 0.5, 0,
+                    0.1
+            );
+        }
+    }
+
+    private static void executeFlashAttack(ServerPlayerEntity player, ServerWorld world) {
+
+
+    Box area = new Box(
                 player.getX() - FLASH_RADIUS,
                 player.getY() - FLASH_RADIUS,
                 player.getZ() - FLASH_RADIUS,

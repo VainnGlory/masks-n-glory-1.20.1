@@ -12,6 +12,7 @@
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
+    "MobEntityAccessor",
     "ModelLoaderMixin",
     "NuggetMixin",
     "PlayerEntityMixin"
