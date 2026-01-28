@@ -38,7 +38,7 @@ public class BluntEnchantment extends Enchantment {
     }
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.isOf(ModItems.PALE_SWORD) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
+        return stack.isOf(ModItems.PALE_SWORD) || stack.isOf(ModItems.MAELSTROM) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
     }
 
     @Override

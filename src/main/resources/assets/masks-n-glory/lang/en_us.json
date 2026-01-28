@@ -133,7 +133,7 @@
   "masks-n-glory.subtitles.item.bone.hit": "Knife hit",
   "masks-n-glory.subtitles.item.pride.hit": "Pride hit",
 
-  "death.attack.soul": "%1$s's soul was claimed by the undead legion.",
+  "death.attack.soul": "%1$s's soul was cleaved by... §kYours Truly§r.",
   "death.attack.soul.player": "%1$s's soul was cleaved by... §kYours Truly§r.",
   "death.attack.soul.item": "%1$s's soul was cleaved by... §kYours Truly§r using %3$s",
 
@@ -142,7 +142,7 @@
   "death.attack.death.item": "%1$s was executed in the public square by %2$s using %3$s",
 
   "death.attack.pan": "%1$s got fried",
-  "death.attack.pan.player": "%1$s was served their eggs and bakey by %2$s using %3$s",
+  "death.attack.pan.player": "%1$s was served their eggs and bakey by %2$s.",
 
   "death.attack.rusted": "%1$s forgot how to pump blood in their veins",
   "death.attack.rusted.player": "%1$s was sliced and diced by %2$s",

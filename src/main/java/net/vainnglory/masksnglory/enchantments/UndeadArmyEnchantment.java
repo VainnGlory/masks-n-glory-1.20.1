@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.vainnglory.masksnglory.item.custom.RetributionHelmet;
 
 public class UndeadArmyEnchantment extends Enchantment {
@@ -28,14 +29,16 @@ public class UndeadArmyEnchantment extends Enchantment {
     }
 
     @Override
+    public boolean isAvailableForRandomSelection() {
+        return true;
+    }
     public boolean isAcceptableItem(ItemStack stack) {
-
-        return stack.getItem() instanceof RetributionHelmet;
+        return stack.getItem() instanceof RetributionHelmet || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
     }
 
     @Override
     public boolean isTreasure() {
-        return true;
+        return false;
     }
 
     @Override
