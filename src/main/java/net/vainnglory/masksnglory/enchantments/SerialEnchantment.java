@@ -6,20 +6,32 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSources;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.vainnglory.masksnglory.item.ModItems;
-import net.minecraft.util.math.random.Random;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class SerialEnchantment extends Enchantment {
 
-        public SerialEnchantment() {
-            super(Rarity.VERY_RARE, EnchantmentTarget.WEAPON, new EquipmentSlot[] { EquipmentSlot.MAINHAND});
-        }
+    private static final Map<UUID, Integer> comboCount = new HashMap<>();
+    private static final Map<UUID, Long> lastHitTime = new HashMap<>();
+
+    private static final long COMBO_TIMEOUT_MS = 2000;
+    private static final int MAX_COMBO = 6;
+    private static final int HEAL_START_COMBO = 4;
+    private static final float MAX_BONUS_DAMAGE = 1.5f;
+    private static final float MAX_BONUS_HEAL = 2.0f;
+
+    public SerialEnchantment() {
+        super(Rarity.VERY_RARE, EnchantmentTarget.WEAPON, new EquipmentSlot[] { EquipmentSlot.MAINHAND});
+    }
 
     @Override
     public int getMinPower(int level) {
@@ -45,8 +57,41 @@ public class SerialEnchantment extends Enchantment {
     public boolean isAvailableForRandomSelection() {
         return true;
     }
+
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.isOf(ModItems.RUSTED_SWORD) || stack.isOf(ModItems.PRIDE) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
+    }
+
+    private static int getCombo(PlayerEntity player) {
+        UUID playerId = player.getUuid();
+        long currentTime = System.currentTimeMillis();
+        Long lastHit = lastHitTime.get(playerId);
+
+        if (lastHit == null || (currentTime - lastHit) > COMBO_TIMEOUT_MS) {
+            comboCount.put(playerId, 0);
+        }
+
+        return comboCount.getOrDefault(playerId, 0);
+    }
+
+    private static void incrementCombo(PlayerEntity player) {
+        UUID playerId = player.getUuid();
+        int currentCombo = comboCount.getOrDefault(playerId, 0);
+        comboCount.put(playerId, Math.min(currentCombo + 1, MAX_COMBO));
+        lastHitTime.put(playerId, System.currentTimeMillis());
+    }
+
+    private static float calculateBonusDamage(int combo) {
+        float progress = Math.min((float) combo / MAX_COMBO, 1.0f);
+        return MAX_BONUS_DAMAGE * progress;
+    }
+
+    private static float calculateHealAmount(int combo) {
+        if (combo < HEAL_START_COMBO) {
+            return 0f;
+        }
+        float progress = (float) (combo - HEAL_START_COMBO) / (MAX_COMBO - HEAL_START_COMBO);
+        return MAX_BONUS_HEAL * progress;
     }
 
     public static void registerAttackCallback() {
@@ -57,19 +102,23 @@ public class SerialEnchantment extends Enchantment {
                 int level = EnchantmentHelper.getLevel(ModEnchantments.SERIAL, weapon);
 
                 if (level > 0 && cooldown >= 0.85f) {
-                    Random random = world.getRandom();
-                    if (random.nextFloat() < 0.60f) {
-                        float amount = 1.5f * level;
-                        world.getServer().execute(() -> {
+                    incrementCombo(player);
+                    int combo = getCombo(player);
+
+                    float bonusDamage = calculateBonusDamage(combo);
+                    float healAmount = calculateHealAmount(combo);
+
+                    world.getServer().execute(() -> {
+                        if (bonusDamage > 0) {
                             target.hurtTime = 0;
                             target.timeUntilRegen = 0;
+                            target.damage(player.getDamageSources().playerAttack(player), bonusDamage);
+                        }
 
-                            player.heal(amount);
-
-                            DamageSources damageSources = world.getDamageSources();
-                            target.damage(damageSources.magic(), amount);
-                        });
-                    }
+                        if (healAmount > 0) {
+                            player.heal(healAmount);
+                        }
+                    });
                 }
             }
             return ActionResult.PASS;
