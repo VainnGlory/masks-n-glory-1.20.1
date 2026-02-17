@@ -112,8 +112,6 @@
   "enchantment.masks-n-glory.serial.desc": "Deals more damage and heals you with each hit you land scaling on how long a combo has been going on for.",
   "enchantment.masks-n-glory.skull": "Skull Breaker",
   "enchantment.masks-n-glory.skull.desc": "Deals additional damage scaling with blocks fallen.",
-  "enchantment.masks-n-glory.impact": "Impact",
-  "enchantment.masks-n-glory.impact.desc": "Create a small shockwave which damages nearby entity if you manages to hit something on your landing. (gets boosted by 'Skull Breaker')",
   "enchantment.masks-n-glory.death": "Guillotine",
   "enchantment.masks-n-glory.death.desc": "If the opponent is under 5 hearts, you have a 8% chance to simply execute them.",
   "enchantment.masks-n-glory.combo": "Combo",

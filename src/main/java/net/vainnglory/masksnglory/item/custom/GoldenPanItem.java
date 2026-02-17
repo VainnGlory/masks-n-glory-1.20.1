@@ -2,6 +2,8 @@ package net.vainnglory.masksnglory.item.custom;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
@@ -14,10 +16,19 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
@@ -27,8 +38,14 @@ import net.vainnglory.masksnglory.util.ModDeathSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.WeakHashMap;
 
 public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSoundItem, ModDeathSource {
+    private static final WeakHashMap<PlayerEntity, Float> fallStarts = new WeakHashMap<>();
+
+    private static final float MIN_FALL_DISTANCE = 2.5f;
+    private static final float SKULL_CRATER_THRESHOLD = 12.0f;
+
     private final float attackDamage;
     private final ModRarities rarity;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
@@ -48,7 +65,6 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         );
         this.attributeModifiers = builder.build();
     }
-
 
     public float getAttackDamage() {
         return this.attackDamage;
@@ -107,7 +123,6 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         if (state.getHardness(world, pos) != 0.0F) {
             stack.damage(2, miner, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         }
-
         return true;
     }
 
@@ -126,11 +141,138 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         tooltip.add(Text.translatable("tooltip.masks-n-glory.golden_pan"));
         super.appendTooltip(stack, world, tooltip, context);
     }
-    public int getEnchantability()
 
-    {
-
+    public int getEnchantability() {
         return 1;
+    }
 
+    public static void registerCallbacks() {
+
+        ServerTickEvents.START_SERVER_TICK.register(server -> {
+            for (var player : server.getPlayerManager().getPlayerList()) {
+                ItemStack weapon = player.getMainHandStack();
+                if (!(weapon.getItem() instanceof GoldenPanItem)) {
+                    fallStarts.remove(player);
+                    continue;
+                }
+                boolean falling = !player.isOnGround() && player.getVelocity().y < -0.08;
+                if (falling && !fallStarts.containsKey(player)) {
+                    fallStarts.put(player, (float) player.getY());
+                }
+                if (player.isOnGround()) {
+                    fallStarts.remove(player);
+                }
+            }
+        });
+
+        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (hand != Hand.MAIN_HAND || world.isClient || !(entity instanceof LivingEntity target)) {
+                return ActionResult.PASS;
+            }
+            ItemStack weapon = player.getMainHandStack();
+            if (!(weapon.getItem() instanceof GoldenPanItem)) {
+                return ActionResult.PASS;
+            }
+
+            Float startY = fallStarts.remove(player);
+            if (startY == null) return ActionResult.PASS;
+
+            float fallDistance = Math.max(0f, startY - (float) player.getY());
+            if (fallDistance < MIN_FALL_DISTANCE) return ActionResult.PASS;
+
+            float cooldown = player.getAttackCooldownProgress(0.5f);
+            if (cooldown <= 0.65f) return ActionResult.PASS;
+
+            int skullLevel = EnchantmentHelper.getLevel(ModEnchantments.SKULL, weapon);
+
+            final float baseFallBonus = fallDistance * 0.18f;
+            final float skullBonus    = skullLevel > 0 ? fallDistance * 1.40f * skullLevel : 0f;
+            final float totalBonus    = baseFallBonus + skullBonus;
+
+            world.getServer().execute(() -> {
+                try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                if (target.isAlive()) {
+                    target.hurtTime = 0;
+                    target.timeUntilRegen = 0;
+                    target.damage(world.getDamageSources().playerAttack(player), totalBonus);
+                }
+            });
+
+            float baseDamage  = (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            float enchantBonus = EnchantmentHelper.getAttackDamage(weapon, target.getGroup());
+            float shockwaveDamage = (baseDamage + enchantBonus) * 0.80f;
+            if (skullLevel > 0) {
+                shockwaveDamage += fallDistance * 0.10f * skullLevel * 0.90f;
+            }
+
+            DamageSource source = world.getDamageSources().playerAttack(player);
+            Vec3d pos = target.getPos();
+
+            Box area = new Box(pos.add(-3, -1, -3), pos.add(3, 2, 3));
+            List<LivingEntity> nearby = world.getNonSpectatingEntities(LivingEntity.class, area);
+            for (LivingEntity near : nearby) {
+                if (near != target && near != player && near.isAlive()) {
+                    near.damage(source, shockwaveDamage);
+                }
+            }
+
+            if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
+
+            serverWorld.spawnParticles(
+                    ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                    pos.x, pos.y + 0.5, pos.z,
+                    18,
+                    0.4, 0.3, 0.4,
+                    0.02
+            );
+
+            float launchVelocity = Math.min(fallDistance * 0.50f, 1.5f);
+            player.setVelocity(player.getVelocity().x, launchVelocity, player.getVelocity().z);
+            player.velocityModified = true;
+
+            if (skullLevel > 0 && fallDistance >= SKULL_CRATER_THRESHOLD) {
+                BlockPos belowTarget = target.getBlockPos().down();
+                BlockState groundBlock = serverWorld.getBlockState(belowTarget);
+                if (groundBlock.isAir()) {
+                    groundBlock = Blocks.STONE.getDefaultState();
+                }
+
+                BlockStateParticleEffect fallbackParticle = new BlockStateParticleEffect(ParticleTypes.BLOCK, groundBlock);
+
+                for (int dx = -3; dx <= 3; dx++) {
+                    for (int dz = -3; dz <= 3; dz++) {
+                        double dist = Math.sqrt(dx * dx + dz * dz);
+                        if (dist < 1.5 || dist > 3.5) continue;
+
+                        BlockPos samplePos = belowTarget.add(dx, 0, dz);
+                        BlockState sampleBlock = serverWorld.getBlockState(samplePos);
+                        BlockStateParticleEffect localParticle = sampleBlock.isAir()
+                                ? fallbackParticle
+                                : new BlockStateParticleEffect(ParticleTypes.BLOCK, sampleBlock);
+
+                        serverWorld.spawnParticles(
+                                localParticle,
+                                pos.x + dx, pos.y + 0.1, pos.z + dz,
+                                6,
+                                0.3, 0.1, 0.3,
+                                0.12
+                        );
+                    }
+                }
+
+                serverWorld.playSound(
+                        null,
+                        pos.x, pos.y, pos.z,
+                        SoundEvents.ENTITY_IRON_GOLEM_HURT,
+                        SoundCategory.PLAYERS,
+                        3.5f,
+                        0.85f
+                );
+            }
+
+            return ActionResult.PASS;
+        });
     }
 }
+
+

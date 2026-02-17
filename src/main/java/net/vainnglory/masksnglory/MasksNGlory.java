@@ -13,6 +13,7 @@ import net.vainnglory.masksnglory.enchantments.*;
 import net.vainnglory.masksnglory.entity.ModEntities;
 import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
 import net.vainnglory.masksnglory.events.PlayerDeathEffects;
+import net.vainnglory.masksnglory.item.custom.GoldenPanItem;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
@@ -46,10 +47,7 @@ public class MasksNGlory implements ModInitializer {
         ModDamageTypes.initialize();
 
         SerialEnchantment.registerAttackCallback();
-        SkullBreakerEnchantment.registerAttackCallback();
-        SkullBreakerEnchantment.registerTickCallback();
-        ImpactEnchantment.registerAttackCallback();
-        ImpactEnchantment.registerTickCallback();
+        GoldenPanItem.registerCallbacks();
         GuillotineEnchantment.registerAttackCallback();
         ComboEnchantment.registerAttackCallback();
         ComboEnchantment.registerKillCallback();

@@ -13,7 +13,6 @@ public class ModEnchantments {
     public static Enchantment LETHAL = new LethalEnchantment();
     public static Enchantment SERIAL = new SerialEnchantment();
     public static Enchantment SKULL = new SkullBreakerEnchantment();
-    public static Enchantment IMPACT = new ImpactEnchantment();
     public static Enchantment DEATH = new GuillotineEnchantment();
     public static Enchantment COMBO = new ComboEnchantment();
     public static Enchantment ANTISEPTIC = new AntisepticEnchantment();
@@ -30,7 +29,6 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "serial"), SERIAL);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "skull"), SKULL);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "death"), DEATH);
-        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "impact"), IMPACT);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "combo"), COMBO);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "antiseptic"), ANTISEPTIC);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "soul"), SOUL);
