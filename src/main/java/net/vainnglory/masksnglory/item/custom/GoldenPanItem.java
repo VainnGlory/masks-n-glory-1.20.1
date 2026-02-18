@@ -162,6 +162,9 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 if (player.isOnGround()) {
                     fallStarts.remove(player);
                 }
+                if (player.fallDistance > 0) {
+                    player.fallDistance = 0;
+                }
             }
         });
 
@@ -186,7 +189,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             int skullLevel = EnchantmentHelper.getLevel(ModEnchantments.SKULL, weapon);
 
             final float baseFallBonus = fallDistance * 0.18f;
-            final float skullBonus    = skullLevel > 0 ? fallDistance * 1.40f * skullLevel : 0f;
+            final float skullBonus    = skullLevel > 0 ? fallDistance * 2.50f * skullLevel + 8.0f : 0f;
             final float totalBonus    = baseFallBonus + skullBonus;
 
             world.getServer().execute(() -> {
@@ -263,7 +266,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 serverWorld.playSound(
                         null,
                         pos.x, pos.y, pos.z,
-                        SoundEvents.ENTITY_IRON_GOLEM_HURT,
+                        SoundEvents.BLOCK_ANVIL_LAND,
                         SoundCategory.PLAYERS,
                         3.5f,
                         0.85f
@@ -274,5 +277,6 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         });
     }
 }
+
 
 
