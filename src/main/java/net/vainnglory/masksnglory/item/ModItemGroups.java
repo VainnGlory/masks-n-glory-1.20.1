@@ -34,6 +34,7 @@ public class ModItemGroups {
                         entries.add(ModItems.ECHODUST);
                         entries.add(ModItems.ECHODUSTSUGAR);
                         entries.add(ModItems.GOLDENSCRAP);
+                        entries.add(ModItems.ASH_CHARGE);
 
 
                         entries.add(ModItems.EGO_MASK);

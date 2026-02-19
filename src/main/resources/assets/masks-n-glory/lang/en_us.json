@@ -72,6 +72,9 @@
   "item.minecraft.smithing_template.pale_upgrade.base_slot_description": "Add netherite sword",
   "item.minecraft.smithing_template.pale_upgrade.applies_to": "Netherite Sword/Netherite Axe",
   "item.minecraft.smithing_template.pale_upgrade.ingredients": "Pale Steel Ingot/Bone Alloy",
+  "item.masks-n-glory.ash_charge": "Ash Charge",
+  "tooltip.masks-n-glory.ash_charge": "§8*Don't look down.*",
+
 
   "item.masks-n-glory.maelstrom": "Maelstrom",
   "tooltip.masks-n-glory.maelstrom": "§8*Appeared to me in a dream*",

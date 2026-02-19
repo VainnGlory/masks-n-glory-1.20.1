@@ -142,6 +142,11 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         super.appendTooltip(stack, world, tooltip, context);
     }
 
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return false;
+    }
+
     public int getEnchantability() {
         return 1;
     }

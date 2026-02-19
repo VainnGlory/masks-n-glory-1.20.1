@@ -6,6 +6,7 @@
     "DeathMixin",
     "EffectMixin",
     "ExampleMixin",
+    "FallDamageMixin",
     "GlaiveDamageMixin",
     "ItemRendererAccessor",
     "ItemRendererMixin",
