@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
@@ -16,6 +17,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
@@ -26,8 +28,10 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
@@ -38,13 +42,23 @@ import net.vainnglory.masksnglory.util.ModDeathSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSoundItem, ModDeathSource {
     private static final WeakHashMap<PlayerEntity, Float> fallStarts = new WeakHashMap<>();
+    private static final Queue<Runnable> pendingSlams = new ConcurrentLinkedQueue<>();
 
     private static final float MIN_FALL_DISTANCE = 2.5f;
     private static final float SKULL_CRATER_THRESHOLD = 12.0f;
+
+    private static final String DENTS_KEY = "MNG_Dents";
+    private static final String LAST_REPAIR_KEY = "MNG_LastRepairTick";
+    private static final int MAX_DENTS = 5;
+    private static final long TICKS_PER_REPAIR = 500L;
+    private static final long TICKS_PER_REPAIR_WATER = 100L;
+    private static final float DENT_PENALTY = 0.14f;
 
     private final float attackDamage;
     private final ModRarities rarity;
@@ -64,6 +78,28 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -1.8F, EntityAttributeModifier.Operation.ADDITION)
         );
         this.attributeModifiers = builder.build();
+    }
+
+    public static int getDents(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
+        return nbt != null ? MathHelper.clamp(nbt.getInt(DENTS_KEY), 0, MAX_DENTS) : 0;
+    }
+
+    private static void setDents(ItemStack stack, int dents) {
+        stack.getOrCreateNbt().putInt(DENTS_KEY, MathHelper.clamp(dents, 0, MAX_DENTS));
+    }
+
+    private static long getLastRepairTick(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
+        return nbt != null ? nbt.getLong(LAST_REPAIR_KEY) : 0L;
+    }
+
+    private static void setLastRepairTick(ItemStack stack, long tick) {
+        stack.getOrCreateNbt().putLong(LAST_REPAIR_KEY, tick);
+    }
+
+    private static float getDentMultiplier(ItemStack stack) {
+        return 1.0f - (getDents(stack) * DENT_PENALTY);
     }
 
     public float getAttackDamage() {
@@ -139,6 +175,22 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(Text.translatable("tooltip.masks-n-glory.golden_pan"));
+        int dents = getDents(stack);
+        if (dents > 0) {
+            String label;
+            int color;
+            if (dents <= 2) {
+                label = "Slightly Dented (" + dents + "/" + MAX_DENTS + ")";
+                color = 0xFFD966;
+            } else if (dents <= 4) {
+                label = "Dented (" + dents + "/" + MAX_DENTS + ")";
+                color = 0xFF8C00;
+            } else {
+                label = "Heavily Dented (" + dents + "/" + MAX_DENTS + ")";
+                color = 0xFF3333;
+            }
+            tooltip.add(Text.literal(label).setStyle(Style.EMPTY.withColor(color)));
+        }
         super.appendTooltip(stack, world, tooltip, context);
     }
 
@@ -154,6 +206,11 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     public static void registerCallbacks() {
 
         ServerTickEvents.START_SERVER_TICK.register(server -> {
+            Runnable task;
+            while ((task = pendingSlams.poll()) != null) {
+                task.run();
+            }
+
             for (var player : server.getPlayerManager().getPlayerList()) {
                 ItemStack weapon = player.getMainHandStack();
                 if (!(weapon.getItem() instanceof GoldenPanItem)) {
@@ -170,7 +227,47 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 if (player.fallDistance > 0) {
                     player.fallDistance = 0;
                 }
+
+                int dents = getDents(weapon);
+                if (dents > 0) {
+                    long worldTime = player.getServerWorld().getTime();
+                    long lastRepair = getLastRepairTick(weapon);
+                    long interval = player.isTouchingWater() ? TICKS_PER_REPAIR_WATER : TICKS_PER_REPAIR;
+                    if (lastRepair == 0L) {
+                        setLastRepairTick(weapon, worldTime);
+                    } else if (worldTime - lastRepair >= interval) {
+                        setDents(weapon, dents - 1);
+                        setLastRepairTick(weapon, worldTime);
+                    }
+                }
             }
+        });
+
+        UseItemCallback.EVENT.register((player, world, hand) -> {
+            if (world.isClient) return TypedActionResult.pass(player.getStackInHand(hand));
+
+            ItemStack heldItem = player.getStackInHand(hand);
+            if (heldItem.getItem() != Items.EXPERIENCE_BOTTLE)
+                return TypedActionResult.pass(heldItem);
+
+            ItemStack mainHand = player.getMainHandStack();
+            if (!(mainHand.getItem() instanceof GoldenPanItem))
+                return TypedActionResult.pass(heldItem);
+
+            int dents = getDents(mainHand);
+            if (dents == 0) return TypedActionResult.pass(heldItem);
+
+            if (!(world instanceof ServerWorld serverWorld)) return TypedActionResult.pass(heldItem);
+
+            setDents(mainHand, dents - 1);
+            setLastRepairTick(mainHand, serverWorld.getTime());
+
+            if (!player.isCreative()) heldItem.decrement(1);
+
+            serverWorld.playSound(null, player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, player.getSoundCategory(), 1f, 1f);
+
+            return TypedActionResult.success(heldItem);
         });
 
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
@@ -181,6 +278,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             if (!(weapon.getItem() instanceof GoldenPanItem)) {
                 return ActionResult.PASS;
             }
+            if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
 
             Float startY = fallStarts.remove(player);
             if (startY == null) return ActionResult.PASS;
@@ -193,12 +291,19 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
 
             int skullLevel = EnchantmentHelper.getLevel(ModEnchantments.SKULL, weapon);
 
+            float dentMultiplier = getDentMultiplier(weapon);
+
             final float baseFallBonus = fallDistance * 0.18f;
             final float skullBonus    = skullLevel > 0 ? fallDistance * 2.50f * skullLevel + 8.0f : 0f;
-            final float totalBonus    = baseFallBonus + skullBonus;
+            final float totalBonus    = (baseFallBonus + skullBonus) * dentMultiplier;
 
-            world.getServer().execute(() -> {
-                try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+            int currentDents = getDents(weapon);
+            if (currentDents < MAX_DENTS) {
+                setDents(weapon, currentDents + 1);
+            }
+            setLastRepairTick(weapon, serverWorld.getTime());
+
+            pendingSlams.offer(() -> {
                 if (target.isAlive()) {
                     target.hurtTime = 0;
                     target.timeUntilRegen = 0;
@@ -206,7 +311,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 }
             });
 
-            float baseDamage  = (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            float baseDamage   = (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
             float enchantBonus = EnchantmentHelper.getAttackDamage(weapon, target.getGroup());
             float shockwaveDamage = (baseDamage + enchantBonus) * 0.80f;
             if (skullLevel > 0) {
@@ -223,8 +328,6 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                     near.damage(source, shockwaveDamage);
                 }
             }
-
-            if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
 
             serverWorld.spawnParticles(
                     ParticleTypes.CAMPFIRE_COSY_SMOKE,
