@@ -20,6 +20,17 @@ public class ModEntityTypes {
                     .build()
     );
 
+    public static final EntityType<PaleSteelCoinEntity> PALE_STEEL_COIN_ENTITY_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MasksNGlory.MOD_ID, "pale_steel_coin"),
+            FabricEntityTypeBuilder.<PaleSteelCoinEntity>create(SpawnGroup.MISC, PaleSteelCoinEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.4F, 0.4F))
+                    .trackRangeBlocks(64)
+                    .trackedUpdateRate(3)
+                    .build()
+    );
+
+
     public static void registerEntityTypes() {
     }
     public static void registerModEntities() {

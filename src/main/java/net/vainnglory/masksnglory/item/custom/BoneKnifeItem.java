@@ -115,6 +115,7 @@ public class BoneKnifeItem extends SwordItem implements Vanishable, CustomHitSou
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(Text.translatable("tooltip.masks-n-glory.bone_knife"));
+        tooltip.add(Text.translatable("tooltip.masks-n-glory.bone_knife.parry"));
         super.appendTooltip(stack, world, tooltip, context);
     }
     public int getEnchantability()

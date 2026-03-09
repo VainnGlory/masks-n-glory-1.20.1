@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:gold_nugget"
+  },
+  "base": {
+    "item": "masks-n-glory:rust"
+  },
+  "result": {
+    "item": "masks-n-glory:pale_steel_coin",
+    "count": 4
+  },
+  "template": {
+    "item": "masks-n-glory:pale_upgrade_template"
+  }
+}

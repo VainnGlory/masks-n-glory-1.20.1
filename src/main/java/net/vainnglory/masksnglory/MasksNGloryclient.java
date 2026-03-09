@@ -10,6 +10,7 @@ import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
 import net.vainnglory.masksnglory.util.FlashEffectPacket;
 import net.vainnglory.masksnglory.util.FlashOverlayRenderer;
 import net.vainnglory.masksnglory.util.ModKeybindings;
+import net.vainnglory.masksnglory.entity.custom.PaleSteelCoinRenderer;
 
 public class MasksNGloryclient implements ClientModInitializer {
     @Override
@@ -17,6 +18,7 @@ public class MasksNGloryclient implements ClientModInitializer {
 
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.MAELSTROME, MaelstromModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntityTypes.MAELSTROM_ENTITY_ENTITY_TYPE, MaelstromEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntityTypes.PALE_STEEL_COIN_ENTITY_TYPE, PaleSteelCoinRenderer::new);
 
         ModKeybindings.register();
 
@@ -25,6 +27,7 @@ public class MasksNGloryclient implements ClientModInitializer {
 
 
         FlashOverlayRenderer.register();
+
 
     }
     }

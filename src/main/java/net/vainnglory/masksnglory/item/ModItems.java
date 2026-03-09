@@ -120,6 +120,10 @@ public class ModItems {
     public static final Item ASH_CHARGE = registerItem("ash_charge",
             new AshChargeItem(new FabricItemSettings().rarity(Rarity.RARE).maxCount(64).fireproof()));
 
+    public static final Item PALE_STEEL_COIN = registerItem("pale_steel_coin",
+            new PaleSteelCoinItem(new FabricItemSettings().maxCount(4), ModRarities.PALE));
+
+
 
 
     public static final Item PALE_TEMPLATE = PaleTemplateItem.createPaleUpgrade();

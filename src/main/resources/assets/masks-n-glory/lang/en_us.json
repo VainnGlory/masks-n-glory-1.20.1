@@ -53,6 +53,8 @@
 
   "item.masks-n-glory.bone_knife": "Bone Alloy Knife",
   "tooltip.masks-n-glory.bone_knife": "§8*He's burning the kitchen*",
+  "tooltip.masks-n-glory.bone_knife.parry": "Parry your own arrow by right-clicking with a bow shortly after firing",
+
 
   "item.masks-n-glory.pale_sword": "Pale Steel Greatsword",
   "tooltip.masks-n-glory.pale_sword": "§8*Slow breath, heavy blow.*",
@@ -62,6 +64,10 @@
 
   "item.masks-n-glory.pride": "Prideful Husk",
   "masks-n-glory.tooltip.pride.imbued_hits": "Imbued Hits: %s",
+
+  "item.masks-n-glory.pale_steel_coin": "Pale Steel Coin",
+  "tooltip.masks-n-glory.pale_steel_coin": "§8*Throw it, ultrakill it.*",
+
 
 
   "item.masks-n-glory.rust": "Pale Steel Ingot",
