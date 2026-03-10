@@ -29,16 +29,18 @@ public class ModArmorItem extends ArmorItem {
                     ))
 
                     .put(ModArmorMaterials.OSHARD, List.of(
-                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 1, false, false, true)
+                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 1, false, false, true),
+                            new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 1, false, false, true)
                     ))
 
                     .put(ModArmorMaterials.PSHARD, List.of(
-                            new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 0, false, false, true)
+                            new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 11000, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 100, 0, false, false, true)
                     ))
 
                     .put(ModArmorMaterials.TSHARD, List.of(
                             new StatusEffectInstance(StatusEffects.ABSORPTION, 300, 3, false, false, true),
-                            new StatusEffectInstance(StatusEffects.HUNGER, 100, 10, false, false, true)
+                            new StatusEffectInstance(StatusEffects.HUNGER, 100, 5, false, false, true)
                     ))
 
                     .put(ModArmorMaterials.HSSHARD, List.of(
@@ -79,23 +81,29 @@ public class ModArmorItem extends ArmorItem {
                     ))
 
                     .put(ModArmorMaterials.DOSHARD, List.of(
-                            new StatusEffectInstance(StatusEffects.SPEED, 600, 4, false, false, true)
+                            new StatusEffectInstance(StatusEffects.SPEED, 100, 4, false, false, true),
+                            new StatusEffectInstance(StatusEffects.HUNGER, 100, 1, false, false, true),
+                            new StatusEffectInstance(StatusEffects.WEAKNESS, 100, 0, false, false, true)
                     ))
 
                     .put(ModArmorMaterials.CSHARD, List.of(
-                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0, false, false, true)
+                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.WEAKNESS, 100, 0, false, false, true)
                     ))
 
                     .put(ModArmorMaterials.CRSHARD, List.of(
-                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0, false, false, true)
+                            new StatusEffectInstance(StatusEffects.RESISTANCE, 400, 0, false, false, true),
+                            new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 1, false, false, true)
                     ))
 
                     .put(ModArmorMaterials.HHSHARD, List.of(
-                            new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1, false, false, true)
+                            new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1, false, false, true),
+                            new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 100, 1, false, false, true)
                     ))
 
                     .put(ModArmorMaterials.DVSHARD, List.of(
-                            new StatusEffectInstance(StatusEffects.REGENERATION, 400, 1, false, false, true)
+                            new StatusEffectInstance(StatusEffects.REGENERATION, 400, 1, false, false, true),
+                            new StatusEffectInstance(StatusEffects.NAUSEA, 100, 0, false, false, true)
                     ))
 
                     .put(ModArmorMaterials.STSHARD, List.of(
@@ -105,7 +113,7 @@ public class ModArmorItem extends ArmorItem {
 
                     .put(ModArmorMaterials.DSHARD, List.of(
                             new StatusEffectInstance(StatusEffects.STRENGTH, 400, 1, false, false, true),
-                            new StatusEffectInstance(StatusEffects.HUNGER, 400, 4, false, false, true)
+                            new StatusEffectInstance(StatusEffects.HUNGER, 400, 1, false, false, true)
                     ))
                     .build();
 
