@@ -4,6 +4,8 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -27,7 +29,6 @@ public class PaleSteelCoinItem extends Item {
     @Override
     public Text getName(ItemStack stack) {
         Text baseName = super.getName(stack);
-
         return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
 
@@ -41,6 +42,9 @@ public class PaleSteelCoinItem extends Item {
             coin.setVelocity(direction.x * 0.4, direction.y * 0.4 + 0.2, direction.z * 0.4);
             coin.setPosition(user.getX(), user.getEyeY() - 0.1, user.getZ());
             world.spawnEntity(coin);
+
+            world.playSound(null, user.getX(), user.getY(), user.getZ(),
+                    SoundEvents.BLOCK_CHAIN_HIT, SoundCategory.PLAYERS, 0.6F, 1.2F);
 
             if (!user.getAbilities().creativeMode) {
                 stack.decrement(1);

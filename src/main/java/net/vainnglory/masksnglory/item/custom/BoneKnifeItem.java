@@ -18,9 +18,12 @@ import net.minecraft.item.Vanishable;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
+import net.vainnglory.masksnglory.util.BoneKnifeParryManager;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +50,6 @@ public class BoneKnifeItem extends SwordItem implements Vanishable, CustomHitSou
         this.attributeModifiers = builder.build();
     }
 
-
     public float getAttackDamage() {
         return this.attackDamage;
     }
@@ -55,7 +57,6 @@ public class BoneKnifeItem extends SwordItem implements Vanishable, CustomHitSou
     @Override
     public Text getName(ItemStack stack) {
         Text baseName = super.getName(stack);
-
         return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
 
@@ -71,6 +72,18 @@ public class BoneKnifeItem extends SwordItem implements Vanishable, CustomHitSou
                 0.7F,
                 (float) (1.0F + player.getRandom().nextGaussian() / 10f)
         );
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (hand != Hand.MAIN_HAND) return TypedActionResult.pass(user.getStackInHand(hand));
+        if (!world.isClient) {
+            BoneKnifeParryManager.activatePanParryWindow(user.getUuid(), world.getTime());
+            if (BoneKnifeParryManager.tryProjectileParry(user, world)) {
+                user.swingHand(hand);
+            }
+        }
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
     @Override
@@ -98,7 +111,6 @@ public class BoneKnifeItem extends SwordItem implements Vanishable, CustomHitSou
         if (state.getHardness(world, pos) != 0.0F) {
             stack.damage(2, miner, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         }
-
         return true;
     }
 
@@ -118,11 +130,8 @@ public class BoneKnifeItem extends SwordItem implements Vanishable, CustomHitSou
         tooltip.add(Text.translatable("tooltip.masks-n-glory.bone_knife.parry"));
         super.appendTooltip(stack, world, tooltip, context);
     }
-    public int getEnchantability()
 
-    {
-
+    public int getEnchantability() {
         return 1;
-
     }
 }

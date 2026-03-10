@@ -36,6 +36,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
+import net.vainnglory.masksnglory.util.BoneKnifeParryManager;
 import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.util.ModRarities;
 import net.vainnglory.masksnglory.util.ModDeathSource;
@@ -305,6 +306,9 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
 
             pendingSlams.offer(() -> {
                 if (target.isAlive()) {
+                    if (BoneKnifeParryManager.tryPanParry(target, player, world, totalBonus)) {
+                        return;
+                    }
                     target.hurtTime = 0;
                     target.timeUntilRegen = 0;
                     target.damage(world.getDamageSources().playerAttack(player), totalBonus);
