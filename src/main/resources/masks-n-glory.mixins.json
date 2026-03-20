@@ -15,10 +15,12 @@
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
+    "MaskEffectsMixin",
     "MobEntityAccessor",
     "ModelLoaderMixin",
     "NuggetMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "ServerPlayerInteractionManagerMixin"
   ],
   "client": [
   ],

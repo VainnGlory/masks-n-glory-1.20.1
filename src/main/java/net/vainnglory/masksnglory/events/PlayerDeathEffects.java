@@ -1,6 +1,7 @@
 package net.vainnglory.masksnglory.events;
 
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.EntityType;
@@ -51,14 +52,14 @@ public class PlayerDeathEffects {
 
             nearbyPlayer.addStatusEffect(new StatusEffectInstance(
                     StatusEffects.WEAKNESS,
-                    2400,
+                    400,
                     1
             ));
 
 
             nearbyPlayer.addStatusEffect(new StatusEffectInstance(
                     StatusEffects.SLOWNESS,
-                    2400,
+                    400,
                     1
             ));
 
@@ -128,4 +129,21 @@ public class PlayerDeathEffects {
             }
         }).start();
     }
+
+    public static void onAnyEntityDeath(LivingEntity entity, DamageSource damageSource) {
+        ServerWorld world = (ServerWorld) entity.getWorld();
+        BlockPos deathPos = entity.getBlockPos();
+        Box searchBox = new Box(deathPos).expand(30);
+
+        List<ServerPlayerEntity> nearbyPlayers = world.getEntitiesByClass(
+                ServerPlayerEntity.class,
+                searchBox,
+                p -> true
+        );
+
+        for (ServerPlayerEntity nearbyPlayer : nearbyPlayers) {
+            nearbyPlayer.playSound(SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.HOSTILE, 1.0F, 1.0F);
+        }
+    }
+
 }

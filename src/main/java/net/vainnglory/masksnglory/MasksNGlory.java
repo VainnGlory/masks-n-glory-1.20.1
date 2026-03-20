@@ -19,6 +19,7 @@ import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.painting.ModPaintings;
 import net.vainnglory.masksnglory.util.*;
+import net.vainnglory.masksnglory.world.ModWorldGeneration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,11 +60,15 @@ public class MasksNGlory implements ModInitializer {
 
         FlashAttackPacket.registerReceiver();
 
+        MaskAbilityManager.registerCallbacks();
+
+        ModWorldGeneration.addFeaturesToBiomes();
+
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (entity instanceof ServerPlayerEntity player) {
                 PlayerDeathEffects.onPlayerDeath(player, damageSource);
-
+                PlayerDeathEffects.onAnyEntityDeath(entity, damageSource);
             }
         });
 

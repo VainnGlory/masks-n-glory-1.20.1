@@ -17,7 +17,7 @@ import java.util.*;
 public class BoneKnifeParryManager {
 
     private static final int PARRY_WINDOW_TICKS = 10;
-    private static final double SPEED_MULTIPLIER = 1.8;
+    private static final double SPEED_MULTIPLIER = 1.3;
     private static final Map<UUID, ParryData> pendingParries = new HashMap<>();
 
     private static final double PROJECTILE_PARRY_RANGE = 3.0;

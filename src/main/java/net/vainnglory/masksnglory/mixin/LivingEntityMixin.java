@@ -6,7 +6,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectInstance;;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -26,6 +26,7 @@ public abstract class LivingEntityMixin extends Entity {
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
+
 
     @Inject(method = "dropEquipment", at = @At(value = "TAIL"))
     private void masksnglory$dropEshard(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
@@ -62,9 +63,11 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
+
     @Inject(
             method = "damage",
             at = @At("TAIL")
+
     )
     private void onDamageApplied(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
@@ -99,8 +102,11 @@ public abstract class LivingEntityMixin extends Entity {
 
         if (!wasCharged && isNowCharged) {
             RetributionHelmet.playChargeSound(player);
+
         }
     }
+
+
 
 
     @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
