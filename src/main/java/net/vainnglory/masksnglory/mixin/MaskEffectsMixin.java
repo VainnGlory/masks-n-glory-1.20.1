@@ -15,6 +15,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.util.MaskAbilityManager;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,7 +32,6 @@ public abstract class MaskEffectsMixin {
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.HMASKS) return;
-
         if (self.getRandom().nextFloat() < 0.2f) {
             self.heal(amount);
             cir.setReturnValue(false);
@@ -45,13 +46,11 @@ public abstract class MaskEffectsMixin {
         if (!(self instanceof PlayerEntity player)) return;
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.DVSHARD) return;
         if (self.getHealth() <= 1.0f) return;
-
         if (amount >= self.getHealth()) {
             ItemStack helmet = player.getInventory().getArmorStack(3);
             NbtCompound nbt = helmet.getOrCreateNbt();
             long lastActivated = nbt.getLong("MNG_SecondWind");
             long currentTime = self.getWorld().getTime();
-
             if (currentTime - lastActivated > 2400) {
                 self.setHealth(1.0f);
                 nbt.putLong("MNG_SecondWind", currentTime);
@@ -72,7 +71,6 @@ public abstract class MaskEffectsMixin {
         if (!(self instanceof PlayerEntity player)) return;
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.OSHARD) return;
         if (!MaskAbilityManager.ojiEnterGuard(player.getUuid())) return;
-
         long currentTime = self.getWorld().getTime();
         if (MaskAbilityManager.isOjiFirstHit(player.getUuid(), currentTime)) {
             MaskAbilityManager.ojiRecordHit(player.getUuid(), currentTime);
@@ -93,7 +91,6 @@ public abstract class MaskEffectsMixin {
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.CSHARD) return;
         if (!(source.getSource() instanceof PersistentProjectileEntity)) return;
         if (!MaskAbilityManager.corvEnterGuard(player.getUuid())) return;
-
         boolean result = self.damage(source, amount * 0.7f);
         MaskAbilityManager.corvExitGuard(player.getUuid());
         cir.setReturnValue(result);
@@ -108,7 +105,6 @@ public abstract class MaskEffectsMixin {
         if (!(self instanceof PlayerEntity player)) return;
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.SMASKS) return;
         if (!(player.getWorld() instanceof ServerWorld world)) return;
-
         double radius = Math.min(8.0, 3.0 + amount * 0.3);
         Box area = new Box(player.getBlockPos()).expand(radius);
         for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class, area, e -> e != player)) {
@@ -120,17 +116,50 @@ public abstract class MaskEffectsMixin {
     @Inject(method = "damage", at = @At("TAIL"))
     private void masksnglory$houndTrackAttacker(DamageSource source, float amount,
                                                 CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue()) return;
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.HHSHARD) return;
-
         Entity attacker = source.getAttacker();
         if (attacker != null) {
             MaskAbilityManager.recordHoundAttacker(player.getUuid(), attacker.getUuid());
         }
     }
+
+    @Inject(method = "damage", at = @At("TAIL"))
+    private void masksnglory$egoGrudgeAccumulate(DamageSource source, float amount,
+                                                 CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue()) return;
+        LivingEntity self = (LivingEntity)(Object)this;
+        if (self.getWorld().isClient) return;
+        if (!(self instanceof PlayerEntity player)) return;
+        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.ESHARD) return;
+        MaskAbilityManager.addEgoGrudge(player.getUuid(), amount);
+    }
+
+    @Inject(method = "onDeath", at = @At("HEAD"))
+    private void masksnglory$egoLastWord(DamageSource source, CallbackInfo ci) {
+        LivingEntity self = (LivingEntity)(Object)this;
+        if (self.getWorld().isClient) return;
+        if (!(self instanceof PlayerEntity player)) return;
+        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.ESHARD) return;
+        Entity killer = source.getAttacker();
+        if (!(killer instanceof LivingEntity living)) return;
+        living.damage(ModDamageTypes.egoLastWord(living), 6.0f);
+    }
+
+    @Inject(method = "damage", at = @At("TAIL"))
+    private void masksnglory$stoneiReactiveShell(DamageSource source, float amount,
+                                                 CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue()) return;
+        LivingEntity self = (LivingEntity)(Object)this;
+        if (self.getWorld().isClient) return;
+        if (!(self instanceof PlayerEntity player)) return;
+        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.STSHARD) return;
+        MaskAbilityManager.activateStoneiShell(player);
+    }
+
+
 }
 
 

@@ -16,12 +16,16 @@ public class ModDamageTypes {
     public static final RegistryKey<DamageType> DEATH_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "death"));
     public static final RegistryKey<DamageType> PAN_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "pan"));
     public static final RegistryKey<DamageType> RUSTED_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "rusted"));
+    public static final RegistryKey<DamageType> EGO_LAST_WORD = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "ego_last_word"));
 
     public static DamageSource pan(LivingEntity entity) {
         return entity.getDamageSources().create(PAN_DAMAGE); }
 
     public static DamageSource rusted(LivingEntity entity) {
         return entity.getDamageSources().create(RUSTED_DAMAGE); }
+
+    public static DamageSource egoLastWord(LivingEntity entity) {
+        return entity.getDamageSources().create(EGO_LAST_WORD); }
 
     private static RegistryKey<DamageType> of(String name) {
         return RegistryKey.of(RegistryKeys.DAMAGE_TYPE,new Identifier(MOD_ID, name));

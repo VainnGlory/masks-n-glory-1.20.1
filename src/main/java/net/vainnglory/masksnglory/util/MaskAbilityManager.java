@@ -34,18 +34,21 @@ import java.util.*;
 public class MaskAbilityManager {
 
     private record DecayData(int stacks, long lastHitTick) {}
-    private record StillnessData(Vec3d lastPos, long stillSince) {}
 
     private static final UUID HOUND_BOOST_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f01234567890");
     private static final UUID DMAN_BOOST_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-012345678901");
     private static final UUID STONEI_ARMOR_UUID = UUID.fromString("d4e5f6a7-b8c9-0123-def0-123456789012");
+    private static final UUID EGO_GRUDGE_UUID = UUID.fromString("e5f6a7b8-c9d0-1234-ef01-234567890123");
 
-    private static final Map<UUID, Set<UUID>> eyeMaskGlowed    = new HashMap<>();
+    private static final Map<UUID, Float> egoGrudge = new HashMap<>();
+    private static final Set<UUID> pendingEgoGrudgeRemoval = new HashSet<>();
+    private static final Map<UUID, Set<UUID>> eyeMaskGlowed = new HashMap<>();
     private static final Set<UUID> togWasEating = new HashSet<>();
     private static final Map<UUID, UUID> houndLastAttacker = new HashMap<>();
     private static final Map<UUID, UUID> houndGlowedEntity = new HashMap<>();
     private static final Map<UUID, DecayData> decayTargets = new HashMap<>();
-    private static final Map<UUID, StillnessData> stoneiData = new HashMap<>();
+    private static final Map<UUID, Long> stoneiShellExpiry  = new HashMap<>();
+    private static final Map<UUID, Long> stoneiCooldownEnd  = new HashMap<>();
     private static final Set<UUID> pendingHoundRemoval = new HashSet<>();
     private static final Set<UUID> pendingDmanRemoval = new HashSet<>();
     private static final Map<UUID, Long> ojiLastHit = new HashMap<>();
@@ -53,8 +56,6 @@ public class MaskAbilityManager {
     private static final Set<UUID> corvGuard = new HashSet<>();
     private static final Map<UUID, Long> nullSneakStart = new HashMap<>();
     private static final Map<UUID, Long> nullCooldown = new HashMap<>();
-    private static final Set<UUID> nullNetherTravelers = new HashSet<>();
-
 
     public static ArmorMaterial getMaskMaterial(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
@@ -65,6 +66,27 @@ public class MaskAbilityManager {
     public static void recordHoundAttacker(UUID playerUUID, UUID attackerUUID) {
         houndLastAttacker.put(playerUUID, attackerUUID);
     }
+
+    public static void addEgoGrudge(UUID id, float damage) {
+        float current = egoGrudge.getOrDefault(id, 0f);
+        egoGrudge.put(id, Math.min(4.0f, current + damage * 0.25f));
+    }
+
+    public static void activateStoneiShell(PlayerEntity player) {
+        UUID id = player.getUuid();
+        long now = player.getWorld().getTime();
+        Long cooldownEnd = stoneiCooldownEnd.get(id);
+        if (cooldownEnd != null && now < cooldownEnd) return;
+        EntityAttributeInstance armor = player.getAttributeInstance(EntityAttributes.GENERIC_ARMOR);
+        if (armor == null) return;
+        armor.removeModifier(STONEI_ARMOR_UUID);
+        armor.addTemporaryModifier(new EntityAttributeModifier(
+                STONEI_ARMOR_UUID, "MNG Fortress",
+                10.0, EntityAttributeModifier.Operation.ADDITION));
+        stoneiShellExpiry.put(id, now + 60);
+        stoneiCooldownEnd.put(id, now + 120);
+    }
+
 
     public static boolean isOjiFirstHit(UUID id, long currentTime) {
         return currentTime - ojiLastHit.getOrDefault(id, 0L) > 80;
@@ -77,7 +99,6 @@ public class MaskAbilityManager {
     public static void corvExitGuard(UUID id) { corvGuard.remove(id); }
 
     public static void tick(PlayerEntity player, ArmorMaterial material) {
-
         if (material == ModArmorMaterials.EMASKS) {
             tickEye(player);
         } else if (eyeMaskGlowed.containsKey(player.getUuid())) {
@@ -86,10 +107,11 @@ public class MaskAbilityManager {
 
         if (material == ModArmorMaterials.STSHARD) {
             tickStonei(player);
-        } else if (stoneiData.containsKey(player.getUuid())) {
+        } else {
             EntityAttributeInstance armor = player.getAttributeInstance(EntityAttributes.GENERIC_ARMOR);
             if (armor != null) armor.removeModifier(STONEI_ARMOR_UUID);
-            stoneiData.remove(player.getUuid());
+            stoneiShellExpiry.remove(player.getUuid());
+            stoneiCooldownEnd.remove(player.getUuid());
         }
 
         if (material == ModArmorMaterials.HHSHARD) {
@@ -139,7 +161,11 @@ public class MaskAbilityManager {
         long now = player.getWorld().getTime();
 
         Long lastTp = nullCooldown.get(id);
-        if (lastTp != null && now - lastTp < 2400) return;
+        if (lastTp != null && now - lastTp < 2400) {
+            long remaining = (2400 - (now - lastTp)) / 20;
+            player.sendMessage(Text.literal("▸ " + remaining + "s").formatted(Formatting.DARK_GRAY), true);
+            return;
+        }
         nullCooldown.put(id, now);
 
         if (player.getWorld().getRegistryKey() == World.OVERWORLD) {
@@ -148,26 +174,20 @@ public class MaskAbilityManager {
             BlockPos spawn = server.getOverworld().getSpawnPos();
             double netherX = spawn.getX() / 8.0;
             double netherZ = spawn.getZ() / 8.0;
-
             player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 0.5f);
-            nullNetherTravelers.add(id);
-            player.teleport(nether, netherX, 128.0, netherZ, Set.of(), player.getYaw(), player.getPitch());
-            nether.playSound(null, netherX, 128.0, netherZ,
+            player.teleport(nether, netherX, 130.0, netherZ, Collections.emptySet(), player.getYaw(), player.getPitch());
+            nether.playSound(null, netherX, 130.0, netherZ,
                     SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 0.5f);
 
-        } else if (player.getWorld().getRegistryKey() == World.NETHER
-                && nullNetherTravelers.contains(id)) {
+        } else if (player.getWorld().getRegistryKey() == World.NETHER) {
             ServerWorld overworld = server.getOverworld();
             BlockPos spawn = overworld.getSpawnPos();
-            int surfaceY = overworld.getTopY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-                    spawn.getX(), spawn.getZ());
-
+            int surfaceY = overworld.getTopY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, spawn.getX(), spawn.getZ());
             player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 0.5f);
-            nullNetherTravelers.remove(id);
             player.teleport(overworld, spawn.getX() + 0.5, surfaceY, spawn.getZ() + 0.5,
-                    Set.of(), player.getYaw(), player.getPitch());
+                    Collections.emptySet(), player.getYaw(), player.getPitch());
             overworld.playSound(null, spawn.getX() + 0.5, surfaceY, spawn.getZ() + 0.5,
                     SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 0.5f);
         }
@@ -190,21 +210,20 @@ public class MaskAbilityManager {
     private static void tickEye(PlayerEntity player) {
         if (!(player.getWorld() instanceof ServerWorld world)) return;
         UUID playerId = player.getUuid();
-        Set<UUID> prevGlowed = eyeMaskGlowed.getOrDefault(playerId, new HashSet<>());
-        Set<UUID> nowGlowed  = new HashSet<>();
-
+        Set<UUID> prev = eyeMaskGlowed.getOrDefault(playerId, new HashSet<>());
+        Set<UUID> now = new HashSet<>();
         Box area = new Box(player.getBlockPos()).expand(12);
         for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class, area, e -> e != player)) {
             entity.setGlowing(true);
-            nowGlowed.add(entity.getUuid());
+            now.add(entity.getUuid());
         }
-        for (UUID uid : prevGlowed) {
-            if (!nowGlowed.contains(uid)) {
+        for (UUID uid : prev) {
+            if (!now.contains(uid)) {
                 Entity gone = world.getEntity(uid);
                 if (gone != null) gone.setGlowing(false);
             }
         }
-        eyeMaskGlowed.put(playerId, nowGlowed);
+        eyeMaskGlowed.put(playerId, now);
     }
 
     private static void cleanupEye(PlayerEntity player) {
@@ -218,11 +237,11 @@ public class MaskAbilityManager {
     }
 
     private static void tickTog(PlayerEntity player) {
-        boolean isEatingFood = player.isUsingItem() && player.getActiveItem().isFood();
-        if (!isEatingFood && togWasEating.remove(player.getUuid())) {
+        boolean eating = player.isUsingItem() && player.getActiveItem().isFood();
+        if (!eating && togWasEating.remove(player.getUuid())) {
             player.addStatusEffect(new StatusEffectInstance(
                     StatusEffects.STRENGTH, 80, 0, false, true, true));
-        } else if (isEatingFood) {
+        } else if (eating) {
             togWasEating.add(player.getUuid());
         }
     }
@@ -235,7 +254,7 @@ public class MaskAbilityManager {
         long currentTime = player.getWorld().getTime();
         if (currentTime - lastActivated > 1200) {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 120, 2, false, true, true));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED,    120, 1, false, true, true));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 120, 1, false, true, true));
             nbt.putLong("MNG_LastStand", currentTime);
         }
     }
@@ -249,10 +268,9 @@ public class MaskAbilityManager {
 
     private static void tickHound(PlayerEntity player) {
         if (!(player.getWorld() instanceof ServerWorld world)) return;
-        UUID playerId    = player.getUuid();
+        UUID playerId = player.getUuid();
         UUID prevGlowedId = houndGlowedEntity.get(playerId);
-        UUID attackerId  = houndLastAttacker.get(playerId);
-
+        UUID attackerId = houndLastAttacker.get(playerId);
         if (attackerId != null) {
             Entity attacker = world.getEntity(attackerId);
             if (attacker != null) {
@@ -267,43 +285,26 @@ public class MaskAbilityManager {
     }
 
     private static void tickStonei(PlayerEntity player) {
-        if (!(player.getWorld() instanceof ServerWorld world)) return;
-        UUID playerId   = player.getUuid();
-        Vec3d currentPos = player.getPos();
-        long currentTime = world.getTime();
-
-        EntityAttributeInstance armorAttr = player.getAttributeInstance(EntityAttributes.GENERIC_ARMOR);
-        if (armorAttr == null) return;
-
-        StillnessData data   = stoneiData.get(playerId);
-        boolean moved = data == null || currentPos.squaredDistanceTo(data.lastPos()) > 0.001;
-
-        if (moved) {
-            stoneiData.put(playerId, new StillnessData(currentPos, currentTime));
-            armorAttr.removeModifier(STONEI_ARMOR_UUID);
-        } else {
-            long stillTicks = currentTime - data.stillSince();
-            double scale    = Math.min(1.0, stillTicks / 60.0);
-            armorAttr.removeModifier(STONEI_ARMOR_UUID);
-            if (scale > 0.01) {
-                armorAttr.addTemporaryModifier(new EntityAttributeModifier(
-                        STONEI_ARMOR_UUID, "MNG Fortress",
-                        scale * 10.0, EntityAttributeModifier.Operation.ADDITION));
-            }
+        UUID id = player.getUuid();
+        Long expiry = stoneiShellExpiry.get(id);
+        if (expiry == null) return;
+        long now = player.getWorld().getTime();
+        if (now >= expiry) {
+            stoneiShellExpiry.remove(id);
+            EntityAttributeInstance armor = player.getAttributeInstance(EntityAttributes.GENERIC_ARMOR);
+            if (armor != null) armor.removeModifier(STONEI_ARMOR_UUID);
         }
     }
+
 
     private static void tickCorv(PlayerEntity player) {
         if (!(player instanceof ServerPlayerEntity sp)) return;
         if (!(player.getWorld() instanceof ServerWorld world)) return;
-
         Vec3d eyePos = player.getEyePos();
-        Vec3d look   = player.getRotationVec(1.0f);
-
+        Vec3d look = player.getRotationVec(1.0f);
         Box searchBox = new Box(eyePos, eyePos.add(look.multiply(16.0))).expand(1.0);
-        LivingEntity found  = null;
+        LivingEntity found = null;
         double closest = Double.MAX_VALUE;
-
         for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class, searchBox, e -> e != player)) {
             Vec3d toEntity = entity.getEyePos().subtract(eyePos);
             double dot = toEntity.normalize().dotProduct(look);
@@ -311,11 +312,10 @@ public class MaskAbilityManager {
                 double dist = eyePos.squaredDistanceTo(entity.getEyePos());
                 if (dist < closest) {
                     closest = dist;
-                    found   = entity;
+                    found = entity;
                 }
             }
         }
-
         if (found != null) {
             String bar = String.format("%.1f / %.1f ❤", found.getHealth(), found.getMaxHealth());
             sp.sendMessage(Text.literal(bar).formatted(Formatting.RED), true);
@@ -323,7 +323,6 @@ public class MaskAbilityManager {
     }
 
     public static void registerCallbacks() {
-
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (world.isClient || !(entity instanceof LivingEntity target))
                 return ActionResult.PASS;
@@ -348,17 +347,15 @@ public class MaskAbilityManager {
             }
 
             if (mat == ModArmorMaterials.HHSHARD) {
-                float missingHearts = (target.getMaxHealth() - target.getHealth()) / 2.0f;
-                if (missingHearts > 0) {
-                    EntityAttributeInstance atk = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-                    if (atk != null) {
-                        atk.removeModifier(HOUND_BOOST_UUID);
-                        atk.addTemporaryModifier(new EntityAttributeModifier(
-                                HOUND_BOOST_UUID, "MNG Hound Bonus",
-                                missingHearts * 0.10,
-                                EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
-                        pendingHoundRemoval.add(player.getUuid());
-                    }
+                float missingHealth = target.getMaxHealth() - target.getHealth();
+                double boost = 0.10 + missingHealth * 0.02;
+                EntityAttributeInstance atk = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                if (atk != null) {
+                    atk.removeModifier(HOUND_BOOST_UUID);
+                    atk.addTemporaryModifier(new EntityAttributeModifier(
+                            HOUND_BOOST_UUID, "MNG Hound Bonus",
+                            boost, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+                    pendingHoundRemoval.add(player.getUuid());
                 }
             }
 
@@ -380,12 +377,21 @@ public class MaskAbilityManager {
                 }
                 decayTargets.put(targetId, new DecayData(Math.min(5, currentStacks + 1), now));
             }
-            if (mat == ModArmorMaterials.ESHARD && player instanceof ServerPlayerEntity sp
-                    && player.isSprinting()) {
-                target.damage(world.getDamageSources().playerAttack(sp), 2.0f);
-                target.takeKnockback(1.5,
-                        player.getX() - target.getX(),
-                        player.getZ() - target.getZ());
+
+            if (mat == ModArmorMaterials.ESHARD) {
+                UUID id = player.getUuid();
+                float grudge = egoGrudge.getOrDefault(id, 0f);
+                if (grudge > 0.1f) {
+                    egoGrudge.remove(id);
+                    EntityAttributeInstance atk = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                    if (atk != null) {
+                        atk.removeModifier(EGO_GRUDGE_UUID);
+                        atk.addTemporaryModifier(new EntityAttributeModifier(
+                                EGO_GRUDGE_UUID, "MNG Grudge",
+                                grudge, EntityAttributeModifier.Operation.ADDITION));
+                        pendingEgoGrudgeRemoval.add(id);
+                    }
+                }
             }
 
             if (mat == ModArmorMaterials.CRSHARD && player.isSprinting()
@@ -422,6 +428,16 @@ public class MaskAbilityManager {
                 long now = overworld.getTime();
                 decayTargets.entrySet().removeIf(e -> now - e.getValue().lastHitTick() > 160);
             }
+
+            for (UUID id : pendingEgoGrudgeRemoval) {
+                ServerPlayerEntity p = server.getPlayerManager().getPlayer(id);
+                if (p != null) {
+                    EntityAttributeInstance atk = p.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                    if (atk != null) atk.removeModifier(EGO_GRUDGE_UUID);
+                }
+            }
+            pendingEgoGrudgeRemoval.clear();
+
         });
     }
 }

@@ -155,6 +155,8 @@
   "death.attack.rusted.player": "%1$s was sliced and diced by %2$s",
   "death.attack.rusted.item": "%1$s was sliced and diced by %2$s using %3$s",
 
+  "death.attack.ego_last_word": "%1$s didn't get the last word",
+
   "advancements.Masks N Glory.pale_armor.description": "An Alchemist's Dream",
   "advancements.Masks N Glory.pale_armor.title": "Cover Me in Nostalgia",
   "advancements.Masks N Glory.rust.description": "Synthesize your first pale steel ingot",
