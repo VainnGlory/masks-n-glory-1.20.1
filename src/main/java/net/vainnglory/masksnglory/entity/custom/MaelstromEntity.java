@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class MaelstromEntity extends PersistentProjectileEntity {
     private static final TrackedData<Boolean> RETURNING = DataTracker.registerData(MaelstromEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final int MAX_DISTANCE = 35; // blocks before returning
+    private static final int MAX_DISTANCE = 35;
     private ItemStack swordStack;
     private Vec3d startPos;
     private int ticksInAir = 0;
