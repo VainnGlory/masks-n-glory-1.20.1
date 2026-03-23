@@ -54,4 +54,8 @@ public class ModFoodComponents {
     public static final FoodComponent DSHARD = new FoodComponent.Builder().hunger(7).saturationModifier(1.7f)
             .statusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 2500), 1.0f).build();
 
+    public static final FoodComponent MARROWED_BONES = new FoodComponent.Builder().hunger(10).saturationModifier(1.5f)
+            .alwaysEdible()
+            .build();
+
 }

@@ -35,6 +35,7 @@ public class ModItemGroups {
                         entries.add(ModItems.ECHODUSTSUGAR);
                         entries.add(ModItems.GOLDENSCRAP);
                         entries.add(ModItems.ASH_CHARGE);
+                        entries.add(ModItems.COOKED_BONES);
                         entries.add(ModItems.PALE_STEEL_COIN);
 
 
@@ -88,6 +89,7 @@ public class ModItemGroups {
                         entries.add(ModItems.CAPPLE);
                         entries.add(ModItems.GCAPPLE);
                         entries.add(ModItems.PAPPLE);
+                        entries.add(ModItems.MARROWED_BONES);
                         entries.add(ModItems.GILDED_HEART);
 
 

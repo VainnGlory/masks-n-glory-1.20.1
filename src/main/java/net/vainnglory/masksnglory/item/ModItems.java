@@ -135,6 +135,9 @@ public class ModItems {
     public static final Item CAPPLE = registerItem("capple", new Item(new FabricItemSettings().rarity(Rarity.RARE).food(ModFoodComponents.CAPPLE)));
     public static final Item PAPPLE = registerItem("papple", new Item(new FabricItemSettings().rarity(Rarity.EPIC).food(ModFoodComponents.PAPPLE)));
     public static final Item GILDED_HEART = registerItem("gilded_heart", new GildedHeartItem(new FabricItemSettings().maxCount(1).food(ModFoodComponents.GILDED_HEART).rarity(Rarity.EPIC)));
+    public static final Item MARROWED_BONES = registerItem("marrowed_bones", new Item(new FabricItemSettings().food(ModFoodComponents.MARROWED_BONES)));
+    public static final Item COOKED_BONES = registerItem("cooked_bones", new CookedBonesItem(new FabricItemSettings()));
+
 
     private static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
         entries.add(ESHARD);

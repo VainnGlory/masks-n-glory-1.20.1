@@ -9,6 +9,7 @@
     "EffectMixin",
     "ExampleMixin",
     "FallDamageMixin",
+    "ItemEntityMixin",
     "GlaiveDamageMixin",
     "ItemRendererAccessor",
     "ItemRendererMixin",
