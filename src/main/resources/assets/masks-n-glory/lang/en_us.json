@@ -82,10 +82,6 @@
   "item.masks-n-glory.ash_charge": "Ash Charge",
   "tooltip.masks-n-glory.ash_charge": "§8*Don't look down.*",
 
-
-  "item.masks-n-glory.maelstrom": "Maelstrom",
-  "tooltip.masks-n-glory.maelstrom": "§8*Appeared to me in a dream*",
-
   "item.masks-n-glory.golden_pan": "Golden War-Pan",
   "tooltip.masks-n-glory.golden_pan": "§8*A pan? For cooking? No, a pan, for breaking teeth*",
 
@@ -135,6 +131,15 @@
   "enchantment.masks-n-glory.ret.desc": "Trade your flashbang for a row of fangs exactly like an evoker",
   "enchantment.masks-n-glory.undead": "Vexed",
   "enchantment.masks-n-glory.undead.desc": "summon 4 vexes to aid you in combat for 15 seconds, be aware however, Evocation is a dangerous magic. Guess who they'll attack, if there's nobody but you around.",
+  "enchantment.masks-n-glory.homing": "Homing",
+  "enchantment.masks-n-glory.homing.desc": "50-block throw range, 4 damage. Auto-targets last struck enemy. Applies Pinning on hit.",
+  "enchantment.masks-n-glory.remorse": "Remorse",
+  "enchantment.masks-n-glory.remorse.desc": "Embeds sword in target. Right-click to recall forcefully. Sneak+Right-click to teleport. Auto-returns after 30s.",
+
+
+  "effect.masks-n-glory.pinning": "Pinning",
+  "effect.masks-n-glory.bleeding": "Bleeding",
+
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hit",
   "masks-n-glory.subtitles.item.pale.hit": "Greatsword hit",
@@ -158,6 +163,8 @@
   "death.attack.rusted.item": "%1$s was sliced and diced by %2$s using %3$s",
 
   "death.attack.ego_last_word": "%1$s didn't get the last word",
+
+  "death.attack.bleeding": "%1$s bled out",
 
   "advancements.Masks N Glory.pale_armor.description": "An Alchemist's Dream",
   "advancements.Masks N Glory.pale_armor.title": "Cover Me in Nostalgia",

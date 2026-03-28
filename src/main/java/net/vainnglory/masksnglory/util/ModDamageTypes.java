@@ -12,11 +12,18 @@ import static net.vainnglory.masksnglory.MasksNGlory.MOD_ID;
 
 public class ModDamageTypes {
 
-    public static final RegistryKey<DamageType> SOUL_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "soul"));
-    public static final RegistryKey<DamageType> DEATH_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "death"));
-    public static final RegistryKey<DamageType> PAN_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "pan"));
-    public static final RegistryKey<DamageType> RUSTED_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "rusted"));
-    public static final RegistryKey<DamageType> EGO_LAST_WORD = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MasksNGlory.MOD_ID, "ego_last_word"));
+    public static final RegistryKey<DamageType> SOUL_DAMAGE =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "soul"));
+    public static final RegistryKey<DamageType> DEATH_DAMAGE =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "death"));
+    public static final RegistryKey<DamageType> PAN_DAMAGE =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "pan"));
+    public static final RegistryKey<DamageType> RUSTED_DAMAGE =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "rusted"));
+    public static final RegistryKey<DamageType> EGO_LAST_WORD =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "ego_last_word"));
+    public static final RegistryKey<DamageType> BLEEDING_DAMAGE =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "bleeding"));
 
     public static DamageSource pan(LivingEntity entity) {
         return entity.getDamageSources().create(PAN_DAMAGE); }
@@ -27,12 +34,10 @@ public class ModDamageTypes {
     public static DamageSource egoLastWord(LivingEntity entity) {
         return entity.getDamageSources().create(EGO_LAST_WORD); }
 
-    private static RegistryKey<DamageType> of(String name) {
-        return RegistryKey.of(RegistryKeys.DAMAGE_TYPE,new Identifier(MOD_ID, name));
-    }
+    public static DamageSource bleeding(LivingEntity entity) {
+        return entity.getDamageSources().create(BLEEDING_DAMAGE); }
 
     public static void initialize() {
-
         MasksNGlory.LOGGER.info("Registered Player's Souls");
     }
 }

@@ -22,13 +22,15 @@ public class MaelstromEntityRenderer extends EntityRenderer<MaelstromEntity> {
     public void render(MaelstromEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
 
-
-        float rotation = (entity.age + tickDelta) * 90.0F; // Adjust speed here
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
-
+        if (entity.isRemorseStuck()) {
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(45.0F));
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(30.0F));
+        } else {
+            float rotation = (entity.age + tickDelta) * 90.0F;
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
+        }
 
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90.0F));
-
 
         this.itemRenderer.renderItem(
                 entity.asItemStack(),

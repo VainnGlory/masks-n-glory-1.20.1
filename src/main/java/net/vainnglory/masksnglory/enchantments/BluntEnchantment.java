@@ -38,13 +38,13 @@ public class BluntEnchantment extends Enchantment {
     }
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.isOf(ModItems.PALE_SWORD) || stack.isOf(ModItems.MAELSTROM) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
+        return stack.isOf(ModItems.PALE_SWORD) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
     }
 
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
         if (target instanceof LivingEntity targetEntity) {
-            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 50 * level, 1, false, false, false)); // L'aura visibile dura 10 secondi
+            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 25 * level, 1, false, false, false));
         }
     }
 }

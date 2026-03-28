@@ -12,7 +12,7 @@ import net.vainnglory.masksnglory.MasksNGlory;
 public class ModEntityTypes {
     public static final EntityType<MaelstromEntity> MAELSTROM_ENTITY_ENTITY_TYPE = Registry.register(
             Registries.ENTITY_TYPE,
-            new Identifier(MasksNGlory.MOD_ID, "maelstrom"),
+            new Identifier(MasksNGlory.MOD_ID, "pale_sword"),
             FabricEntityTypeBuilder.<MaelstromEntity>create(SpawnGroup.MISC, MaelstromEntity::new)
                     .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
                     .trackRangeBlocks(64)

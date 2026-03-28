@@ -2,13 +2,18 @@ package net.vainnglory.masksnglory;
 
 import net.fabricmc.api.ModInitializer;
 
-
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.server.network.ServerPlayerEntity;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.GameRules;
 import net.vainnglory.masksnglory.block.ModBlocks;
+import net.vainnglory.masksnglory.effect.ModEffects;
 import net.vainnglory.masksnglory.enchantments.*;
 import net.vainnglory.masksnglory.entity.ModEntities;
 import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
@@ -44,6 +49,7 @@ public class MasksNGlory implements ModInitializer {
         ModEntities.registerModEntities();
 
         ModEnchantments.registerEnchantments();
+        ModEffects.registerEffects();
 
         ModDamageTypes.initialize();
 
@@ -71,6 +77,44 @@ public class MasksNGlory implements ModInitializer {
                 PlayerDeathEffects.onAnyEntityDeath(entity, damageSource);
             }
         });
+
+        final Map<UUID, Integer> pinningAirTicks = new HashMap<>();
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                UUID id = player.getUuid();
+
+                if (!player.hasStatusEffect(ModEffects.PINNING)) {
+                    pinningAirTicks.remove(id);
+                    continue;
+                }
+
+                if (player.getAbilities().flying) {
+                    player.getAbilities().flying = false;
+                    player.sendAbilitiesUpdate();
+                    player.setVelocity(player.getVelocity().x, -3.0, player.getVelocity().z);
+                    player.velocityModified = true;
+                    pinningAirTicks.remove(id);
+                    continue;
+                }
+
+                if (!player.isOnGround()) {
+                    int ticks = pinningAirTicks.getOrDefault(id, 0) + 1;
+                    if (ticks >= 40) {
+                        player.setVelocity(player.getVelocity().x, -3.0, player.getVelocity().z);
+                        player.velocityModified = true;
+                        pinningAirTicks.remove(id);
+                    } else {
+                        pinningAirTicks.put(id, ticks);
+                    }
+                } else {
+                    pinningAirTicks.remove(id);
+                }
+            }
+        });
+
+
+
 
 
 

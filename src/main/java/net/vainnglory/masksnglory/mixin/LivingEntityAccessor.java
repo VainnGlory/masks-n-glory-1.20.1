@@ -18,3 +18,4 @@ public interface LivingEntityAccessor {
     @Invoker("onStatusEffectUpgraded")
     void invokeOnStatusEffectUpgraded(StatusEffectInstance effect, boolean reapplyEffect, Entity source);
 }
+

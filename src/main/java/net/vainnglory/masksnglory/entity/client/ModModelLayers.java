@@ -6,5 +6,5 @@ import net.vainnglory.masksnglory.MasksNGlory;
 
 public class ModModelLayers {
     public static final EntityModelLayer MAELSTROME =
-            new EntityModelLayer(new Identifier(MasksNGlory.MOD_ID, "maelstrom"), "main");
+            new EntityModelLayer(new Identifier(MasksNGlory.MOD_ID, "pale_sword"), "main");
 }

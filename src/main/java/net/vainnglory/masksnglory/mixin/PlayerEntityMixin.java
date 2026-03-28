@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.item.custom.CustomHitSoundItem;
@@ -44,6 +45,16 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             cir.setReturnValue(true);
         }
     }
+
+    @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
+    private void masksnglory$blockRemorseAttack(Entity target, CallbackInfo ci) {
+        PlayerEntity self = (PlayerEntity)(Object)this;
+        ItemStack mainHand = self.getMainHandStack();
+        if (mainHand.hasNbt() && mainHand.getNbt().getBoolean("RemorseActive")) {
+            ci.cancel();
+        }
+    }
+
 
 }
 

@@ -7,10 +7,11 @@
     "CoinRicochetMixin",
     "DeathMixin",
     "EffectMixin",
+    "ElytraPinningMixin",
     "ExampleMixin",
     "FallDamageMixin",
-    "ItemEntityMixin",
     "GlaiveDamageMixin",
+    "ItemEntityMixin",
     "ItemRendererAccessor",
     "ItemRendererMixin",
     "LivingEntityAccessor",
@@ -21,9 +22,11 @@
     "ModelLoaderMixin",
     "NuggetMixin",
     "PlayerEntityMixin",
-    "ServerPlayerInteractionManagerMixin"
+    "ServerPlayerInteractionManagerMixin",
+    "TridentPinningMixin"
   ],
   "client": [
+    "HeldItemFeatureRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

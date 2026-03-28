@@ -19,6 +19,8 @@ public class ModEnchantments {
     public static Enchantment SOUL = new SoulPhaseEnchantment();
     public static Enchantment RET = new RetributionEnchantment();
     public static Enchantment UNDEAD = new UndeadArmyEnchantment();
+    public static Enchantment HOMING = new HomingEnchantment();
+    public static Enchantment REMORSE = new RemorseEnchantment();
 
 
     public static void registerEnchantments(){
@@ -34,10 +36,10 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "soul"), SOUL);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "ret"), RET);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "undead"), UNDEAD);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "homing"), HOMING);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "remorse"), REMORSE);
 
         }
-
-
 
     }
 
