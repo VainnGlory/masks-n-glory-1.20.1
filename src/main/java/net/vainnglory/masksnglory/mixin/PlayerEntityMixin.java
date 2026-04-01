@@ -2,12 +2,17 @@ package net.vainnglory.masksnglory.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.effect.ModEffects;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.item.custom.CustomHitSoundItem;
+import net.vainnglory.masksnglory.util.ActorManager;
 import net.vainnglory.masksnglory.util.MaskAbilityManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,6 +42,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             }
         }
     }
+
     @Inject(method = "canConsume", at = @At("HEAD"), cancellable = true)
     private void masksnglory$togCanConsume(boolean ignoreHunger, CallbackInfoReturnable<Boolean> cir) {
         PlayerEntity player = (PlayerEntity) (Object) this;
@@ -48,13 +54,21 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
     private void masksnglory$blockRemorseAttack(Entity target, CallbackInfo ci) {
-        PlayerEntity self = (PlayerEntity)(Object)this;
+        PlayerEntity self = (PlayerEntity) (Object) this;
         ItemStack mainHand = self.getMainHandStack();
         if (mainHand.hasNbt() && mainHand.getNbt().getBoolean("RemorseActive")) {
             ci.cancel();
         }
     }
 
-
+    @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
+    private void masksnglory$offScriptProjectileImmunity(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        PlayerEntity self = (PlayerEntity) (Object) this;
+        if (!self.getWorld().isClient && ActorManager.offScriptActive.contains(self.getUuid())) {
+            if (source.isIn(DamageTypeTags.IS_PROJECTILE)) {
+                cir.setReturnValue(true);
+            }
+        }
+    }
 }
 

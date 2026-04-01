@@ -9,10 +9,17 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.effect.ModEffects;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.RetributionHelmet;
+import net.vainnglory.masksnglory.util.ActorManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,8 +36,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "dropEquipment", at = @At(value = "TAIL"))
-    private void masksnglory$dropEshard(DamageSource source, int lootingMultiplier,
-                                        boolean allowDrops, CallbackInfo ci) {
+    private void masksnglory$dropEshard(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
         if (source.getAttacker() instanceof PlayerEntity
                 && getUuidAsString().equals("d1848a30-b4c9-4f64-817d-0d09377b125c")) {
             dropStack(new ItemStack(ModItems.ESHARD));
@@ -38,8 +44,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "dropEquipment", at = @At(value = "TAIL"))
-    private void masksnglory$dropTshard(DamageSource source, int lootingMultiplier,
-                                        boolean allowDrops, CallbackInfo ci) {
+    private void masksnglory$dropTshard(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
         if (source.getAttacker() instanceof PlayerEntity
                 && getUuidAsString().equals("f8951f83-bfaf-4a75-80bf-000824037387")) {
             dropStack(new ItemStack(ModItems.TSHARD));
@@ -47,8 +52,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "dropEquipment", at = @At(value = "TAIL"))
-    private void masksnglory$dropPshard(DamageSource source, int lootingMultiplier,
-                                        boolean allowDrops, CallbackInfo ci) {
+    private void masksnglory$dropPshard(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
         if (source.getAttacker() instanceof PlayerEntity
                 && getUuidAsString().equals("4f4c543e-9134-46f2-8e37-f97a7327ee0a")) {
             dropStack(new ItemStack(ModItems.PSHARD));
@@ -56,8 +60,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "dropEquipment", at = @At(value = "TAIL"))
-    private void masksnglory$dropOshard(DamageSource source, int lootingMultiplier,
-                                        boolean allowDrops, CallbackInfo ci) {
+    private void masksnglory$dropOshard(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
         if (source.getAttacker() instanceof PlayerEntity
                 && getUuidAsString().equals("ee77d450-64e4-40bc-a70d-78bcf91ffebe")) {
             dropStack(new ItemStack(ModItems.OSHARD));
@@ -65,8 +68,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "dropEquipment", at = @At(value = "TAIL"))
-    private void masksnglory$dropDshard(DamageSource source, int lootingMultiplier,
-                                        boolean allowDrops, CallbackInfo ci) {
+    private void masksnglory$dropDshard(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
         if (source.getAttacker() instanceof PlayerEntity
                 && getUuidAsString().equals("3af214f5-7f9a-464f-9240-dc96148d8bd4")) {
             dropStack(new ItemStack(ModItems.DSHARD));
@@ -74,8 +76,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "damage", at = @At("TAIL"))
-    private void onDamageApplied(DamageSource source, float amount,
-                                 CallbackInfoReturnable<Boolean> cir) {
+    private void masksnglory$retributionHelmetCharge(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (entity.getWorld().isClient) return;
         if (!cir.getReturnValue()) return;
@@ -93,6 +94,43 @@ public abstract class LivingEntityMixin extends Entity {
         if (!wasCharged && isNowCharged) {
             RetributionHelmet.playChargeSound(player);
         }
+    }
+
+    @Inject(method = "damage", at = @At("TAIL"))
+    private void masksnglory$actorSympathyAndTracking(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        if (entity.getWorld().isClient) return;
+        if (!cir.getReturnValue()) return;
+        if (!(entity instanceof ServerPlayerEntity player)) return;
+        if (!player.hasStatusEffect(ModEffects.ACTOR)) return;
+
+        ServerWorld world = player.getServerWorld();
+        ActorManager.lastDamageTicks.put(player.getUuid(), (long) player.getServer().getTicks());
+
+        if (amount <= 4.0f) return;
+        if (ActorManager.sympathyInProgress.contains(player.getUuid())) return;
+
+        Vec3d pos = player.getPos();
+        LivingEntity attacker = source.getAttacker() instanceof LivingEntity l ? l : null;
+
+        ActorManager.sympathyInProgress.add(player.getUuid());
+        int watcherCount = 0;
+        for (PlayerEntity nearby : world.getPlayers()) {
+            if (nearby == player) continue;
+            if (nearby.equals(attacker)) continue;
+            if (nearby.squaredDistanceTo(pos) > 400.0) continue;
+
+            Vec3d eyePos = nearby.getEyePos();
+            Vec3d targetEye = player.getEyePos();
+            RaycastContext rayCtx = new RaycastContext(eyePos, targetEye, RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.NONE, nearby);
+            BlockHitResult result = world.raycast(rayCtx);
+            if (result.getType() == HitResult.Type.BLOCK) continue;
+
+            nearby.damage(world.getDamageSources().generic(), amount * 0.08f);
+            watcherCount++;
+            if (watcherCount >= 3) break;
+        }
+        ActorManager.sympathyInProgress.remove(player.getUuid());
     }
 
     @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();

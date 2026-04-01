@@ -18,6 +18,10 @@ public class BleedingEffect extends StatusEffect {
 
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-        entity.damage(ModDamageTypes.bleeding(entity), 1.0F);
+        if (entity.getHealth() > 1.0F) {
+            entity.setHealth(entity.getHealth() - 1.0F);
+        } else {
+            entity.damage(ModDamageTypes.bleeding(entity), 1.0F);
+        }
     }
 }

@@ -6,7 +6,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class ModEnchantments {
-
     public static Enchantment FEAR = new FearEnchantment();
     public static Enchantment STUNNED = new DiscombobulatedEnchantment();
     public static Enchantment BLUNT = new BluntEnchantment();
@@ -21,9 +20,9 @@ public class ModEnchantments {
     public static Enchantment UNDEAD = new UndeadArmyEnchantment();
     public static Enchantment HOMING = new HomingEnchantment();
     public static Enchantment REMORSE = new RemorseEnchantment();
+    public static Enchantment STUNT_DOUBLE = new StuntDoubleEnchantment();
 
-
-    public static void registerEnchantments(){
+    public static void registerEnchantments() {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "fear"), FEAR);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "discombobulated"), STUNNED);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "blunt"), BLUNT);
@@ -38,8 +37,7 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "undead"), UNDEAD);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "homing"), HOMING);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "remorse"), REMORSE);
-
-        }
-
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "stunt_double"), STUNT_DOUBLE);
     }
+}
 

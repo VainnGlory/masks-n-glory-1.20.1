@@ -205,6 +205,7 @@ public class MaelstromEntity extends PersistentProjectileEntity {
                             ItemStack s = owner.getInventory().getStack(i);
                             if (s.hasNbt() && s.getNbt().getBoolean("RemorseActive")) {
                                 s.getNbt().remove("RemorseActive");
+                                owner.getItemCooldownManager().set(s.getItem(), 100);
                                 break;
                             }
                         }

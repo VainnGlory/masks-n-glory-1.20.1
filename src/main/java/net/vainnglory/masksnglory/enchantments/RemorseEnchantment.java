@@ -14,8 +14,8 @@ public class RemorseEnchantment extends Enchantment {
 
     @Override public int getMinPower(int level) { return 30; }
     @Override public int getMaxLevel() { return 1; }
-    @Override public boolean isTreasure() { return true; }
-    @Override public boolean isAvailableForRandomSelection() { return false; }
+    @Override public boolean isTreasure() { return false; }
+    @Override public boolean isAvailableForRandomSelection() { return true; }
     @Override public boolean isAvailableForEnchantedBookOffer() { return true; }
 
     @Override

@@ -139,6 +139,9 @@
 
   "effect.masks-n-glory.pinning": "Pinning",
   "effect.masks-n-glory.bleeding": "Bleeding",
+  "effect.masks-n-glory.actor": "Actor",
+  "effect.masks-n-glory.off_script_flag": "Off-Script",
+  "effect.masks-n-glory.stunt_double": "Stunt Double",
 
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hit",

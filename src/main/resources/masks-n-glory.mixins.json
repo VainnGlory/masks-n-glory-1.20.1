@@ -23,9 +23,11 @@
     "NuggetMixin",
     "PlayerEntityMixin",
     "ServerPlayerInteractionManagerMixin",
+    "StuntDoubleMixin",
     "TridentPinningMixin"
   ],
   "client": [
+    "ArmorFeatureRendererMixin",
     "HeldItemFeatureRendererMixin"
   ],
   "injectors": {

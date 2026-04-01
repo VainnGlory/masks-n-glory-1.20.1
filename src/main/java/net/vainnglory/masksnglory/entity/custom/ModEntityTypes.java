@@ -30,11 +30,9 @@ public class ModEntityTypes {
                     .build()
     );
 
+    public static void registerEntityTypes() {}
 
-    public static void registerEntityTypes() {
-    }
     public static void registerModEntities() {
         MasksNGlory.LOGGER.info("Registering Entities for " + MasksNGlory.MOD_ID);
     }
-
 }

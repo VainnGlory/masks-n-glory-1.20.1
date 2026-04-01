@@ -35,6 +35,7 @@ public abstract class FallDamageMixin extends Entity {
             }
         }
     }
+
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     private void masksnglory$hsAcrobat(DamageSource source, float amount,
                                        CallbackInfoReturnable<Boolean> cir) {
@@ -44,15 +45,17 @@ public abstract class FallDamageMixin extends Entity {
         if (!(player.getWorld() instanceof ServerWorld world)) return;
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.HSSHARD) return;
 
+        float damagePortion = Math.min(5f, amount * 0.5f);
+        float knockbackMult = 0.4f + amount * 0.06f;
+
         Box area = new Box(player.getBlockPos()).expand(4.0);
         for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class, area, e -> e != player)) {
-            Vec3d dir = entity.getPos().subtract(player.getPos());
-            entity.setVelocity(entity.getVelocity().add(
-                    dir.x * 0.6, 0.4, dir.z * 0.6));
+            Vec3d dir = entity.getPos().subtract(player.getPos()).normalize();
+            entity.setVelocity(entity.getVelocity().add(dir.x * knockbackMult, 0.4, dir.z * knockbackMult));
             if (entity instanceof ServerPlayerEntity targetSp) {
                 targetSp.velocityModified = true;
             }
-            entity.damage(world.getDamageSources().fall(), amount * 0.5f);
+            entity.damage(world.getDamageSources().fall(), damagePortion);
         }
 
         cir.setReturnValue(false);
