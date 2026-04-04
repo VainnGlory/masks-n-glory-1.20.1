@@ -3,6 +3,9 @@ package net.vainnglory.masksnglory;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.entity.EmptyEntityRenderer;
+import net.minecraft.client.render.entity.EntityRenderers;
+import net.minecraft.client.render.entity.RavagerEntityRenderer;
 import net.vainnglory.masksnglory.entity.client.MaelstromModel;
 import net.vainnglory.masksnglory.entity.client.ModModelLayers;
 import net.vainnglory.masksnglory.entity.custom.MaelstromEntityRenderer;
@@ -18,6 +21,8 @@ public class MasksNGloryclient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.MAELSTROME, MaelstromModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntityTypes.MAELSTROM_ENTITY_ENTITY_TYPE, MaelstromEntityRenderer::new);
         EntityRendererRegistry.register(ModEntityTypes.PALE_STEEL_COIN_ENTITY_TYPE, PaleSteelCoinRenderer::new);
+        EntityRendererRegistry.register(ModEntityTypes.SOUL_RAVAGER_TYPE, RavagerEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntityTypes.SOUL_PROJECTILE_TYPE, EmptyEntityRenderer::new);
 
         ModKeybindings.register();
 

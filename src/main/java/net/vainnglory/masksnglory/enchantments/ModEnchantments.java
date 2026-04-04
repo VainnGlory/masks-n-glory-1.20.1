@@ -21,6 +21,8 @@ public class ModEnchantments {
     public static Enchantment HOMING = new HomingEnchantment();
     public static Enchantment REMORSE = new RemorseEnchantment();
     public static Enchantment STUNT_DOUBLE = new StuntDoubleEnchantment();
+    public static Enchantment AFTERLIFE = new AfterlifeEnchantment();
+    public static Enchantment RISK = new RiskEnchantment();
 
     public static void registerEnchantments() {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "fear"), FEAR);
@@ -38,6 +40,8 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "homing"), HOMING);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "remorse"), REMORSE);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "stunt_double"), STUNT_DOUBLE);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "afterlife"), AFTERLIFE);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "risk"), RISK);
     }
 }
 

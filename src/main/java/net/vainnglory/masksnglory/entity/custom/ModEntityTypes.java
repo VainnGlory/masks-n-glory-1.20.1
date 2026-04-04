@@ -30,6 +30,27 @@ public class ModEntityTypes {
                     .build()
     );
 
+    public static final EntityType<SoulProjectileEntity> SOUL_PROJECTILE_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MasksNGlory.MOD_ID, "soul_projectile"),
+            FabricEntityTypeBuilder.<SoulProjectileEntity>create(SpawnGroup.MISC, SoulProjectileEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.3F, 0.3F))
+                    .trackRangeBlocks(64)
+                    .trackedUpdateRate(3)
+                    .build()
+    );
+
+    public static final EntityType<SoulRavagerEntity> SOUL_RAVAGER_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MasksNGlory.MOD_ID, "soul_ravager"),
+            FabricEntityTypeBuilder.<SoulRavagerEntity>create(SpawnGroup.MONSTER, SoulRavagerEntity::new)
+                    .dimensions(EntityDimensions.fixed(1.95F, 2.2F))
+                    .trackRangeBlocks(80)
+                    .trackedUpdateRate(3)
+                    .build()
+    );
+
+
     public static void registerEntityTypes() {}
 
     public static void registerModEntities() {

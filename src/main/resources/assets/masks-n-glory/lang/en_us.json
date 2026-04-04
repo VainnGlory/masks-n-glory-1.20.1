@@ -132,9 +132,14 @@
   "enchantment.masks-n-glory.undead": "Vexed",
   "enchantment.masks-n-glory.undead.desc": "summon 4 vexes to aid you in combat for 15 seconds, be aware however, Evocation is a dangerous magic. Guess who they'll attack, if there's nobody but you around.",
   "enchantment.masks-n-glory.homing": "Homing",
-  "enchantment.masks-n-glory.homing.desc": "50-block throw range, 4 damage. Auto-targets last struck enemy. Applies Pinning on hit.",
+  "enchantment.masks-n-glory.homing.desc": "Auto-targets last struck enemy. Applies Pinning on hit.",
   "enchantment.masks-n-glory.remorse": "Remorse",
   "enchantment.masks-n-glory.remorse.desc": "Embeds sword in target. Right-click to recall forcefully. Sneak+Right-click to teleport. Auto-returns after 30s.",
+  "enchantment.masks-n-glory.afterlife": "Afterlife",
+  "enchantment.masks-n-glory.afterlife.desc": "gather souls on death, can be shot at opponent.",
+  "enchantment.masks-n-glory.risk": "Risk",
+  "enchantment.masks-n-glory.risk.desc": "applies the 'rotting' effect on opponent, hiding their health bar completely.",
+
 
 
   "effect.masks-n-glory.pinning": "Pinning",
@@ -142,6 +147,8 @@
   "effect.masks-n-glory.actor": "Actor",
   "effect.masks-n-glory.off_script_flag": "Off-Script",
   "effect.masks-n-glory.stunt_double": "Stunt Double",
+  "effect.masks-n-glory.rotting": "Rot",
+
 
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hit",
@@ -168,6 +175,7 @@
   "death.attack.ego_last_word": "%1$s didn't get the last word",
 
   "death.attack.bleeding": "%1$s bled out",
+  "death.attack.bleeding.player": "%1$s bled out",
 
   "advancements.Masks N Glory.pale_armor.description": "An Alchemist's Dream",
   "advancements.Masks N Glory.pale_armor.title": "Cover Me in Nostalgia",

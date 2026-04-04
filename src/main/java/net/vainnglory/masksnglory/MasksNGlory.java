@@ -5,12 +5,15 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
@@ -19,6 +22,7 @@ import net.vainnglory.masksnglory.effect.ModEffects;
 import net.vainnglory.masksnglory.enchantments.*;
 import net.vainnglory.masksnglory.entity.ModEntities;
 import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
+import net.vainnglory.masksnglory.entity.custom.SoulRavagerEntity;
 import net.vainnglory.masksnglory.events.PlayerDeathEffects;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
@@ -62,10 +66,14 @@ public class MasksNGlory implements ModInitializer {
         ComboEnchantment.registerAttackCallback();
         ComboEnchantment.registerKillCallback();
         AntisepticEnchantment.registerTickCallback();
+        AfterlifeEnchantment.registerCallbacks();
+        RiskEnchantment.registerAttackCallback();
 
         RegisterMNGItems.registerPaleItems();
 
         ModEntityTypes.registerEntityTypes();
+        FabricDefaultAttributeRegistry.register(ModEntityTypes.SOUL_RAVAGER_TYPE, SoulRavagerEntity.createAttributes());
+
 
         FlashAttackPacket.registerReceiver();
 
@@ -82,6 +90,7 @@ public class MasksNGlory implements ModInitializer {
             ActorManager.sympathyInProgress.remove(id);
             MaskAbilityManager.clearPlayerData(id);
         });
+
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (entity instanceof ServerPlayerEntity player) {
@@ -164,12 +173,20 @@ public class MasksNGlory implements ModInitializer {
                     boolean inCombat = (server.getTicks() - ActorManager.lastDamageTicks.getOrDefault(id, 0L)) <= 100;
                     if (player.isSneaking() && inCombat) {
                         int sneakTicks = ActorManager.actorSneakTicks.merge(id, 1, Integer::sum);
-                        if (sneakTicks >= 60) {
+                        if (sneakTicks >= 40) {
                             ActorManager.offScriptActive.add(id);
                             ActorManager.actorSneakTicks.remove(id);
                             ActorManager.offScriptCooldowns.put(id, 600);
-                            player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 60, 0, false, false, false));
-                            player.addStatusEffect(new StatusEffectInstance(ModEffects.OFF_SCRIPT_FLAG, 60, 0, false, false, true));
+                            player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 100, 0, false, false, false));
+                            player.addStatusEffect(new StatusEffectInstance(ModEffects.OFF_SCRIPT_FLAG, 100, 0, false, false, true));
+
+                            StatusEffectInstance flagEffect = player.getStatusEffect(ModEffects.OFF_SCRIPT_FLAG);
+                            if (flagEffect != null) {
+                                EntityStatusEffectS2CPacket flagPacket = new EntityStatusEffectS2CPacket(player.getId(), flagEffect);
+                                for (ServerPlayerEntity tracker : PlayerLookup.tracking(player)) {
+                                    tracker.networkHandler.sendPacket(flagPacket);
+                                }
+                            }
                         }
                     } else {
                         ActorManager.actorSneakTicks.remove(id);

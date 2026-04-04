@@ -28,7 +28,8 @@
   ],
   "client": [
     "ArmorFeatureRendererMixin",
-    "HeldItemFeatureRendererMixin"
+    "HeldItemFeatureRendererMixin",
+    "InGameHudRottingMixin"
   ],
   "injectors": {
     "defaultRequire": 1

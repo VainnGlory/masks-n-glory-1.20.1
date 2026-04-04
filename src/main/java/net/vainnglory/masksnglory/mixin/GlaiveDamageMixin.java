@@ -16,28 +16,24 @@ public class GlaiveDamageMixin {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     private void onDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        LivingEntity entity = (LivingEntity) (Object) this;
+        if (source.getTypeRegistryEntry().matchesKey(ModDamageTypes.SOUL_DAMAGE)) return;
 
+        LivingEntity entity = (LivingEntity) (Object) this;
 
         if (source.getAttacker() instanceof PlayerEntity player) {
             ItemStack heldItem = player.getMainHandStack();
 
-            if (heldItem.getItem() instanceof GlaiveItem glaive) {
-
+            if (heldItem.getItem() instanceof GlaiveItem) {
                 cir.setReturnValue(false);
 
+                float cooldown = player.getAttackCooldownProgress(0.5f);
+                float damage = 3.0F * cooldown;
 
-                float vanillaDamageWithCooldown = amount;
-
-
-                float cooldownMultiplier = Math.min(1.0F, vanillaDamageWithCooldown / 1.0F);
-                float damage = 3.0F * cooldownMultiplier;
-
-
-                DamageSource soulDamage = entity.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE);
-
-                entity.damage(soulDamage, damage);
-                cir.setReturnValue(true);
+                if (damage > 0.1f) {
+                    DamageSource soulDamage = entity.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE, player);
+                    entity.damage(soulDamage, damage);
+                    cir.setReturnValue(true);
+                }
             }
         }
     }

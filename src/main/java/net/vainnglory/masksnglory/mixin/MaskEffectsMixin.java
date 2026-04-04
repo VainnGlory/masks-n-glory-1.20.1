@@ -16,10 +16,10 @@ import net.minecraft.util.math.Box;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.util.MaskAbilityManager;
 import net.vainnglory.masksnglory.util.ModDamageTypes;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -137,17 +137,6 @@ public abstract class MaskEffectsMixin {
         MaskAbilityManager.addEgoGrudge(player.getUuid(), amount);
     }
 
-    @Inject(method = "onDeath", at = @At("HEAD"))
-    private void masksnglory$egoLastWord(DamageSource source, CallbackInfo ci) {
-        LivingEntity self = (LivingEntity)(Object)this;
-        if (self.getWorld().isClient) return;
-        if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.ESHARD) return;
-        Entity killer = source.getAttacker();
-        if (!(killer instanceof LivingEntity living)) return;
-        living.damage(ModDamageTypes.egoLastWord(living), 6.0f);
-    }
-
     @Inject(method = "damage", at = @At("TAIL"))
     private void masksnglory$stoneiReactiveShell(DamageSource source, float amount,
                                                  CallbackInfoReturnable<Boolean> cir) {
@@ -158,6 +147,20 @@ public abstract class MaskEffectsMixin {
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.STSHARD) return;
         MaskAbilityManager.activateStoneiShell(player);
     }
+
+    @Inject(method = "damage", at = @At("TAIL"))
+    private void masksnglory$egoLastWord(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue()) return;
+        LivingEntity self = (LivingEntity)(Object)this;
+        if (self.getWorld().isClient) return;
+        if (!(self instanceof PlayerEntity player)) return;
+        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.ESHARD) return;
+        if (!self.isDead()) return;
+        Entity killer = source.getAttacker();
+        if (!(killer instanceof LivingEntity living)) return;
+        living.damage(ModDamageTypes.egoLastWord(living), 6.0f);
+    }
+
 
 
 }

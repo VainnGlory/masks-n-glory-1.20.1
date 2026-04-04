@@ -16,8 +16,11 @@ import net.minecraft.item.*;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.enchantments.AfterlifeEnchantment;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.util.ModRarities;
@@ -75,6 +78,17 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
         );
     }
 
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        ItemStack stack = user.getStackInHand(hand);
+        if (EnchantmentHelper.getLevel(ModEnchantments.AFTERLIFE, stack) <= 0) {
+            return TypedActionResult.pass(stack);
+        }
+        boolean acted = AfterlifeEnchantment.handleUse(user, stack, user.isSneaking());
+        return acted ? TypedActionResult.success(stack, world.isClient) : TypedActionResult.pass(stack);
+    }
+
+
 
     @Override
     public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
@@ -120,6 +134,14 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(Text.translatable("tooltip.masks-n-glory.glaive"));
+        if (EnchantmentHelper.getLevel(ModEnchantments.AFTERLIFE, stack) > 0) {
+            int souls = stack.getOrCreateNbt().getInt(AfterlifeEnchantment.SOULS_KEY);
+            int ravagers = stack.getOrCreateNbt().getInt(AfterlifeEnchantment.RAVAGER_KEY);
+            tooltip.add(Text.literal("Souls: " + souls).setStyle(Style.EMPTY.withColor(0x7B68EE)));
+            if (ravagers > 0) {
+                tooltip.add(Text.literal("Ravagers: " + ravagers).setStyle(Style.EMPTY.withColor(0x8B0000)));
+            }
+        }
         super.appendTooltip(stack, world, tooltip, context);
     }
     public int getEnchantability()
