@@ -135,6 +135,8 @@
   "enchantment.masks-n-glory.homing.desc": "Auto-targets last struck enemy. Applies Pinning on hit.",
   "enchantment.masks-n-glory.remorse": "Remorse",
   "enchantment.masks-n-glory.remorse.desc": "Embeds sword in target. Right-click to recall forcefully. Sneak+Right-click to teleport. Auto-returns after 30s.",
+  "enchantment.masks-n-glory.stunt_double": "Stunt Double",
+  "enchantment.masks-n-glory.stunt_double.desc": "apply the 'stunt double' effect to you and people nearby, this effect nullify totems completely.",
   "enchantment.masks-n-glory.afterlife": "Afterlife",
   "enchantment.masks-n-glory.afterlife.desc": "gather souls on death, can be shot at opponent.",
   "enchantment.masks-n-glory.risk": "Risk",
