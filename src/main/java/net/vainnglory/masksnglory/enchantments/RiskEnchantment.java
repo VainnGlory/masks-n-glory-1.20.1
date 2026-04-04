@@ -22,13 +22,18 @@ public class RiskEnchantment extends Enchantment {
     @Override public int getMaxLevel() { return 1; }
     @Override public int getMinPower(int level) { return 30; }
     @Override public int getMaxPower(int level) { return 50; }
-    @Override public boolean isTreasure() { return true; }
-    @Override public boolean isAvailableForEnchantedBookOffer() { return false; }
-    @Override public boolean isAvailableForRandomSelection() { return false; }
+    @Override public boolean isTreasure() { return false; }
+    @Override public boolean isAvailableForEnchantedBookOffer() { return true; }
+    @Override public boolean isAvailableForRandomSelection() { return true; }
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof GlaiveItem;
+    }
+
+    @Override
+    public boolean canAccept(Enchantment other) {
+        return !(other instanceof AfterlifeEnchantment) && super.canAccept(other);
     }
 
     public static void registerAttackCallback() {
