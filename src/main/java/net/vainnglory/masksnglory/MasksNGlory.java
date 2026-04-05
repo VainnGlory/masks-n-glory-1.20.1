@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
@@ -15,6 +16,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.vainnglory.masksnglory.block.ModBlocks;
@@ -222,6 +224,24 @@ public class MasksNGlory implements ModInitializer {
                 }
             }
         });
+
+        ServerPlayNetworking.registerGlobalReceiver(
+                new Identifier("masks-n-glory", "cycle_glaive_mode"),
+                (server, player, handler, buf, responseSender) -> server.execute(() -> {
+                    for (int i = 0; i < player.getInventory().size(); i++) {
+                        net.minecraft.item.ItemStack s = player.getInventory().getStack(i);
+                        if (s.getItem() instanceof net.vainnglory.masksnglory.item.custom.GlaiveItem
+                                && net.minecraft.enchantment.EnchantmentHelper.getLevel(
+                                net.vainnglory.masksnglory.enchantments.ModEnchantments.AFTERLIFE, s) > 0) {
+                            AfterlifeEnchantment.cycleMode(s);
+                            break;
+                        }
+                    }
+                })
+        );
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> AfterlifeEnchantment.tickSummonedUndead(server));
+
 
         LOGGER.info("Starting The 9/5");
 

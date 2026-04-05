@@ -28,6 +28,7 @@
   ],
   "client": [
     "ArmorFeatureRendererMixin",
+    "GlaiveInventoryCycleMixin",
     "HeldItemFeatureRendererMixin",
     "InGameHudRottingMixin"
   ],

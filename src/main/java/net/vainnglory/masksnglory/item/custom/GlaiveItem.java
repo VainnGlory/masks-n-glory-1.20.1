@@ -13,11 +13,13 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.AfterlifeEnchantment;
@@ -84,9 +86,38 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
         if (EnchantmentHelper.getLevel(ModEnchantments.AFTERLIFE, stack) <= 0) {
             return TypedActionResult.pass(stack);
         }
-        boolean acted = AfterlifeEnchantment.handleUse(user, stack, user.isSneaking());
-        return acted ? TypedActionResult.success(stack, world.isClient) : TypedActionResult.pass(stack);
+
+        if (user.isSneaking()) {
+            boolean acted = AfterlifeEnchantment.handleUse(user, stack, true);
+            return acted ? TypedActionResult.success(stack, world.isClient) : TypedActionResult.pass(stack);
+        } else {
+            if (stack.getOrCreateNbt().getInt(AfterlifeEnchantment.SOULS_KEY) <= 0) {
+                return TypedActionResult.pass(stack);
+            }
+            user.setCurrentHand(hand);
+            return TypedActionResult.consume(stack);
+        }
     }
+
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (!(user instanceof PlayerEntity player)) return;
+        if (EnchantmentHelper.getLevel(ModEnchantments.AFTERLIFE, stack) <= 0) return;
+        int chargedTicks = getMaxUseTime(stack) - remainingUseTicks;
+        if (chargedTicks < 20) return;
+        AfterlifeEnchantment.handleUse(player, stack, false);
+    }
+
+    @Override
+    public int getMaxUseTime(ItemStack stack) {
+        return 72000;
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.SPEAR;
+    }
+
 
 
 
@@ -134,16 +165,26 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(Text.translatable("tooltip.masks-n-glory.glaive"));
+
         if (EnchantmentHelper.getLevel(ModEnchantments.AFTERLIFE, stack) > 0) {
-            int souls = stack.getOrCreateNbt().getInt(AfterlifeEnchantment.SOULS_KEY);
-            int ravagers = stack.getOrCreateNbt().getInt(AfterlifeEnchantment.RAVAGER_KEY);
-            tooltip.add(Text.literal("Souls: " + souls).setStyle(Style.EMPTY.withColor(0x7B68EE)));
-            if (ravagers > 0) {
-                tooltip.add(Text.literal("Ravagers: " + ravagers).setStyle(Style.EMPTY.withColor(0x8B0000)));
-            }
+            NbtCompound nbt = stack.getOrCreateNbt();
+            int mode = nbt.getInt(AfterlifeEnchantment.MODE_KEY);
+            int souls = nbt.getInt(AfterlifeEnchantment.SOULS_KEY);
+            int ravagers = nbt.getInt(AfterlifeEnchantment.RAVAGER_KEY);
+            int illagers = nbt.getInt(AfterlifeEnchantment.ILLAGER_KEY);
+            int undead = nbt.getInt(AfterlifeEnchantment.UNDEAD_KEY);
+            int bandit = nbt.getInt(AfterlifeEnchantment.BANDIT_KEY);
+
+            tooltip.add(Text.literal("Souls: " + souls + "/10").setStyle(Style.EMPTY.withColor(0x7B68EE)));
+            tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_RAVAGER ? "► " : "  ") + "Ravagers: " + ravagers + "/5").setStyle(Style.EMPTY.withColor(0x8B0000)));
+            tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_ILLAGER ? "► " : "  ") + "Illagers: " + illagers + "/5").setStyle(Style.EMPTY.withColor(0x2E8B57)));
+            tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_UNDEAD  ? "► " : "  ") + "Undead: " + undead + "/8").setStyle(Style.EMPTY.withColor(0x708090)));
+            tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_BANDIT ? "► " : "  ") + "Bandits: " + bandit + "/3").setStyle(Style.EMPTY.withColor(0xA0522D)));
+
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
+
     public int getEnchantability()
 
     {

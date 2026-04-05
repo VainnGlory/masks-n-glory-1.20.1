@@ -14,6 +14,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
 
 import java.util.Comparator;
 import java.util.List;
@@ -98,7 +99,7 @@ public class SoulProjectileEntity extends PersistentProjectileEntity {
         Entity hit = entityHitResult.getEntity();
         if (hit == getOwner() || !(hit instanceof LivingEntity target)) return;
 
-        target.damage(getDamageSources().arrow(this, getOwner()), 6.0f);
+        target.damage(target.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE, getOwner()), 4.0f);
         discard();
     }
 
@@ -108,7 +109,7 @@ public class SoulProjectileEntity extends PersistentProjectileEntity {
     }
 
     @Override
-    public boolean shouldRender(double distance) { return false; } // visuals are particles only
+    public boolean shouldRender(double distance) { return false; }
 
     @Override
     protected ItemStack asItemStack() { return new ItemStack(Items.AIR); }

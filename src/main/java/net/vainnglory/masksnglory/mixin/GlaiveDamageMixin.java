@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.vainnglory.masksnglory.item.custom.GlaiveItem;
 import net.vainnglory.masksnglory.util.ModDamageTypes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,14 +27,12 @@ public class GlaiveDamageMixin {
             if (heldItem.getItem() instanceof GlaiveItem) {
                 cir.setReturnValue(false);
 
-                float cooldown = player.getAttackCooldownProgress(0.5f);
-                float damage = 3.0F * cooldown;
+                float cooldown = MathHelper.clamp((amount - 0.2f) / 0.8f, 0f, 1f);
+                float damage = 3.0f * cooldown;
 
-                if (damage > 0.1f) {
-                    DamageSource soulDamage = entity.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE, player);
-                    entity.damage(soulDamage, damage);
-                    cir.setReturnValue(true);
-                }
+                DamageSource soulDamage = entity.getDamageSources().create(ModDamageTypes.SOUL_DAMAGE, player);
+                entity.damage(soulDamage, damage);
+                cir.setReturnValue(true);
             }
         }
     }
