@@ -63,22 +63,21 @@ public class SerialEnchantment extends Enchantment {
     }
 
     private static int getCombo(PlayerEntity player) {
-        UUID playerId = player.getUuid();
-        long currentTime = System.currentTimeMillis();
-        Long lastHit = lastHitTime.get(playerId);
-
-        if (lastHit == null || (currentTime - lastHit) > COMBO_TIMEOUT_MS) {
-            comboCount.put(playerId, 0);
-        }
-
-        return comboCount.getOrDefault(playerId, 0);
+        return comboCount.getOrDefault(player.getUuid(), 0);
     }
 
     private static void incrementCombo(PlayerEntity player) {
         UUID playerId = player.getUuid();
+        long currentTime = System.currentTimeMillis();
+        Long lastHit = lastHitTime.get(playerId);
+
+        if (lastHit != null && (currentTime - lastHit) > COMBO_TIMEOUT_MS) {
+            comboCount.put(playerId, 0);
+        }
+
         int currentCombo = comboCount.getOrDefault(playerId, 0);
         comboCount.put(playerId, Math.min(currentCombo + 1, MAX_COMBO));
-        lastHitTime.put(playerId, System.currentTimeMillis());
+        lastHitTime.put(playerId, currentTime);
     }
 
     private static float calculateBonusDamage(int combo) {

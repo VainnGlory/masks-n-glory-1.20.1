@@ -23,6 +23,8 @@ public class ModEnchantments {
     public static Enchantment STUNT_DOUBLE = new StuntDoubleEnchantment();
     public static Enchantment AFTERLIFE = new AfterlifeEnchantment();
     public static Enchantment RISK = new RiskEnchantment();
+    public static Enchantment LOCKOUT = new LockoutEnchantment();
+    public static Enchantment PACT = new PactEnchantment();
 
     public static void registerEnchantments() {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "fear"), FEAR);
@@ -42,6 +44,8 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "stunt_double"), STUNT_DOUBLE);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "afterlife"), AFTERLIFE);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "risk"), RISK);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "lockout"), LOCKOUT);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "pact"), PACT);
     }
 }
 

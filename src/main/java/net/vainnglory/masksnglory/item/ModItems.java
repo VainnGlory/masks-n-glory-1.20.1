@@ -42,6 +42,7 @@ public class ModItems {
     public static final Item ECHODUST = registerItem("echodust", new Item(new FabricItemSettings()));
     public static final Item ECHODUSTSUGAR = registerItem("echo_dust_and_sugar", new Item(new FabricItemSettings()));
     public static final Item GOLDENSCRAP = registerItem("goldenscrap", new GoldenScrapItem(new FabricItemSettings().fireproof(), ModRarities.GOLDEN));
+    public static final Item DUST = registerItem("dust", new Item(new FabricItemSettings().rarity(Rarity.COMMON)));
 
     public static final Item EGO_MASK = registerItem("ego_mask",
         new ModArmorItem(ModArmorMaterials.ESHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));

@@ -70,6 +70,8 @@ public class MasksNGlory implements ModInitializer {
         AntisepticEnchantment.registerTickCallback();
         AfterlifeEnchantment.registerCallbacks();
         RiskEnchantment.registerAttackCallback();
+        PactEnchantment.registerAttackCallback();
+        LockoutEnchantment.registerAttackCallback();
 
         RegisterMNGItems.registerPaleItems();
 
@@ -91,6 +93,14 @@ public class MasksNGlory implements ModInitializer {
             ActorManager.offScriptCooldowns.remove(id);
             ActorManager.sympathyInProgress.remove(id);
             MaskAbilityManager.clearPlayerData(id);
+        });
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                if (player.hasStatusEffect(ModEffects.SEIZED)) {
+                    player.setSprinting(false);
+                }
+            }
         });
 
 

@@ -36,6 +36,7 @@ public class ModItemGroups {
                         entries.add(ModItems.GOLDENSCRAP);
                         entries.add(ModItems.ASH_CHARGE);
                         entries.add(ModItems.COOKED_BONES);
+                        entries.add(ModItems.DUST);
                         entries.add(ModItems.PALE_STEEL_COIN);
 
 

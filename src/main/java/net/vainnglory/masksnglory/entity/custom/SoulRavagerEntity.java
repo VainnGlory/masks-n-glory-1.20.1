@@ -90,7 +90,7 @@ public class SoulRavagerEntity extends RavagerEntity {
             Entity e = ((ServerWorld) getWorld()).getEntity(ownerUUID);
             if (!(e instanceof PlayerEntity p)) return false;
             owner = p;
-            return squaredDistanceTo(owner) > 16.0; // start following if >4 blocks away
+            return squaredDistanceTo(owner) > 16.0;
         }
 
         @Override

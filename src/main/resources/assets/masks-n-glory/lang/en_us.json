@@ -19,6 +19,7 @@
   "item.masks-n-glory.echo_dust_and_sugar": "Echo Dust And Sugar",
   "item.masks-n-glory.void": "Error:Null",
   "item.masks-n-glory.cooked_bones": "Cooked Bone",
+  "item.masks-n-glory.dust": "Bone Dust",
 
   "item.masks-n-glory.goldenscrap": "Golden Scrap",
   "tooltip.masks-n-glory.goldenscrap": "§7*seems to be a part of a greater whole...*",
@@ -141,6 +142,10 @@
   "enchantment.masks-n-glory.afterlife.desc": "gather souls on death, can be shot at opponent.",
   "enchantment.masks-n-glory.risk": "Risk",
   "enchantment.masks-n-glory.risk.desc": "applies the 'rotting' effect on opponent, hiding their health bar completely.",
+  "enchantment.masks-n-glory.lockout": "Lockout",
+  "enchantment.masks-n-glory.lockout.desc": "Every 5 hits, seizes the target's joints.",
+  "enchantment.masks-n-glory.pact": "Marrow",
+  "enchantment.masks-n-glory.pact.desc": "Each armor piece you forgo empowers your strikes.",
 
 
 
@@ -150,6 +155,8 @@
   "effect.masks-n-glory.off_script_flag": "Off-Script",
   "effect.masks-n-glory.stunt_double": "Stunt Double",
   "effect.masks-n-glory.rotting": "Rot",
+  "effect.masks-n-glory.seized": "Seized",
+  "effect.masks-n-glory.sugar_rush": "Sugar Rush",
 
 
 

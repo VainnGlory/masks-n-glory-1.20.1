@@ -133,7 +133,7 @@ public class AfterlifeEnchantment extends Enchantment {
             }
 
             if (killed.getGroup() == EntityGroup.UNDEAD && !(killed instanceof SoulRavagerEntity)) {
-                nbt.putInt(UNDEAD_KEY, Math.min(5, nbt.getInt(UNDEAD_KEY) + 1));
+                nbt.putInt(UNDEAD_KEY, Math.min(10, nbt.getInt(UNDEAD_KEY) + 1));
                 String typeId = Registries.ENTITY_TYPE.getId(killed.getType()).toString();
                 NbtList typeList = nbt.getList(UNDEAD_TYPES_KEY, NbtElement.STRING_TYPE);
                 boolean tracked = false;

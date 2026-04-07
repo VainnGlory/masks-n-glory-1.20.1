@@ -54,7 +54,6 @@ public class FlashOverlayRenderer {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
 
-        // Draw white overlay
         context.fill(0, 0, width, height, 0xFFFFFF | ((int)(alpha * 255) << 24));
 
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);

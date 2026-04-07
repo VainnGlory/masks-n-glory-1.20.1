@@ -28,7 +28,6 @@ public class ModArmorItem extends ArmorItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (!world.isClient() && entity instanceof PlayerEntity player) {
-            // Only tick if this item is the currently equipped helmet
             ItemStack helmet = player.getInventory().getArmorStack(3);
             if (helmet == stack) {
                 MaskAbilityManager.tick(player, this.getMaterial());

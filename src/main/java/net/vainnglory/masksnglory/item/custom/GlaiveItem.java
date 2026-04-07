@@ -178,7 +178,7 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
             tooltip.add(Text.literal("Souls: " + souls + "/10").setStyle(Style.EMPTY.withColor(0x7B68EE)));
             tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_RAVAGER ? "► " : "  ") + "Ravagers: " + ravagers + "/5").setStyle(Style.EMPTY.withColor(0x8B0000)));
             tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_ILLAGER ? "► " : "  ") + "Illagers: " + illagers + "/5").setStyle(Style.EMPTY.withColor(0x2E8B57)));
-            tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_UNDEAD  ? "► " : "  ") + "Undead: " + undead + "/8").setStyle(Style.EMPTY.withColor(0x708090)));
+            tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_UNDEAD  ? "► " : "  ") + "Undead: " + undead + "/10").setStyle(Style.EMPTY.withColor(0x708090)));
             tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_BANDIT ? "► " : "  ") + "Bandits: " + bandit + "/3").setStyle(Style.EMPTY.withColor(0xA0522D)));
 
         }

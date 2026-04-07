@@ -63,6 +63,12 @@ public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitS
         if (EnchantmentHelper.getLevel(ModEnchantments.SERIAL, stack) > 0) {
             return super.getName(stack).copy().styled(style -> style.withColor(0x7A94AC));
         }
+        if (EnchantmentHelper.getLevel(ModEnchantments.PACT, stack) > 0) {
+            return super.getName(stack).copy().styled(style -> style.withColor(0x95B575));
+        }
+        if (EnchantmentHelper.getLevel(ModEnchantments.LOCKOUT, stack) > 0) {
+            return super.getName(stack).copy().styled(style -> style.withColor(0x70A098));
+        }
         return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
 

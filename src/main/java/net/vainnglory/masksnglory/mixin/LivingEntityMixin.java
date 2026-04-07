@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -131,6 +132,33 @@ public abstract class LivingEntityMixin extends Entity {
             if (watcherCount >= 3) break;
         }
         ActorManager.sympathyInProgress.remove(player.getUuid());
+    }
+
+    @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
+    private void masksnglory$seizedPreventJump(CallbackInfo ci) {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (self.hasStatusEffect(ModEffects.SEIZED)) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "setSprinting", at = @At("HEAD"), cancellable = true)
+    private void masksnglory$seizedPreventSprint(boolean sprinting, CallbackInfo ci) {
+        if (!sprinting) return;
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (self.hasStatusEffect(ModEffects.SEIZED)) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "onStatusEffectRemoved", at = @At("HEAD"))
+    private void masksnglory$sugarRushCrash(StatusEffectInstance effect, CallbackInfo ci) {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (self.getWorld().isClient) return;
+        if (effect.getEffectType() == ModEffects.SUGAR_RUSH) {
+            self.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1, false, true, true));
+            self.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 200, 0, false, true, true));
+        }
     }
 
     @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();

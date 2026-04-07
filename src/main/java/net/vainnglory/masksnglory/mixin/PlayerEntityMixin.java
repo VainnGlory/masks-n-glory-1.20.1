@@ -69,4 +69,3 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         }
     }
 }
-

@@ -30,7 +30,9 @@
     "ArmorFeatureRendererMixin",
     "GlaiveInventoryCycleMixin",
     "HeldItemFeatureRendererMixin",
-    "InGameHudRottingMixin"
+    "InGameHudRottingMixin",
+    "SugarRushCameraMixin",
+    "SugarRushHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
