@@ -72,6 +72,10 @@ public class MasksNGlory implements ModInitializer {
         RiskEnchantment.registerAttackCallback();
         PactEnchantment.registerAttackCallback();
         LockoutEnchantment.registerAttackCallback();
+        TemperEnchantment.registerAttackCallback();
+        TemperEnchantment.registerTickCallback();
+        IncumbentEnchantment.registerAttackCallback();
+        NotorietyEnchantment.registerCallbacks();
 
         RegisterMNGItems.registerPaleItems();
 
@@ -93,6 +97,8 @@ public class MasksNGlory implements ModInitializer {
             ActorManager.offScriptCooldowns.remove(id);
             ActorManager.sympathyInProgress.remove(id);
             MaskAbilityManager.clearPlayerData(id);
+            TemperEnchantment.cleanup(id);
+            IncumbentEnchantment.cleanup(id);
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -189,7 +195,9 @@ public class MasksNGlory implements ModInitializer {
                             ActorManager.offScriptActive.add(id);
                             ActorManager.actorSneakTicks.remove(id);
                             ActorManager.offScriptCooldowns.put(id, 600);
-                            player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 100, 0, false, false, false));
+                            if (!player.hasStatusEffect(StatusEffects.INVISIBILITY)) {
+                                player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 100, 0, false, false, false));
+                            }
                             player.addStatusEffect(new StatusEffectInstance(ModEffects.OFF_SCRIPT_FLAG, 100, 0, false, false, true));
 
                             StatusEffectInstance flagEffect = player.getStatusEffect(ModEffects.OFF_SCRIPT_FLAG);

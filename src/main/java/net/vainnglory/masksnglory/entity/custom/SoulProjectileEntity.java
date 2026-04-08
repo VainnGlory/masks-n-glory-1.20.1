@@ -19,6 +19,7 @@ import net.vainnglory.masksnglory.util.ModDamageTypes;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class SoulProjectileEntity extends PersistentProjectileEntity {
@@ -41,18 +42,13 @@ public class SoulProjectileEntity extends PersistentProjectileEntity {
 
     @Override
     public void tick() {
-        this.inGround = false;
         lifetime++;
 
-        if (getWorld().isClient) {
-            super.tick();
-            return;
-        }
+        if (getWorld().isClient) return;
 
         if (getWorld() instanceof ServerWorld serverWorld) {
             serverWorld.spawnParticles(ParticleTypes.SCULK_SOUL,
-                    getX(), getY(), getZ(),
-                    2, 0.1, 0.1, 0.1, 0.02);
+                    getX(), getY(), getZ(), 2, 0.1, 0.1, 0.1, 0.02);
         }
 
         LivingEntity target = findTarget();
@@ -69,7 +65,33 @@ public class SoulProjectileEntity extends PersistentProjectileEntity {
             return;
         }
 
-        super.tick();
+        Vec3d velocity = getVelocity();
+        Vec3d start = getPos();
+        Vec3d end = start.add(velocity);
+
+        List<LivingEntity> candidates = getWorld().getEntitiesByClass(LivingEntity.class,
+                getBoundingBox().expand(velocity.length() + 0.5),
+                e -> e != getOwner() && !e.isDead() && e.canHit());
+
+        LivingEntity hit = null;
+        double closest = Double.MAX_VALUE;
+        for (LivingEntity candidate : candidates) {
+            Optional<Vec3d> intersection = candidate.getBoundingBox().expand(0.3).raycast(start, end);
+            if (intersection.isPresent()) {
+                double dist = start.squaredDistanceTo(intersection.get());
+                if (dist < closest) {
+                    closest = dist;
+                    hit = candidate;
+                }
+            }
+        }
+
+        if (hit != null) {
+            onEntityHit(new EntityHitResult(hit));
+            return;
+        }
+
+        setPosition(end);
     }
 
     private LivingEntity findTarget() {
@@ -105,9 +127,7 @@ public class SoulProjectileEntity extends PersistentProjectileEntity {
     }
 
     @Override
-    protected void onBlockHit(BlockHitResult blockHitResult) {
-        discard();
-    }
+    protected void onBlockHit(BlockHitResult blockHitResult) {}
 
     @Override
     public boolean shouldRender(double distance) { return false; }

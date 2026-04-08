@@ -3,6 +3,7 @@ package net.vainnglory.masksnglory.item.custom;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -22,6 +23,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.enchantments.ModEnchantments;
+import net.vainnglory.masksnglory.enchantments.NotorietyEnchantment;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
@@ -47,6 +50,11 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
         this.maxHits = maxHits;
     }
 
+    private boolean hasSpecialEnchant(ItemStack stack) {
+        return EnchantmentHelper.getLevel(ModEnchantments.TEMPER, stack) > 0 ||
+                EnchantmentHelper.getLevel(ModEnchantments.INCUMBENT, stack) > 0 ||
+                EnchantmentHelper.getLevel(ModEnchantments.NOTORIETY, stack) > 0;
+    }
 
     private List<StatusEffectInstance> getEffects(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
@@ -134,6 +142,10 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (hasSpecialEnchant(stack)) {
+            return super.postHit(stack, target, attacker);
+        }
+
         List<StatusEffectInstance> effects = getEffects(stack);
         int hitCounter = getHitCounter(stack);
 
@@ -149,7 +161,6 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
                 ));
             }
         } else {
-
             setHitCounter(stack, 0);
             setEffects(stack, null);
         }
@@ -167,6 +178,11 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack mainHandItem = user.getStackInHand(hand);
+
+        if (hasSpecialEnchant(mainHandItem)) {
+            return super.use(world, user, hand);
+        }
+
         ItemStack offHandItem = user.getOffHandStack();
 
         if (offHandItem.getItem() instanceof PotionItem) {
@@ -197,10 +213,19 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (EnchantmentHelper.getLevel(ModEnchantments.NOTORIETY, stack) > 0) {
+            NbtList kills = NotorietyEnchantment.getKillList(stack);
+            if (!kills.isEmpty()) {
+                for (int i = 0; i < kills.size(); i++) {
+                    tooltip.add(Text.literal("  " + kills.getString(i)).setStyle(Style.EMPTY.withColor(0x880000)));
+                }
+            }
+        }
+
         List<StatusEffectInstance> effects = getEffects(stack);
         int hitCounter = getHitCounter(stack);
 
-        if (effects != null && !effects.isEmpty() && (this.maxHits - hitCounter) > 0) {
+        if (!hasSpecialEnchant(stack) && effects != null && !effects.isEmpty() && (this.maxHits - hitCounter) > 0) {
             MutableText imbuedHits = Text.translatable(
                     "masks-n-glory.tooltip.pride.imbued_hits",
                     nf.format(maxHits - hitCounter)

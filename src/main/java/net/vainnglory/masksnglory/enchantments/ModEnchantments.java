@@ -25,6 +25,9 @@ public class ModEnchantments {
     public static Enchantment RISK = new RiskEnchantment();
     public static Enchantment LOCKOUT = new LockoutEnchantment();
     public static Enchantment PACT = new PactEnchantment();
+    public static Enchantment TEMPER = new TemperEnchantment();
+    public static Enchantment INCUMBENT = new IncumbentEnchantment();
+    public static Enchantment NOTORIETY = new NotorietyEnchantment();
 
     public static void registerEnchantments() {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "fear"), FEAR);
@@ -46,6 +49,9 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "risk"), RISK);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "lockout"), LOCKOUT);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "pact"), PACT);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "temper"), TEMPER);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "incumbent"), INCUMBENT);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "notoriety"), NOTORIETY);
     }
 }
 

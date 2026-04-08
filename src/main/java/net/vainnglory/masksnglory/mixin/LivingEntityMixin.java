@@ -1,5 +1,6 @@
 package net.vainnglory.masksnglory.mixin;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -12,12 +13,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.effect.ModEffects;
+import net.vainnglory.masksnglory.enchantments.ModEnchantments;
+import net.vainnglory.masksnglory.enchantments.TemperEnchantment;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.RetributionHelmet;
 import net.vainnglory.masksnglory.util.ActorManager;
@@ -160,6 +164,16 @@ public abstract class LivingEntityMixin extends Entity {
             self.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 200, 0, false, true, true));
         }
     }
+
+    @Inject(method = "swingHand(Lnet/minecraft/util/Hand;)V", at = @At("HEAD"))
+    private void masksnglory$temperSwingDetect(Hand hand, CallbackInfo ci) {
+        if (!(((Object) this) instanceof ServerPlayerEntity player)) return;
+        if (hand != Hand.MAIN_HAND) return;
+        ItemStack weapon = player.getMainHandStack();
+        if (EnchantmentHelper.getLevel(ModEnchantments.TEMPER, weapon) <= 0) return;
+        TemperEnchantment.onSwing(player.getUuid());
+    }
+
 
     @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
 

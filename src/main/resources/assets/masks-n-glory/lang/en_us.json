@@ -146,6 +146,12 @@
   "enchantment.masks-n-glory.lockout.desc": "Every 5 hits, seizes the target's joints.",
   "enchantment.masks-n-glory.pact": "Marrow",
   "enchantment.masks-n-glory.pact.desc": "Each armor piece you forgo empowers your strikes.",
+  "enchantment.masks-n-glory.temper": "Temper",
+  "enchantment.masks-n-glory.temper.desc": "Wind up your attack and land a devastating blow, don't miss or it resets.",
+  "enchantment.masks-n-glory.incumbent": "Incumbent",
+  "enchantment.masks-n-glory.incumbent.desc": "damage scales with how long a fight has been going on for.",
+  "enchantment.masks-n-glory.notoriety": "Notoriety",
+  "enchantment.masks-n-glory.notoriety.desc": "For every individual player you kill, you will gain a small damage boost. (reset on death).",
 
 
 
