@@ -24,7 +24,8 @@
     "PlayerEntityMixin",
     "ServerPlayerInteractionManagerMixin",
     "StuntDoubleMixin",
-    "TridentPinningMixin"
+    "TridentPinningMixin",
+    "VexEntityMixin"
   ],
   "client": [
     "ArmorFeatureRendererMixin",
@@ -39,5 +40,5 @@
   },
   "overwrites": {
     "requireAnnotations": true
-	}
+  }
 }

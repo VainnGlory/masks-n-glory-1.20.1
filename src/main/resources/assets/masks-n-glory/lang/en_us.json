@@ -163,6 +163,7 @@
   "effect.masks-n-glory.rotting": "Rot",
   "effect.masks-n-glory.seized": "Seized",
   "effect.masks-n-glory.sugar_rush": "Sugar Rush",
+  "effect.masks-n-glory.spite": "Spite",
 
 
 
@@ -207,6 +208,10 @@
 
   "key.masks-n-glory.flash_attack": "Flash Attack",
   "category.masks-n-glory.keybinds": "Masks N Glory",
+
+  "item.minecraft.potion.effect.masks_n_glory.spit": "Bottle of Spit",
+  "item.minecraft.potion.effect.masks_n_glory.spite": "Potion of Spite",
+  "item.minecraft.splash_potion.effect.masks_n_glory.spite": "Splash Potion of Spite",
 
   "itemgroup.shards": "Masks N Glory"
 }

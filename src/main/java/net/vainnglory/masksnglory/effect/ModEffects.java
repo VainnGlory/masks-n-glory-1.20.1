@@ -14,6 +14,7 @@ public class ModEffects {
     public static final StatusEffect ROTTING = new RottingEffect();
     public static final StatusEffect SEIZED = new SeizedEffect();
     public static final StatusEffect SUGAR_RUSH = new SugarRushEffect();
+    public static final StatusEffect SPITE = new SpiteEffect();
 
     public static void registerEffects() {
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "pinning"), PINNING);
@@ -24,5 +25,6 @@ public class ModEffects {
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "rotting"), ROTTING);
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "seized"), SEIZED);
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "sugar_rush"), SUGAR_RUSH);
+        Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "spite"), SPITE);
     }
 }

@@ -3,6 +3,7 @@ package net.vainnglory.masksnglory;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -13,9 +14,16 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.passive.LlamaEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
@@ -30,6 +38,7 @@ import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.GoldenPanItem;
 import net.vainnglory.masksnglory.painting.ModPaintings;
+import net.vainnglory.masksnglory.potion.ModPotions;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.util.*;
 import net.vainnglory.masksnglory.world.ModWorldGeneration;
@@ -59,6 +68,7 @@ public class MasksNGlory implements ModInitializer {
 
         ModEnchantments.registerEnchantments();
         ModEffects.registerEffects();
+        ModPotions.registerPotions();
 
         ModDamageTypes.initialize();
 
@@ -257,6 +267,23 @@ public class MasksNGlory implements ModInitializer {
                     }
                 })
         );
+
+        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (entity instanceof LlamaEntity && hand == Hand.MAIN_HAND && !world.isClient()) {
+                ItemStack held = player.getStackInHand(hand);
+                if (held.isOf(Items.GLASS_BOTTLE)) {
+                    if (!player.getAbilities().creativeMode) {
+                        held.decrement(1);
+                    }
+                    player.giveItemStack(PotionUtil.setPotion(new ItemStack(Items.POTION), ModPotions.SPIT));
+                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                            SoundEvents.ENTITY_LLAMA_SPIT, SoundCategory.NEUTRAL, 1.0f, 1.0f);
+                    return ActionResult.SUCCESS;
+                }
+            }
+            return ActionResult.PASS;
+        });
+
 
         ServerTickEvents.END_SERVER_TICK.register(server -> AfterlifeEnchantment.tickSummonedUndead(server));
 

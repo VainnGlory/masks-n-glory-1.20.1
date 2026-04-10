@@ -4,8 +4,10 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.EvokerFangsEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.VexEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Style;
 import net.minecraft.util.Identifier;
@@ -26,11 +28,15 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
-import net.vainnglory.masksnglory.util.FollowOwnerAttackGoal;
+import net.vainnglory.masksnglory.effect.ModEffects;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class RetributionHelmet extends ArmorItem {
     private final ModRarities rarity;
@@ -38,6 +44,8 @@ public class RetributionHelmet extends ArmorItem {
     private static final float DAMAGE_THRESHOLD = 40.0f;
     private static final int FLASH_RADIUS = 10;
     private static final int BLINDNESS_DURATION = 100;
+
+    public static final Set<UUID> SPITE_VEXES = new HashSet<>();
 
     public RetributionHelmet(ArmorMaterial material, Settings settings, ModRarities rarity) {
         super(material, Type.HELMET, settings);
@@ -145,19 +153,46 @@ public class RetributionHelmet extends ArmorItem {
                 helmet
         );
 
-
         if (undeadArmyLevel > 0) {
             summonVexes(player, world);
         } else if (retributionLevel > 0) {
             summonEvokerFangs(player, world);
         } else {
-
             executeFlashAttack(player, world);
         }
     }
 
     private static void summonVexes(ServerPlayerEntity player, ServerWorld world) {
-        int vexCount = 5;
+        int vexCount = 7;
+        int spiteDuration = 600;
+
+        List<LivingEntity> nearbyEntities = world.getEntitiesByClass(
+                LivingEntity.class,
+                player.getBoundingBox().expand(30),
+                e -> e != player && e.isAlive() && EntityPredicates.EXCEPT_SPECTATOR.test(e)
+        );
+
+        for (LivingEntity entity : nearbyEntities) {
+            entity.addStatusEffect(new StatusEffectInstance(ModEffects.SPITE, spiteDuration, 0, false, true, true));
+        }
+
+        List<MobEntity> nearbyMobs = world.getEntitiesByClass(
+                MobEntity.class,
+                player.getBoundingBox().expand(30),
+                e -> e.isAlive() && !(e instanceof VexEntity)
+        );
+
+        for (MobEntity mob : nearbyMobs) {
+            LivingEntity spiteTarget = world.getEntitiesByClass(
+                    LivingEntity.class,
+                    mob.getBoundingBox().expand(30),
+                    e -> e != mob && e.isAlive() && e.hasStatusEffect(ModEffects.SPITE)
+            ).stream().min(Comparator.comparingDouble(mob::squaredDistanceTo)).orElse(null);
+
+            if (spiteTarget != null) {
+                mob.setTarget(spiteTarget);
+            }
+        }
 
         for (int i = 0; i < vexCount; i++) {
             VexEntity vex = EntityType.VEX.create(world);
@@ -168,13 +203,10 @@ public class RetributionHelmet extends ArmorItem {
                 double z = player.getZ() + Math.sin(angle) * distance;
 
                 vex.refreshPositionAndAngles(x, player.getY() + 1, z, world.random.nextFloat() * 360, 0);
-
                 vex.setLifeTicks(300);
 
-
-                ((net.vainnglory.masksnglory.mixin.MobEntityAccessor) vex).getGoalSelector().add(1, new FollowOwnerAttackGoal(vex, player));
-
                 world.spawnEntity(vex);
+                SPITE_VEXES.add(vex.getUuid());
 
                 world.spawnParticles(
                         ParticleTypes.SOUL,
@@ -222,7 +254,6 @@ public class RetributionHelmet extends ArmorItem {
                 1.0f, 1.0f
         );
 
-
         for (int i = 0; i < 60; i++) {
             double angle = world.random.nextDouble() * Math.PI * 2;
             double distance = 1.5 + world.random.nextDouble() * 2.0;
@@ -241,8 +272,7 @@ public class RetributionHelmet extends ArmorItem {
 
     private static void executeFlashAttack(ServerPlayerEntity player, ServerWorld world) {
 
-
-    Box area = new Box(
+        Box area = new Box(
                 player.getX() - FLASH_RADIUS,
                 player.getY() - FLASH_RADIUS,
                 player.getZ() - FLASH_RADIUS,
