@@ -39,6 +39,7 @@ public class MaskAbilityManager {
     private static final UUID DMAN_BOOST_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-012345678901");
     private static final UUID STONEI_ARMOR_UUID = UUID.fromString("d4e5f6a7-b8c9-0123-def0-123456789012");
     private static final UUID EGO_GRUDGE_UUID = UUID.fromString("e5f6a7b8-c9d0-1234-ef01-234567890123");
+    private static final UUID PIKO_DAMAGE_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
 
     private static final Map<UUID, Float> egoGrudge = new HashMap<>();
     private static final Set<UUID> pendingEgoGrudgeRemoval = new HashSet<>();
@@ -56,6 +57,8 @@ public class MaskAbilityManager {
     private static final Set<UUID> corvGuard = new HashSet<>();
     private static final Map<UUID, Long> nullSneakStart = new HashMap<>();
     private static final Map<UUID, Long> nullCooldown = new HashMap<>();
+    private static final Map<UUID, Long> grinWearStart = new HashMap<>();
+    private static final Set<UUID> pikoModifierActive = new HashSet<>();
 
     public static ArmorMaterial getMaskMaterial(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
@@ -69,6 +72,8 @@ public class MaskAbilityManager {
         nullSneakStart.remove(id);
         nullCooldown.remove(id);
         ojiLastHit.remove(id);
+        grinWearStart.remove(id);
+        pikoModifierActive.remove(id);
     }
 
     public static void recordHoundAttacker(UUID playerUUID, UUID attackerUUID) {
@@ -139,12 +144,34 @@ public class MaskAbilityManager {
             nullSneakStart.remove(player.getUuid());
         }
 
-        if (material == ModArmorMaterials.GMASKS) tickGrin(player);
+        if (material == ModArmorMaterials.GMASKS) {
+            tickGrin(player);
+        } else {
+            grinWearStart.remove(player.getUuid());
+        }
+
         if (material == ModArmorMaterials.DOSHARD) tickDog(player);
         if (material == ModArmorMaterials.TSHARD) tickTog(player);
         if (material == ModArmorMaterials.KMASKS) tickKnight(player);
         if (material == ModArmorMaterials.DVSHARD) tickDave(player);
         if (material == ModArmorMaterials.CSHARD) tickCorv(player);
+
+        if (material == ModArmorMaterials.ESHARD) {
+            if (!player.hasStatusEffect(ModEffects.PINNING)) {
+                player.addStatusEffect(new StatusEffectInstance(
+                        ModEffects.PINNING, 200, 0, false, false, true));
+            }
+        }
+
+        if (material == ModArmorMaterials.PSHARD) {
+            tickPiko(player);
+        } else {
+            UUID id = player.getUuid();
+            if (pikoModifierActive.remove(id)) {
+                EntityAttributeInstance atk = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                if (atk != null) atk.removeModifier(PIKO_DAMAGE_UUID);
+            }
+        }
     }
 
     private static void tickNull(PlayerEntity player) {
@@ -205,6 +232,13 @@ public class MaskAbilityManager {
         if (!player.hasStatusEffect(StatusEffects.BAD_OMEN)) {
             player.addStatusEffect(new StatusEffectInstance(
                     StatusEffects.BAD_OMEN, 400, 0, false, false, true));
+        }
+        UUID id = player.getUuid();
+        long now = player.getWorld().getTime();
+        grinWearStart.computeIfAbsent(id, k -> now);
+        long worn = now - grinWearStart.get(id);
+        if (worn > 0 && worn % 100 == 0) {
+            player.getHungerManager().setFoodLevel(0);
         }
     }
 
@@ -326,6 +360,20 @@ public class MaskAbilityManager {
         if (found != null) {
             String bar = String.format("%.1f / %.1f ❤", found.getHealth(), found.getMaxHealth());
             sp.sendMessage(Text.literal(bar).formatted(Formatting.RED), true);
+        }
+    }
+
+    private static void tickPiko(PlayerEntity player) {
+        UUID id = player.getUuid();
+        if (!pikoModifierActive.contains(id)) {
+            EntityAttributeInstance atk = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            if (atk != null) {
+                atk.removeModifier(PIKO_DAMAGE_UUID);
+                atk.addTemporaryModifier(new EntityAttributeModifier(
+                        PIKO_DAMAGE_UUID, "MNG Piko Weakness",
+                        -0.05, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+                pikoModifierActive.add(id);
+            }
         }
     }
 

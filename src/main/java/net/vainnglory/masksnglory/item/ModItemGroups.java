@@ -70,6 +70,7 @@ public class ModItemGroups {
                         entries.add(ModItems.BONE_KNIFE);
                         entries.add(ModItems.RUSTED_SWORD);
                         entries.add(ModItems.PRIDE);
+                        entries.add(ModItems.NULL_KNIFE);
                         entries.add(ModItems.PALE_SWORD);
                         entries.add(ModItems.GLAIVE);
                         entries.add(ModItems.GOLDEN_PAN);

@@ -115,6 +115,9 @@ public class ModItems {
     public static final Item PRIDE = registerItem("pride",
             new PrideItem(ModToolMaterial.RUSTED,3, -2.4f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE, 3));
 
+    public static final Item NULL_KNIFE = registerItem("null_knife",
+            new NullKnifeItem(ModToolMaterial.RUSTED, new FabricItemSettings().maxCount(1).fireproof()));
+
     public static final Item ASH_CHARGE = registerItem("ash_charge",
             new AshChargeItem(new FabricItemSettings().rarity(Rarity.RARE).maxCount(64).fireproof()));
 

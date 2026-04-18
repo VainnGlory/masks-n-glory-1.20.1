@@ -3,6 +3,7 @@
   "package": "net.vainnglory.masksnglory.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AnvilNullKnifeMixin",
     "BowParryMixin",
     "CoinRicochetMixin",
     "DeathMixin",
@@ -21,6 +22,7 @@
     "MobEntityAccessor",
     "ModelLoaderMixin",
     "NuggetMixin",
+    "NullScreenHandlerMixin",
     "PlayerEntityMixin",
     "ServerPlayerInteractionManagerMixin",
     "StuntDoubleMixin",

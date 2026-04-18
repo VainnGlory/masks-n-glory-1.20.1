@@ -28,6 +28,7 @@ public class ModEnchantments {
     public static Enchantment TEMPER = new TemperEnchantment();
     public static Enchantment INCUMBENT = new IncumbentEnchantment();
     public static Enchantment NOTORIETY = new NotorietyEnchantment();
+    public static Enchantment EXCEPTION = new ExceptionNotCaughtEnchantment();
 
     public static void registerEnchantments() {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "fear"), FEAR);
@@ -52,6 +53,7 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "temper"), TEMPER);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "incumbent"), INCUMBENT);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "notoriety"), NOTORIETY);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "exception_not_caught"), EXCEPTION);
     }
 }
 

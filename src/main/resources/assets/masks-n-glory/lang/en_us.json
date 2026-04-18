@@ -70,6 +70,8 @@
   "item.masks-n-glory.pale_steel_coin": "Pale Steel Coin",
   "tooltip.masks-n-glory.pale_steel_coin": "§8*Throw it, ultrakill it.*",
 
+  "item.masks-n-glory.null_knife": "Nulled Knife",
+  "tooltip.masks-n-glory.null_knife": "§8*a name is written on the handle 'Ego'.*",
 
 
   "item.masks-n-glory.rust": "Pale Steel Ingot",
@@ -152,6 +154,8 @@
   "enchantment.masks-n-glory.incumbent.desc": "damage scales with how long a fight has been going on for.",
   "enchantment.masks-n-glory.notoriety": "Notoriety",
   "enchantment.masks-n-glory.notoriety.desc": "For every individual player you kill, you will gain a small damage boost. (reset on death).",
+  "enchantment.masks-n-glory.exception_not_caught": "Exception_Not_Caught",
+  "enchantment.masks-n-glory.exception_not_caught.desc": "exception_not_caught.",
 
 
 
@@ -164,6 +168,7 @@
   "effect.masks-n-glory.seized": "Seized",
   "effect.masks-n-glory.sugar_rush": "Sugar Rush",
   "effect.masks-n-glory.spite": "Spite",
+  "effect.masks-n-glory.null": "Effect:NULL",
 
 
 
@@ -205,6 +210,8 @@
   "advancements.Masks N Glory.glaive.title": "Better Than it Seems",
   "advancements.Masks N Glory.golden_pan.description": "Absolute Bonk",
   "advancements.Masks N Glory.golden_pan.title": "For a Dear Friend",
+  "advancements.Masks N Glory.null_knife.title": "First Step Toward Apocalypse",
+  "advancements.Masks N Glory.null_knife.description": "unlike HIM, you don't have that red plane to escape what you'll discover.",
 
   "key.masks-n-glory.flash_attack": "Flash Attack",
   "category.masks-n-glory.keybinds": "Masks N Glory",

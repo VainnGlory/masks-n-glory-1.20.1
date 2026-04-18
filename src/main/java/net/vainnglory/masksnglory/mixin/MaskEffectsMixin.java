@@ -22,8 +22,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 @Mixin(LivingEntity.class)
 public abstract class MaskEffectsMixin {
+
+    private static final Set<UUID> happyDoubleHitActive = new HashSet<>();
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     private void masksnglory$happyFoolsLuck(DamageSource source, float amount,
@@ -32,9 +38,19 @@ public abstract class MaskEffectsMixin {
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
         if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.HMASKS) return;
+        if (happyDoubleHitActive.contains(player.getUuid())) return;
+
         if (self.getRandom().nextFloat() < 0.2f) {
             self.heal(amount);
             cir.setReturnValue(false);
+            return;
+        }
+
+        if (self.getRandom().nextFloat() < 0.2f) {
+            UUID id = player.getUuid();
+            happyDoubleHitActive.add(id);
+            self.damage(source, amount);
+            happyDoubleHitActive.remove(id);
         }
     }
 

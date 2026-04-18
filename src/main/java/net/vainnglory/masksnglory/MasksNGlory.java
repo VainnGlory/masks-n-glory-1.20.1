@@ -2,6 +2,7 @@ package net.vainnglory.masksnglory;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
@@ -37,6 +38,7 @@ import net.vainnglory.masksnglory.events.PlayerDeathEffects;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.GoldenPanItem;
+import net.vainnglory.masksnglory.item.custom.NullKnifeItem;
 import net.vainnglory.masksnglory.painting.ModPaintings;
 import net.vainnglory.masksnglory.potion.ModPotions;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
@@ -71,6 +73,9 @@ public class MasksNGlory implements ModInitializer {
         ModPotions.registerPotions();
 
         ModDamageTypes.initialize();
+
+        NullKnifeItem.registerCallbacks();
+        ExceptionNotCaughtEnchantment.registerCallbacks();
 
         SerialEnchantment.registerAttackCallback();
         GoldenPanItem.registerCallbacks();
@@ -109,6 +114,17 @@ public class MasksNGlory implements ModInitializer {
             MaskAbilityManager.clearPlayerData(id);
             TemperEnchantment.cleanup(id);
             IncumbentEnchantment.cleanup(id);
+            NullManager.cleanup(id);
+            NullKnifeItem.cleanup(id);
+            ExceptionNotCaughtEnchantment.cleanup(id);
+        });
+
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+            UUID id = oldPlayer.getUuid();
+            NullManager.restoreItems(oldPlayer);
+            NullManager.cleanup(id);
+            NullKnifeItem.cleanup(id);
+            ExceptionNotCaughtEnchantment.cleanup(id);
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -124,6 +140,20 @@ public class MasksNGlory implements ModInitializer {
             if (entity instanceof ServerPlayerEntity player) {
                 PlayerDeathEffects.onPlayerDeath(player, damageSource);
                 PlayerDeathEffects.onAnyEntityDeath(entity, damageSource);
+            }
+        });
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            long worldTime = server.getOverworld().getTime();
+            NullManager.tick(worldTime);
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                UUID id = player.getUuid();
+                if (NullManager.needsRestoration(id, worldTime)) {
+                    NullManager.restoreItems(player);
+                    player.removeStatusEffect(ModEffects.NULL_EFFECT);
+                } else if (!NullManager.isAffected(id) && worldTime % 20 == 0) {
+                    NullManager.restoreItems(player);
+                }
             }
         });
 

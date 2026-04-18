@@ -23,7 +23,7 @@ public class ArmorFeatureRendererMixin<T extends LivingEntity, M extends BipedEn
             cancellable = true
     )
     private void masksnglory$hideActorArmor(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch, CallbackInfo ci) {
-        if (entity.hasStatusEffect(ModEffects.OFF_SCRIPT_FLAG)) {
+        if (entity.hasStatusEffect(ModEffects.OFF_SCRIPT_FLAG) && entity.isInvisible()) {
             ci.cancel();
         }
     }
