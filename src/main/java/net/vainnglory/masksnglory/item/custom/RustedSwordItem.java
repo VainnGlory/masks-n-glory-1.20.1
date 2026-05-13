@@ -109,8 +109,8 @@ public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitS
     }
 
     @Override
-    public DamageSource getKillSource(LivingEntity livingEntity) {
-        return ModDamageTypes.rusted(livingEntity);
+    public DamageSource getKillSource(LivingEntity attacker, LivingEntity target) {
+        return ModDamageTypes.rusted(attacker, target);
     }
 
 

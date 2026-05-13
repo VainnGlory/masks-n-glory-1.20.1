@@ -8,12 +8,11 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
-
-
 @Environment(EnvType.CLIENT)
 public class ModKeybindings {
 
     public static KeyBinding flashAttackKey;
+    public static KeyBinding blackoutKey;
 
     public static void register() {
         flashAttackKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -23,10 +22,22 @@ public class ModKeybindings {
                 "category.masks-n-glory.keybinds"
         ));
 
+        blackoutKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.masks-n-glory.blackout",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_MINUS,
+                "category.masks-n-glory.keybinds"
+        ));
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (flashAttackKey.wasPressed()) {
                 if (client.player != null) {
                     FlashAttackC2SPacket.send();
+                }
+            }
+            while (blackoutKey.wasPressed()) {
+                if (client.player != null) {
+                    BlackoutC2SPacket.send();
                 }
             }
         });

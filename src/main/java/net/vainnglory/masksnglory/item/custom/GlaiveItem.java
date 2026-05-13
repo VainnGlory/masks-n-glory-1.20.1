@@ -1,5 +1,7 @@
 package net.vainnglory.masksnglory.item.custom;
 
+import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
+import java.util.UUID;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
@@ -47,6 +49,11 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_SPEED,
                 new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -2.9F, EntityAttributeModifier.Operation.ADDITION)
+        );
+        builder.put(
+                ReachEntityAttributes.ATTACK_RANGE,
+                new EntityAttributeModifier(UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+                        "Weapon reach", 1.0, EntityAttributeModifier.Operation.ADDITION)
         );
         this.attributeModifiers = builder.build();
     }
@@ -174,12 +181,14 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
             int illagers = nbt.getInt(AfterlifeEnchantment.ILLAGER_KEY);
             int undead = nbt.getInt(AfterlifeEnchantment.UNDEAD_KEY);
             int bandit = nbt.getInt(AfterlifeEnchantment.BANDIT_KEY);
+            int trades = nbt.getInt(AfterlifeEnchantment.VILLAGER_KEY);
 
             tooltip.add(Text.literal("Souls: " + souls + "/10").setStyle(Style.EMPTY.withColor(0x7B68EE)));
             tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_RAVAGER ? "► " : "  ") + "Ravagers: " + ravagers + "/5").setStyle(Style.EMPTY.withColor(0x8B0000)));
             tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_ILLAGER ? "► " : "  ") + "Illagers: " + illagers + "/5").setStyle(Style.EMPTY.withColor(0x2E8B57)));
             tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_UNDEAD  ? "► " : "  ") + "Undead: " + undead + "/10").setStyle(Style.EMPTY.withColor(0x708090)));
             tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_BANDIT ? "► " : "  ") + "Bandits: " + bandit + "/3").setStyle(Style.EMPTY.withColor(0xA0522D)));
+            tooltip.add(Text.literal((mode == AfterlifeEnchantment.MODE_VILLAGER ? "► " : "  ") + "Trades: " + trades + "/1").setStyle(Style.EMPTY.withColor(0x2ECC40)));
 
         }
         super.appendTooltip(stack, world, tooltip, context);

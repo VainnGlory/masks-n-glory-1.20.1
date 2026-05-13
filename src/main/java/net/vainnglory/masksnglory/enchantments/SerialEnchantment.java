@@ -25,7 +25,7 @@ public class SerialEnchantment extends Enchantment {
 
     private static final long COMBO_TIMEOUT_MS = 2000;
     private static final int MAX_COMBO = 6;
-    private static final int HEAL_START_COMBO = 4;
+    private static final int HEAL_START_COMBO = 2;
     private static final float MAX_BONUS_DAMAGE = 1.5f;
     private static final float MAX_BONUS_HEAL = 2.0f;
 

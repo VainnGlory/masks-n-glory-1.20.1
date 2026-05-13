@@ -8,20 +8,25 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.effect.ModEffects;
 import net.vainnglory.masksnglory.item.ModItems;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class MaelstromEntity extends PersistentProjectileEntity {
@@ -46,6 +51,8 @@ public class MaelstromEntity extends PersistentProjectileEntity {
     private UUID stuckTargetUUID;
     private int remorseTimer = 0;
 
+    private final Set<UUID> nearbyFireworkIds = new HashSet<>();
+
     public MaelstromEntity(EntityType<? extends MaelstromEntity> entityType, World world) {
         super(entityType, world);
         this.swordStack = new ItemStack(ModItems.PALE_SWORD);
@@ -67,14 +74,14 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         this.dataTracker.startTracking(REMORSE_STUCK, false);
     }
 
-    public boolean isReturning() { return this.dataTracker.get(RETURNING);}
-    public void setReturning(boolean v) { this.dataTracker.set(RETURNING, v);}
-    public boolean isHoming() { return this.dataTracker.get(HOMING);}
-    public void setHoming(boolean v){ this.dataTracker.set(HOMING, v);}
-    public boolean isRemorse() { return this.dataTracker.get(REMORSE);}
-    public void setRemorse(boolean v){ this.dataTracker.set(REMORSE, v);}
-    public boolean isRemorseStuck() { return this.dataTracker.get(REMORSE_STUCK);}
-    public void setRemorseStuck(boolean v){ this.dataTracker.set(REMORSE_STUCK, v);}
+    public boolean isReturning() { return this.dataTracker.get(RETURNING); }
+    public void setReturning(boolean v) { this.dataTracker.set(RETURNING, v); }
+    public boolean isHoming() { return this.dataTracker.get(HOMING); }
+    public void setHoming(boolean v) { this.dataTracker.set(HOMING, v); }
+    public boolean isRemorse() { return this.dataTracker.get(REMORSE); }
+    public void setRemorse(boolean v) { this.dataTracker.set(REMORSE, v); }
+    public boolean isRemorseStuck() { return this.dataTracker.get(REMORSE_STUCK); }
+    public void setRemorseStuck(boolean v) { this.dataTracker.set(REMORSE_STUCK, v); }
 
     public void setHomingTargetUUID(UUID uuid) { this.homingTargetUUID = uuid; }
 
@@ -139,7 +146,6 @@ public class MaelstromEntity extends PersistentProjectileEntity {
                 if (this.getOwner() instanceof PlayerEntity owner) {
                     activeRemorseEntities.putIfAbsent(owner.getUuid(), this);
                 }
-
                 LivingEntity stuckTarget = findLivingEntityByUUID(stuckTargetUUID);
                 if (stuckTarget == null || stuckTarget.isRemoved() || stuckTarget.isDead()) {
                     setRemorseStuck(false);
@@ -151,7 +157,7 @@ public class MaelstromEntity extends PersistentProjectileEntity {
                             stuckTarget.getZ()
                     );
                     remorseTimer++;
-                    if (remorseTimer >= 600) { // 30 seconds
+                    if (remorseTimer >= 600) {
                         setRemorseStuck(false);
                         setReturning(true);
                     }
@@ -161,8 +167,13 @@ public class MaelstromEntity extends PersistentProjectileEntity {
             super.tick();
             return;
         }
+
         this.inGround = false;
         ticksInAir++;
+
+        if (!this.getWorld().isClient && !isReturning() && !isRemorseStuck()) {
+            checkForFireworkExplosion();
+        }
 
         if (isHoming() && !isReturning() && !this.getWorld().isClient) {
             applyHomingGuidance();
@@ -217,6 +228,87 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         }
 
         super.tick();
+    }
+
+    private void activateFireworkHoming() {
+        if (!(this.getWorld() instanceof ServerWorld serverWorld)) return;
+
+        Entity target = findEntityByUUID(homingTargetUUID);
+        boolean targetInvalid = target == null || target.isRemoved()
+                || (target instanceof LivingEntity le && le.isDead());
+
+        if (targetInvalid) {
+            Entity owner = this.getOwner();
+            double searchX = owner != null ? owner.getX() : this.getX();
+            double searchY = owner != null ? owner.getY() : this.getY();
+            double searchZ = owner != null ? owner.getZ() : this.getZ();
+
+            PlayerEntity nearestPlayer = serverWorld.getClosestPlayer(
+                    searchX, searchY, searchZ, 64,
+                    p -> p != this.getOwner() && !p.isSpectator());
+
+            if (nearestPlayer != null) {
+                homingTargetUUID = nearestPlayer.getUuid();
+            } else {
+                LivingEntity nearestMob = null;
+                double closestDist = Double.MAX_VALUE;
+                for (LivingEntity e : serverWorld.getEntitiesByClass(LivingEntity.class,
+                        new Box(searchX, searchY, searchZ, searchX, searchY, searchZ).expand(64),
+                        e -> !(e instanceof PlayerEntity) && e != this.getOwner() && !e.isDead())) {
+                    double dist = e.squaredDistanceTo(searchX, searchY, searchZ);
+                    if (dist < closestDist) {
+                        closestDist = dist;
+                        nearestMob = e;
+                    }
+                }
+                if (nearestMob != null) homingTargetUUID = nearestMob.getUuid();
+            }
+        }
+
+        if (homingTargetUUID == null) return;
+
+        setHoming(true);
+        startPos = this.getPos();
+        ticksInAir = 0;
+
+        Entity finalTarget = findEntityByUUID(homingTargetUUID);
+        if (finalTarget != null) {
+            double targetY = finalTarget instanceof LivingEntity le
+                    ? finalTarget.getY() + le.getHeight() / 2.0
+                    : finalTarget.getY();
+            Vec3d toTarget = new Vec3d(
+                    finalTarget.getX() - this.getX(),
+                    targetY - this.getY(),
+                    finalTarget.getZ() - this.getZ()
+            ).normalize();
+            double speed = Math.max(this.getVelocity().length(), 1.5);
+            this.setVelocity(toTarget.multiply(speed));
+        }
+
+        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.ITEM_CROSSBOW_HIT, SoundCategory.PLAYERS, 1.0f, 1.8f);
+    }
+
+    private void checkForFireworkExplosion() {
+        if (!(this.getWorld() instanceof ServerWorld serverWorld)) return;
+
+        Set<UUID> currentIds = new HashSet<>();
+        serverWorld.getEntitiesByClass(
+                FireworkRocketEntity.class,
+                this.getBoundingBox().expand(6.0),
+                f -> f.wasShotAtAngle() && !f.isRemoved()
+        ).forEach(f -> currentIds.add(f.getUuid()));
+
+        for (UUID id : nearbyFireworkIds) {
+            if (!currentIds.contains(id)) {
+                activateFireworkHoming();
+                nearbyFireworkIds.clear();
+                return;
+            }
+        }
+
+        nearbyFireworkIds.clear();
+        nearbyFireworkIds.addAll(currentIds);
     }
 
     @Override
@@ -307,7 +399,6 @@ public class MaelstromEntity extends PersistentProjectileEntity {
     @Override
     protected boolean tryPickup(PlayerEntity player) { return false; }
 
-
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
@@ -341,9 +432,9 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         remorseTimer = nbt.getInt("RemorseTimer");
         if (nbt.contains("StartX")) {
             this.startPos = new Vec3d(
-            nbt.getDouble("StartX"),
-            nbt.getDouble("StartY"),
-            nbt.getDouble("StartZ"));
+                    nbt.getDouble("StartX"),
+                    nbt.getDouble("StartY"),
+                    nbt.getDouble("StartZ"));
         }
         if (nbt.containsUuid("HomingTargetUUID")) homingTargetUUID = nbt.getUuid("HomingTargetUUID");
         if (nbt.containsUuid("StuckTargetUUID"))  stuckTargetUUID  = nbt.getUuid("StuckTargetUUID");

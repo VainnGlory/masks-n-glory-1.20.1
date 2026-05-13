@@ -2,14 +2,12 @@ package net.vainnglory.masksnglory.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.world.World;
-import net.vainnglory.masksnglory.effect.NullEffect;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.item.custom.CustomHitSoundItem;
 import net.vainnglory.masksnglory.util.ActorManager;

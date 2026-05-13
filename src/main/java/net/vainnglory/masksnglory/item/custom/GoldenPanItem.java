@@ -2,6 +2,7 @@ package net.vainnglory.masksnglory.item.custom;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -44,12 +45,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSoundItem, ModDeathSource {
     private static final WeakHashMap<PlayerEntity, Float> fallStarts = new WeakHashMap<>();
     private static final Queue<Runnable> pendingSlams = new ConcurrentLinkedQueue<>();
+    private static final Queue<Runnable> pendingKillChecks = new ConcurrentLinkedQueue<>();
+    private static final WeakHashMap<PlayerEntity, Integer> lastHurtTime = new WeakHashMap<>();
+    private static final WeakHashMap<PlayerEntity, Integer> hitsTaken = new WeakHashMap<>();
 
     private static final float MIN_FALL_DISTANCE = 2.5f;
     private static final float SKULL_CRATER_THRESHOLD = 12.0f;
@@ -59,7 +64,8 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     private static final int MAX_DENTS = 5;
     private static final long TICKS_PER_REPAIR = 500L;
     private static final long TICKS_PER_REPAIR_WATER = 100L;
-    private static final float DENT_PENALTY = 0.14f;
+    private static final float DENT_PENALTY = 0.08f;
+    private static final int HITS_TO_REPAIR = 2;
 
     private final float attackDamage;
     private final ModRarities rarity;
@@ -77,6 +83,11 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_SPEED,
                 new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -1.8F, EntityAttributeModifier.Operation.ADDITION)
+        );
+        builder.put(
+                ReachEntityAttributes.ATTACK_RANGE,
+                new EntityAttributeModifier(UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
+                        "Weapon reach", 0.5, EntityAttributeModifier.Operation.ADDITION)
         );
         this.attributeModifiers = builder.build();
     }
@@ -151,8 +162,8 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     }
 
     @Override
-    public DamageSource getKillSource(LivingEntity livingEntity) {
-        return ModDamageTypes.pan(livingEntity);
+    public DamageSource getKillSource(LivingEntity attacker, LivingEntity target) {
+        return ModDamageTypes.pan(attacker, target);
     }
 
     @Override
@@ -212,12 +223,20 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 task.run();
             }
 
+            Runnable killCheck;
+            while ((killCheck = pendingKillChecks.poll()) != null) {
+                killCheck.run();
+            }
+
             for (var player : server.getPlayerManager().getPlayerList()) {
                 ItemStack weapon = player.getMainHandStack();
                 if (!(weapon.getItem() instanceof GoldenPanItem)) {
                     fallStarts.remove(player);
+                    lastHurtTime.remove(player);
+                    hitsTaken.remove(player);
                     continue;
                 }
+
                 boolean falling = !player.isOnGround() && player.getVelocity().y < -0.08;
                 if (falling && !fallStarts.containsKey(player)) {
                     fallStarts.put(player, (float) player.getY());
@@ -239,6 +258,31 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                     } else if (worldTime - lastRepair >= interval) {
                         setDents(weapon, dents - 1);
                         setLastRepairTick(weapon, worldTime);
+                    }
+                }
+
+                int prevHurt = lastHurtTime.getOrDefault(player, 0);
+                int currHurt = player.hurtTime;
+                lastHurtTime.put(player, currHurt);
+
+                if (prevHurt == 0 && currHurt > 0) {
+                    int currentDents = getDents(weapon);
+                    if (currentDents > 0) {
+                        int hits = hitsTaken.getOrDefault(player, 0) + 1;
+                        if (hits >= HITS_TO_REPAIR) {
+                            setDents(weapon, currentDents - 1);
+                            setLastRepairTick(weapon, player.getServerWorld().getTime());
+                            hitsTaken.put(player, 0);
+                            player.getServerWorld().playSound(
+                                    null,
+                                    player.getX(), player.getY(), player.getZ(),
+                                    SoundEvents.BLOCK_ANVIL_USE,
+                                    player.getSoundCategory(),
+                                    0.6f, 1.3f
+                            );
+                        } else {
+                            hitsTaken.put(player, hits);
+                        }
                     }
                 }
             }
@@ -282,7 +326,27 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
 
             Float startY = fallStarts.remove(player);
-            if (startY == null) return ActionResult.PASS;
+            if (startY == null) {
+                final LivingEntity capturedTarget = target;
+                final ItemStack capturedWeapon = weapon;
+                pendingKillChecks.offer(() -> {
+                    if (!capturedTarget.isAlive()) {
+                        int curDents = getDents(capturedWeapon);
+                        if (curDents > 0) {
+                            setDents(capturedWeapon, curDents - 2);
+                            setLastRepairTick(capturedWeapon, serverWorld.getTime());
+                            serverWorld.playSound(
+                                    null,
+                                    capturedTarget.getX(), capturedTarget.getY(), capturedTarget.getZ(),
+                                    SoundEvents.BLOCK_ANVIL_USE,
+                                    SoundCategory.PLAYERS,
+                                    0.6f, 1.3f
+                            );
+                        }
+                    }
+                });
+                return ActionResult.PASS;
+            }
 
             float fallDistance = Math.max(0f, startY - (float) player.getY());
             if (fallDistance < MIN_FALL_DISTANCE) return ActionResult.PASS;
@@ -312,6 +376,21 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                     target.hurtTime = 0;
                     target.timeUntilRegen = 0;
                     target.damage(world.getDamageSources().playerAttack(player), totalBonus);
+
+                    if (!target.isAlive()) {
+                        int curDents = getDents(weapon);
+                        if (curDents > 0) {
+                            setDents(weapon, curDents - 2);
+                            setLastRepairTick(weapon, serverWorld.getTime());
+                            serverWorld.playSound(
+                                    null,
+                                    target.getX(), target.getY(), target.getZ(),
+                                    SoundEvents.BLOCK_ANVIL_USE,
+                                    SoundCategory.PLAYERS,
+                                    0.6f, 1.3f
+                            );
+                        }
+                    }
                 }
             });
 
@@ -389,6 +468,5 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         });
     }
 }
-
 
 

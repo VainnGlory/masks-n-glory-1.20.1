@@ -38,6 +38,7 @@ public class ModItemGroups {
                         entries.add(ModItems.COOKED_BONES);
                         entries.add(ModItems.DUST);
                         entries.add(ModItems.PALE_STEEL_COIN);
+                        entries.add(ModItems.HUNTERS_SATCHEL);
 
 
 

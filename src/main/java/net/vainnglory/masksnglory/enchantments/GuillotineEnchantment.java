@@ -6,13 +6,11 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.vainnglory.masksnglory.item.ModItems;
-import net.minecraft.util.math.random.Random;
 import net.vainnglory.masksnglory.util.ModDamageTypes;
 
 
@@ -50,8 +48,11 @@ public class GuillotineEnchantment extends Enchantment {
     @Override
     public boolean canAccept(Enchantment other) {
         return !(other instanceof SerialEnchantment) &&
+                !(other instanceof PactEnchantment) &&
+                !(other instanceof LockoutEnchantment) &&
                 !(other instanceof FearEnchantment);
     }
+
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.isOf(ModItems.RUSTED_SWORD) || stack.isOf(ModItems.PRIDE) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
@@ -65,10 +66,8 @@ public class GuillotineEnchantment extends Enchantment {
                     ItemStack weapon = player.getMainHandStack();
                     int level = EnchantmentHelper.getLevel(ModEnchantments.DEATH, weapon);
 
-                    if (level > 0 && canExecute(target, level, world.random)) {
-                        DamageSources damageSources = world.getDamageSources();
-                        float amount = 100000.0f * level;
-                        target.damage(target.getDamageSources().create(ModDamageTypes.DEATH_DAMAGE), amount);
+                    if (level > 0 && target.getHealth() < 9.0f && isInterrupted(target)) {
+                        target.damage(target.getDamageSources().create(ModDamageTypes.DEATH_DAMAGE, player, player), 100000.0f);
                     }
                 }
             }
@@ -76,20 +75,7 @@ public class GuillotineEnchantment extends Enchantment {
         });
     }
 
-    private static boolean canExecute(LivingEntity target, int level, Random random) {
-        if (target.getHealth() > 10.0f) {
-            return false;
-        }
-
-        float chance = getExecutionChance(level);
-        return random.nextFloat() < chance;
+    private static boolean isInterrupted(LivingEntity target) {
+        return target.isUsingItem();
     }
-
-    private static float getExecutionChance(int level) {
-        switch (level) {
-            case 1: return 0.08f;
-            default: return 0.08f;
-        }
-    }
-
 }

@@ -59,6 +59,7 @@ public class MaskAbilityManager {
     private static final Map<UUID, Long> nullCooldown = new HashMap<>();
     private static final Map<UUID, Long> grinWearStart = new HashMap<>();
     private static final Set<UUID> pikoModifierActive = new HashSet<>();
+    private static final Set<UUID> happyWearing = new HashSet<>();
 
     public static ArmorMaterial getMaskMaterial(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
@@ -74,6 +75,7 @@ public class MaskAbilityManager {
         ojiLastHit.remove(id);
         grinWearStart.remove(id);
         pikoModifierActive.remove(id);
+        happyWearing.remove(id);
     }
 
     public static void recordHoundAttacker(UUID playerUUID, UUID attackerUUID) {
@@ -172,6 +174,14 @@ public class MaskAbilityManager {
                 if (atk != null) atk.removeModifier(PIKO_DAMAGE_UUID);
             }
         }
+
+        if (material == ModArmorMaterials.HMASKS) {
+            tickHappy(player);
+        } else if (happyWearing.remove(player.getUuid())) {
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.UNLUCK, 400, 0, false, true, true));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 200, 1, false, true, true));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1, false, true, true));
+        }
     }
 
     private static void tickNull(PlayerEntity player) {
@@ -186,6 +196,19 @@ public class MaskAbilityManager {
         if (heldTicks >= 20) {
             nullSneakStart.remove(id);
             if (player instanceof ServerPlayerEntity sp) triggerNullTP(sp);
+        }
+    }
+
+    private static void tickHappy(PlayerEntity player) {
+        happyWearing.add(player.getUuid());
+        if (!player.hasStatusEffect(ModEffects.SUGAR_RUSH)) {
+            player.addStatusEffect(new StatusEffectInstance(ModEffects.SUGAR_RUSH, 400, 0, false, false, true));
+        }
+        if (!player.hasStatusEffect(StatusEffects.HERO_OF_THE_VILLAGE)) {
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 400, 0, false, false, true));
+        }
+        if (!player.hasStatusEffect(StatusEffects.LUCK)) {
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 400, 0, false, false, true));
         }
     }
 
@@ -371,7 +394,7 @@ public class MaskAbilityManager {
                 atk.removeModifier(PIKO_DAMAGE_UUID);
                 atk.addTemporaryModifier(new EntityAttributeModifier(
                         PIKO_DAMAGE_UUID, "MNG Piko Weakness",
-                        -0.05, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+                        -0.40, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
                 pikoModifierActive.add(id);
             }
         }
@@ -397,8 +420,10 @@ public class MaskAbilityManager {
             }
 
             if (mat == ModArmorMaterials.PSHARD) {
-                float dmg = (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-                player.heal(dmg * 0.15f);
+                if (player.getAttackCooldownProgress(0.5f) >= 0.9f) {
+                    float dmg = (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                    player.heal(dmg * 0.15f);
+                }
             }
 
             if (mat == ModArmorMaterials.HHSHARD) {

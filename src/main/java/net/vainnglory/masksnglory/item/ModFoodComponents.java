@@ -19,7 +19,7 @@ public class ModFoodComponents {
     public static final FoodComponent GCAPPLE = new FoodComponent.Builder().hunger(6).saturationModifier(1.4F)
             .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 250, 1), 1.0F)
             .statusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 4000, 0), 1.0F)
-            .statusEffect(new StatusEffectInstance(ModEffects.SUGAR_RUSH, 400, 1), 1.0F)
+            .statusEffect(new StatusEffectInstance(ModEffects.SUGAR_RUSH, 400, 0), 1.0F)
             .alwaysEdible()
             .build();
 

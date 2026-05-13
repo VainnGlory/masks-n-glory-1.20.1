@@ -44,7 +44,7 @@ public class LethalEnchantment extends Enchantment {
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
         if (target instanceof LivingEntity targetEntity) {
-            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 170 * level, 4, false, false, false)); // L'aura visibile dura 10 secondi
+            targetEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 170 * level, 4, false, false, false));
         }
     }
 }

@@ -1,0 +1,1 @@
+{ "parent": "minecraft:block/template_torch", "textures": { "torch": "masks-n-glory:block/unlit_torch" } }

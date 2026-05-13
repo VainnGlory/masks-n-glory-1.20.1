@@ -1,5 +1,23 @@
 package net.vainnglory.masksnglory;
 
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.client.render.RenderLayer;
+import net.vainnglory.masksnglory.block.ModBlocks;
+import net.vainnglory.masksnglory.util.BlackoutAbilityManager;
+import net.vainnglory.masksnglory.util.BlackoutC2SPacket;
+import net.vainnglory.masksnglory.util.GoldenScrapManager;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import java.util.List;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.EndermiteEntity;
+import net.minecraft.text.Text;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -56,6 +74,9 @@ public class MasksNGlory implements ModInitializer {
     public static final GameRules.Key<GameRules.BooleanRule> DO_PROPERTY_DAMAGE = GameRuleRegistry.register(
             "doPropertyDamage", GameRules.Category.MISC, GameRuleFactory.createBooleanRule(true));
 
+    public static final GameRules.Key<GameRules.BooleanRule> EGO_ONLY = GameRuleRegistry.register(
+            "EgoOnly", GameRules.Category.PLAYER, GameRuleFactory.createBooleanRule(false));
+
     @Override
     public void onInitialize() {
         ModItemGroups.registerItemGroups();
@@ -104,6 +125,15 @@ public class MasksNGlory implements ModInitializer {
 
         ModWorldGeneration.addFeaturesToBiomes();
 
+        BlackoutC2SPacket.registerReceiver();
+
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_TORCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_TORCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_WALL_TORCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_WALL_TORCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_LANTERN, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_LANTERN, RenderLayer.getCutout());
+
         ServerPlayConnectionEvents.DISCONNECT.register((handler, s) -> {
             UUID id = handler.player.getUuid();
             ActorManager.offScriptActive.remove(id);
@@ -117,6 +147,12 @@ public class MasksNGlory implements ModInitializer {
             NullManager.cleanup(id);
             NullKnifeItem.cleanup(id);
             ExceptionNotCaughtEnchantment.cleanup(id);
+            GoldenScrapManager.cleanupOnDisconnect(id);
+            GoldenScrapManager.pauseHealthPenalty(id);
+        });
+
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            GoldenScrapManager.resumeHealthPenalty(handler.player.getUuid(), handler.player);
         });
 
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
@@ -135,6 +171,7 @@ public class MasksNGlory implements ModInitializer {
             }
         });
 
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> BlackoutAbilityManager.onServerStart(server));
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (entity instanceof ServerPlayerEntity player) {
@@ -157,6 +194,14 @@ public class MasksNGlory implements ModInitializer {
             }
         });
 
+        ServerTickEvents.END_SERVER_TICK.register(server -> BlackoutAbilityManager.tick(server));
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            if (server.getTicks() % 20 == 0) {
+                GoldenScrapManager.tickHealthPenalties(server);
+            }
+        });
+
         final Map<UUID, Integer> pinningAirTicks = new HashMap<>();
         final Set<UUID> pinningSlamming = new HashSet<>();
         ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -172,13 +217,21 @@ public class MasksNGlory implements ModInitializer {
                     if (player.isOnGround()) {
                         pinningSlamming.remove(id);
                     } else {
-                        player.fallDistance = 0f;
+                        int amplifier = player.getStatusEffect(ModEffects.PINNING).getAmplifier();
+                        switch (amplifier) {
+                            case 0 -> player.fallDistance = 0f;
+                            case 1 -> player.fallDistance = Math.min(player.fallDistance, 5f);
+                            case 2 -> player.fallDistance = Math.min(player.fallDistance, 10f);
+                            default -> {}
+                        }
                     }
                 }
 
                 if (!player.isOnGround()) {
+                    int amplifier = player.getStatusEffect(ModEffects.PINNING).getAmplifier();
+                    int threshold = Math.max(1, 20 - amplifier * 7);
                     int ticks = pinningAirTicks.getOrDefault(id, 0) + 1;
-                    if (ticks >= 20) {
+                    if (ticks >= threshold) {
                         if (player.getAbilities().flying) {
                             player.getAbilities().flying = false;
                             player.sendAbilitiesUpdate();
@@ -312,6 +365,157 @@ public class MasksNGlory implements ModInitializer {
                 }
             }
             return ActionResult.PASS;
+        });
+
+        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (world.isClient()) return ActionResult.PASS;
+            if (!(entity instanceof EndermiteEntity endermite)) return ActionResult.PASS;
+            if (hand != Hand.MAIN_HAND) return ActionResult.PASS;
+
+            ItemStack held = player.getStackInHand(hand);
+            if (!held.isOf(Items.ENDER_EYE)) return ActionResult.PASS;
+
+            if (world.getGameRules().getBoolean(MasksNGlory.EGO_ONLY)) {
+                UUID egoUUID = UUID.fromString("d1848a30-b4c9-4f64-817d-0d09377b125c");
+                if (!player.getUuid().equals(egoUUID)) {
+                    player.sendMessage(Text.literal("your knowledge is far too low to understand this."), true);
+                    return ActionResult.FAIL;
+                }
+            }
+
+            Box searchBox = endermite.getBoundingBox().expand(2.0);
+            List<ItemEntity> nearbyItems = world.getEntitiesByType(EntityType.ITEM, searchBox, e -> true);
+
+            int leatherNeeded = 4;
+            boolean ingotNeeded = true;
+            List<ItemEntity> leatherEntities = new ArrayList<>();
+            ItemEntity ingotEntity = null;
+
+            for (ItemEntity itemEntity : nearbyItems) {
+                ItemStack stack = itemEntity.getStack();
+                if (leatherNeeded > 0 && stack.isOf(Items.LEATHER)) {
+                    leatherEntities.add(itemEntity);
+                    leatherNeeded -= stack.getCount();
+                } else if (ingotNeeded && stack.isOf(ModItems.RUSTED)) {
+                    ingotEntity = itemEntity;
+                    ingotNeeded = false;
+                }
+            }
+
+            if (leatherNeeded > 0 || ingotNeeded) return ActionResult.PASS;
+
+            int toConsume = 4;
+            for (ItemEntity itemEntity : leatherEntities) {
+                if (toConsume <= 0) break;
+                ItemStack stack = itemEntity.getStack();
+                int take = Math.min(stack.getCount(), toConsume);
+                if (take >= stack.getCount()) {
+                    itemEntity.discard();
+                } else {
+                    stack.decrement(take);
+                }
+                toConsume -= take;
+            }
+
+            ItemStack ingotStack = ingotEntity.getStack();
+            if (ingotStack.getCount() == 1) {
+                ingotEntity.discard();
+            } else {
+                ingotStack.decrement(1);
+            }
+
+            if (!player.getAbilities().creativeMode) {
+                held.decrement(1);
+            }
+
+            ItemEntity satchelDrop = new ItemEntity(world, endermite.getX(), endermite.getY() + 0.5, endermite.getZ(), new ItemStack(ModItems.HUNTERS_SATCHEL));
+            world.spawnEntity(satchelDrop);
+
+            if (world instanceof ServerWorld serverWorld) {
+                serverWorld.spawnParticles(ParticleTypes.PORTAL, endermite.getX(), endermite.getY() + 0.5, endermite.getZ(), 40, 0.3, 0.3, 0.3, 0.15);
+                serverWorld.playSound(null, endermite.getBlockPos(), SoundEvents.ENTITY_ENDERMITE_DEATH, SoundCategory.NEUTRAL, 1.5f, 0.8f);
+            }
+
+            endermite.discard();
+            return ActionResult.SUCCESS;
+        });
+
+
+        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+            if (world.isClient) return ActionResult.PASS;
+            if (hand != Hand.MAIN_HAND) return ActionResult.PASS;
+            ItemStack handItem = player.getStackInHand(hand);
+            if (!handItem.isOf(Items.BLAZE_POWDER)) return ActionResult.PASS;
+            BlockPos blockPos = hitResult.getBlockPos();
+            if (!world.getBlockState(blockPos).isOf(Blocks.SCULK_SHRIEKER)) return ActionResult.PASS;
+
+            List<ItemEntity> nearbyItems = world.getEntitiesByClass(
+                    ItemEntity.class,
+                    new Box(blockPos).expand(2.0),
+                    e -> !e.isRemoved()
+            );
+
+            ItemEntity vanillaBone = null;
+            ItemEntity boneAlloyIngot = null;
+            for (ItemEntity ie : nearbyItems) {
+                if (ie.getStack().isOf(Items.BONE) && vanillaBone == null) vanillaBone = ie;
+                else if (ie.getStack().isOf(ModItems.BONE) && boneAlloyIngot == null) boneAlloyIngot = ie;
+            }
+
+            if (vanillaBone == null || boneAlloyIngot == null) return ActionResult.PASS;
+
+            vanillaBone.discard();
+            boneAlloyIngot.discard();
+            if (!player.getAbilities().creativeMode) handItem.decrement(1);
+
+            ItemStack warden = new ItemStack(ModItems.WARDEN);
+            if (!player.getInventory().insertStack(warden)) {
+                player.dropItem(warden, false);
+            }
+
+            if (world instanceof ServerWorld sw) {
+                sw.spawnParticles(ParticleTypes.SCULK_SOUL,
+                        blockPos.getX() + 0.5, blockPos.getY() + 1.0, blockPos.getZ() + 0.5,
+                        20, 0.5, 0.5, 0.5, 0.04);
+                sw.spawnParticles(ParticleTypes.SOUL,
+                        blockPos.getX() + 0.5, blockPos.getY() + 1.0, blockPos.getZ() + 0.5,
+                        10, 0.3, 0.3, 0.3, 0.02);
+            }
+
+            return ActionResult.SUCCESS;
+        });
+
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                if (player.hasStatusEffect(ModEffects.WARDEN) && player.isTouchingWater()) {
+                    player.removeStatusEffect(ModEffects.WARDEN);
+                    player.removeStatusEffect(ModEffects.PINNING);
+                    player.removeStatusEffect(ModEffects.SEIZED);
+                    player.removeStatusEffect(StatusEffects.SLOWNESS);
+                }
+            }
+        });
+
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+            if (entity instanceof ServerPlayerEntity victim && source.getAttacker() instanceof ServerPlayerEntity dealer) {
+                GoldenScrapManager.recordDamage(dealer.getUuid(), victim.getUuid(), amount);
+            }
+            return true;
+        });
+
+        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
+            if (entity instanceof ServerPlayerEntity victim) {
+                if (damageSource.getAttacker() instanceof ServerPlayerEntity killer) {
+                    GoldenScrapManager.handleKill(killer, victim);
+                }
+                if (GoldenScrapManager.isMarkedForHealthPenalty(victim.getUuid())) {
+                    GoldenScrapManager.applyHealthPenalty(victim);
+                    GoldenScrapManager.startHealthPenaltyTimer(victim.getUuid());
+                }
+                GoldenScrapManager.resetProgress(victim.getUuid());
+                GoldenScrapManager.cleanupAfterDeath(victim.getUuid());
+            }
         });
 
 

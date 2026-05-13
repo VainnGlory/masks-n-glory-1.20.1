@@ -20,6 +20,7 @@
   "item.masks-n-glory.void": "Error:Null",
   "item.masks-n-glory.cooked_bones": "Cooked Bone",
   "item.masks-n-glory.dust": "Bone Dust",
+  "item.masks-n-glory.hunters_satchel": "Hunter's Satchel",
 
   "item.masks-n-glory.goldenscrap": "Golden Scrap",
   "tooltip.masks-n-glory.goldenscrap": "§7*seems to be a part of a greater whole...*",
@@ -188,6 +189,7 @@
 
   "death.attack.pan": "%1$s got fried",
   "death.attack.pan.player": "%1$s was served their eggs and bakey by %2$s.",
+  "death.attack.pan.item": "%1$s was served their eggs and bacon by %2$s using %3$s.",
 
   "death.attack.rusted": "%1$s forgot how to pump blood in their veins",
   "death.attack.rusted.player": "%1$s was sliced and diced by %2$s",
@@ -197,6 +199,10 @@
 
   "death.attack.bleeding": "%1$s bled out",
   "death.attack.bleeding.player": "%1$s bled out",
+
+  "item.masks-n-glory.warden": "Warden",
+  "effect.masks-n-glory.wardeneffect": "Imprisoned",
+  "tooltip.masks-n-glory.warden": "§8...",
 
   "advancements.Masks N Glory.pale_armor.description": "An Alchemist's Dream",
   "advancements.Masks N Glory.pale_armor.title": "Cover Me in Nostalgia",

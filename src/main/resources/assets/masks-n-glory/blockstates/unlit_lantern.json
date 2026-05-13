@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "hanging=false,waterlogged=false": { "model": "masks-n-glory:block/unlit_lantern" },
+    "hanging=false,waterlogged=true": { "model": "masks-n-glory:block/unlit_lantern" },
+    "hanging=true,waterlogged=false": { "model": "masks-n-glory:block/hanging_unlit_lantern" },
+    "hanging=true,waterlogged=true": { "model": "masks-n-glory:block/hanging_unlit_lantern" }
+  }
+}

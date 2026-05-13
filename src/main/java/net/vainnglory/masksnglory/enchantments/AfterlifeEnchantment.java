@@ -10,6 +10,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.HorseEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -41,6 +42,7 @@ public class AfterlifeEnchantment extends Enchantment {
     public static final String UNDEAD_TYPES_KEY = "AfterlifeUndeadTypes";
     public static final String MODE_KEY = "AfterlifeMode";
     public static final String BANDIT_KEY = "AfterlifeBandits";
+    public static final String VILLAGER_KEY = "AfterlifeVillagers";
 
 
     public static final int MODE_RAVAGER = 0;
@@ -48,6 +50,7 @@ public class AfterlifeEnchantment extends Enchantment {
     public static final int MODE_UNDEAD = 2;
     private static final int SOUL_CAP = 10;
     public static final int MODE_BANDIT = 3;
+    public static final int MODE_VILLAGER = 4;
 
     private static final WeakHashMap<PlayerEntity, LivingEntity> lastTargets = new WeakHashMap<>();
     private static final Map<UUID, Map<UUID, Integer>> critCounts = new HashMap<>();
@@ -78,7 +81,7 @@ public class AfterlifeEnchantment extends Enchantment {
 
     public static void cycleMode(ItemStack stack) {
         NbtCompound nbt = stack.getOrCreateNbt();
-        nbt.putInt(MODE_KEY, (nbt.getInt(MODE_KEY) + 1) % 4);
+        nbt.putInt(MODE_KEY, (nbt.getInt(MODE_KEY) + 1) % 5);
     }
 
     public static void registerCallbacks() {
@@ -148,6 +151,10 @@ public class AfterlifeEnchantment extends Enchantment {
                 nbt.putInt(BANDIT_KEY, Math.min(3, nbt.getInt(BANDIT_KEY) + 1));
             }
 
+            if (killed instanceof VillagerEntity) {
+                nbt.putInt(VILLAGER_KEY, Math.min(1, nbt.getInt(VILLAGER_KEY) + 1));
+            }
+
 
             if (player.getWorld() instanceof ServerWorld sw) {
                 sw.spawnParticles(ParticleTypes.SCULK_SOUL,
@@ -168,6 +175,7 @@ public class AfterlifeEnchantment extends Enchantment {
                 case MODE_ILLAGER -> fireIllagerFangs(player, stack);
                 case MODE_UNDEAD -> summonUndead(player, stack);
                 case MODE_BANDIT -> summonBanditHorse(player, stack);
+                case MODE_VILLAGER -> summonVillager(player, stack);
                 default -> false;
             };
         } else {
@@ -184,6 +192,9 @@ public class AfterlifeEnchantment extends Enchantment {
             proj.setPosition(player.getX() + dx * 0.8, player.getEyeY() - 0.1, player.getZ() + dz * 0.8);
             proj.setVelocity(player, player.getPitch(), player.getYaw(), 0f, 1.5f, 0f);
             player.getWorld().spawnEntity(proj);
+            player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(),
+                    net.minecraft.sound.SoundEvents.ENTITY_WITHER_AMBIENT,
+                    player.getSoundCategory(), 1.0f, 1.0f);
 
             nbt.putInt(SOULS_KEY, souls - 1);
             return true;
@@ -350,6 +361,27 @@ public class AfterlifeEnchantment extends Enchantment {
 
         serverWorld.spawnEntity(horse);
         nbt.putInt(BANDIT_KEY, count - 1);
+        return true;
+    }
+
+    private static boolean summonVillager(PlayerEntity player, ItemStack stack) {
+        if (!(player.getWorld() instanceof ServerWorld serverWorld)) return false;
+        NbtCompound nbt = stack.getOrCreateNbt();
+        int count = nbt.getInt(VILLAGER_KEY);
+        if (count <= 0) return false;
+
+        VillagerEntity villager = EntityType.VILLAGER.create(serverWorld);
+        if (villager == null) return false;
+
+        villager.refreshPositionAndAngles(player.getX(), player.getY(), player.getZ(), player.getYaw(), 0);
+
+        if (villager.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH) != null) {
+            villager.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(40.0);
+        }
+        villager.setHealth(40.0f);
+
+        serverWorld.spawnEntity(villager);
+        nbt.putInt(VILLAGER_KEY, count - 1);
         return true;
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.util.ModDeathSource;
 
 @Mixin(LivingEntity.class)
@@ -20,8 +21,10 @@ public abstract class DeathMixin extends Entity implements Attackable {
 
     @WrapOperation(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V"))
     private void mask$modKillSource(LivingEntity instance, DamageSource source, float amount, Operation<Void> original) {
-        if (source.getAttacker() instanceof LivingEntity living && living.getMainHandStack().getItem() instanceof ModDeathSource deathSource) {
-            original.call(instance, deathSource.getKillSource(instance), amount);
+        if (source.getAttacker() instanceof LivingEntity living
+                && living.getMainHandStack().getItem() instanceof ModDeathSource deathSource
+                && !source.getTypeRegistryEntry().matchesKey(ModDamageTypes.DEATH_DAMAGE)) {
+            original.call(instance, deathSource.getKillSource(living, instance), amount);
         } else {
             original.call(instance, source, amount);
         }

@@ -2,6 +2,7 @@ package net.vainnglory.masksnglory.item.custom;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
@@ -35,6 +36,7 @@ import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSoundItem {
     private final float attackDamage;
@@ -54,6 +56,11 @@ public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSou
         builder.put(EntityAttributes.GENERIC_ATTACK_SPEED,
                 new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier",
                         -3F, EntityAttributeModifier.Operation.ADDITION));
+        builder.put(
+                ReachEntityAttributes.ATTACK_RANGE,
+                new EntityAttributeModifier(UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789012"),
+                        "Weapon reach", 0.5, EntityAttributeModifier.Operation.ADDITION)
+        );
         this.attributeModifiers = builder.build();
     }
 

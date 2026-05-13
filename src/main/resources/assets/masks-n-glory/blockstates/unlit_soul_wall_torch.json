@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=east": { "model": "masks-n-glory:block/unlit_wall_torch" },
+    "facing=north": { "model": "masks-n-glory:block/unlit_wall_torch", "y": 270 },
+    "facing=south": { "model": "masks-n-glory:block/unlit_wall_torch", "y": 90 },
+    "facing=west": { "model": "masks-n-glory:block/unlit_wall_torch", "y": 180 }
+  }
+}

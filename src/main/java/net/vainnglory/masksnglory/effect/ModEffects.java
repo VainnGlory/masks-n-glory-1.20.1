@@ -16,6 +16,7 @@ public class ModEffects {
     public static final StatusEffect SUGAR_RUSH = new SugarRushEffect();
     public static final StatusEffect SPITE = new SpiteEffect();
     public static final StatusEffect NULL_EFFECT = new NullEffect();
+    public static final StatusEffect WARDEN = new WardenEffect();
 
     public static void registerEffects() {
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "pinning"), PINNING);
@@ -28,5 +29,6 @@ public class ModEffects {
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "sugar_rush"), SUGAR_RUSH);
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "spite"), SPITE);
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "null"), NULL_EFFECT);
+        Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "wardeneffect"), WARDEN);
     }
 }

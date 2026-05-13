@@ -1,0 +1,1 @@
+{ "parent": "minecraft:block/template_lantern", "textures": { "lantern": "masks-n-glory:block/unlit_soul_lantern" } }

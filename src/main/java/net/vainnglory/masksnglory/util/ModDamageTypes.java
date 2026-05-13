@@ -25,11 +25,13 @@ public class ModDamageTypes {
     public static final RegistryKey<DamageType> BLEEDING_DAMAGE =
             RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "bleeding"));
 
-    public static DamageSource pan(LivingEntity entity) {
-        return entity.getDamageSources().create(PAN_DAMAGE); }
+    public static DamageSource pan(LivingEntity attacker, LivingEntity target) {
+        return target.getDamageSources().create(PAN_DAMAGE, attacker, attacker);
+    }
 
-    public static DamageSource rusted(LivingEntity entity) {
-        return entity.getDamageSources().create(RUSTED_DAMAGE); }
+    public static DamageSource rusted(LivingEntity attacker, LivingEntity target) {
+        return target.getDamageSources().create(RUSTED_DAMAGE, attacker, attacker);
+    }
 
     public static DamageSource egoLastWord(LivingEntity entity) {
         return entity.getDamageSources().create(EGO_LAST_WORD); }

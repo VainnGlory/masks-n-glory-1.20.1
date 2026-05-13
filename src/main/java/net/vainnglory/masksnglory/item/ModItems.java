@@ -124,6 +124,12 @@ public class ModItems {
     public static final Item PALE_STEEL_COIN = registerItem("pale_steel_coin",
             new PaleSteelCoinItem(new FabricItemSettings().maxCount(4), ModRarities.PALE));
 
+    public static final Item HUNTERS_SATCHEL = registerItem("hunters_satchel",
+            new HuntersSatchelItem(new FabricItemSettings()));
+
+    public static final Item WARDEN = registerItem("warden",
+            new WardenItem(new FabricItemSettings().maxCount(1).fireproof()));
+
 
 
 
