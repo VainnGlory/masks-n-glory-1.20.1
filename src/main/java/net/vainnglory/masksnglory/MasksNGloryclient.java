@@ -1,5 +1,8 @@
 package net.vainnglory.masksnglory;
 
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.minecraft.client.render.RenderLayer;
+import net.vainnglory.masksnglory.block.ModBlocks;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -13,6 +16,7 @@ import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
 import net.vainnglory.masksnglory.entity.custom.PaleSteelCoinRenderer;
 import net.vainnglory.masksnglory.util.FlashEffectPacket;
 import net.vainnglory.masksnglory.util.FlashOverlayRenderer;
+import net.vainnglory.masksnglory.util.GreaseEffectPacket;
 import net.vainnglory.masksnglory.util.ModKeybindings;
 
 public class MasksNGloryclient implements ClientModInitializer {
@@ -29,6 +33,15 @@ public class MasksNGloryclient implements ClientModInitializer {
         FlashEffectPacket.registerClientReceiver();
 
         FlashOverlayRenderer.register();
+
+        GreaseEffectPacket.registerClientReceiver();
+
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_TORCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_TORCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_WALL_TORCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_WALL_TORCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_LANTERN, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_LANTERN, RenderLayer.getCutout());
     }
 }
 

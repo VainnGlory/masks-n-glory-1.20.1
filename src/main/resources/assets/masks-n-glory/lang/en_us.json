@@ -157,7 +157,10 @@
   "enchantment.masks-n-glory.notoriety.desc": "For every individual player you kill, you will gain a small damage boost. (reset on death).",
   "enchantment.masks-n-glory.exception_not_caught": "Exception_Not_Caught",
   "enchantment.masks-n-glory.exception_not_caught.desc": "exception_not_caught.",
-
+  "enchantment.masks-n-glory.cast_iron": "Cast Iron",
+  "enchantment.masks-n-glory.cast_iron.desc": "Right-click to raise the pan as a shield. Each hit absorbed charges it; at full charge, it releases a shockwave that sends attackers flying.",
+  "enchantment.masks-n-glory.grease": "Grease",
+  "enchantment.masks-n-glory.grease.desc": "Coats the target in grease on hit, causing them to slide uncontrollably for 5 seconds. sneak right click to coat yourself",
 
 
   "effect.masks-n-glory.pinning": "Pinning",

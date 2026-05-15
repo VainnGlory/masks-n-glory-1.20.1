@@ -48,7 +48,7 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
         );
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_SPEED,
-                new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -2.9F, EntityAttributeModifier.Operation.ADDITION)
+                new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -3.0F, EntityAttributeModifier.Operation.ADDITION)
         );
         builder.put(
                 ReachEntityAttributes.ATTACK_RANGE,

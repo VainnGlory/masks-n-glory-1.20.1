@@ -1,8 +1,6 @@
 package net.vainnglory.masksnglory;
 
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.client.render.RenderLayer;
 import net.vainnglory.masksnglory.block.ModBlocks;
 import net.vainnglory.masksnglory.util.BlackoutAbilityManager;
 import net.vainnglory.masksnglory.util.BlackoutC2SPacket;
@@ -112,6 +110,8 @@ public class MasksNGlory implements ModInitializer {
         TemperEnchantment.registerTickCallback();
         IncumbentEnchantment.registerAttackCallback();
         NotorietyEnchantment.registerCallbacks();
+        CastIronManager.register();
+        GreaseManager.register();
 
         RegisterMNGItems.registerPaleItems();
 
@@ -126,13 +126,6 @@ public class MasksNGlory implements ModInitializer {
         ModWorldGeneration.addFeaturesToBiomes();
 
         BlackoutC2SPacket.registerReceiver();
-
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_TORCH, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_TORCH, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_WALL_TORCH, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_WALL_TORCH, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_LANTERN, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.UNLIT_SOUL_LANTERN, RenderLayer.getCutout());
 
         ServerPlayConnectionEvents.DISCONNECT.register((handler, s) -> {
             UUID id = handler.player.getUuid();
@@ -149,6 +142,7 @@ public class MasksNGlory implements ModInitializer {
             ExceptionNotCaughtEnchantment.cleanup(id);
             GoldenScrapManager.cleanupOnDisconnect(id);
             GoldenScrapManager.pauseHealthPenalty(id);
+            CastIronManager.setBlocking(handler.player, false);
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

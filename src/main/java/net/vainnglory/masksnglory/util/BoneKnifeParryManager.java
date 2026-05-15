@@ -24,6 +24,7 @@ public class BoneKnifeParryManager {
 
     private static final int PAN_PARRY_WINDOW_TICKS = 20;
     private static final Map<UUID, Long> panParryWindows = new HashMap<>();
+    private static final Map<UUID, Long> panParryCooldowns = new HashMap<>();
 
     public static void registerArrow(UUID playerId, PersistentProjectileEntity arrow, long fireTime) {
         pendingParries.put(playerId, new ParryData(arrow, fireTime));
@@ -104,9 +105,14 @@ public class BoneKnifeParryManager {
     public static boolean tryPanParry(LivingEntity target, PlayerEntity attacker, World world, float slamDamage) {
         if (!(target instanceof PlayerEntity targetPlayer)) return false;
 
+        Long lastParry = panParryCooldowns.get(targetPlayer.getUuid());
+        if (lastParry != null && world.getTime() - lastParry < 40L) return false;
+
         Long windowStart = panParryWindows.remove(targetPlayer.getUuid());
         if (windowStart == null) return false;
         if (world.getTime() - windowStart > PAN_PARRY_WINDOW_TICKS) return false;
+
+        panParryCooldowns.put(targetPlayer.getUuid(), world.getTime());
 
         attacker.hurtTime = 0;
         attacker.timeUntilRegen = 0;

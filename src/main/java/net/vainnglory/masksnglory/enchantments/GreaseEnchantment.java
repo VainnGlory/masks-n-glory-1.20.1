@@ -7,28 +7,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.vainnglory.masksnglory.item.ModItems;
 
-public class SkullBreakerEnchantment extends Enchantment {
+public class GreaseEnchantment extends Enchantment {
 
-    public SkullBreakerEnchantment() {
+    public GreaseEnchantment() {
         super(Rarity.VERY_RARE, EnchantmentTarget.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
-    @Override
-    public int getMaxLevel() { return 1; }
-
-    @Override
-    public boolean isTreasure() { return true; }
-
-    @Override
-    public boolean isAvailableForEnchantedBookOffer() { return true; }
-
-    @Override
-    public boolean isAvailableForRandomSelection() { return false; }
+    @Override public int getMaxLevel() { return 1; }
+    @Override public boolean isTreasure() { return true; }
+    @Override public boolean isAvailableForEnchantedBookOffer() { return true; }
+    @Override public boolean isAvailableForRandomSelection() { return false; }
 
     @Override
     public boolean canAccept(Enchantment other) {
         return super.canAccept(other)
-                && !(other instanceof GreaseEnchantment)
+                && !(other instanceof SkullBreakerEnchantment)
                 && !(other instanceof CastIronEnchantment);
     }
 

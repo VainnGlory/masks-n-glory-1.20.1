@@ -2,7 +2,6 @@ package net.vainnglory.masksnglory.item.custom;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -30,6 +29,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -38,6 +38,8 @@ import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 import net.vainnglory.masksnglory.util.BoneKnifeParryManager;
+import net.vainnglory.masksnglory.util.CastIronManager;
+import net.vainnglory.masksnglory.util.GreaseManager;
 import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.util.ModRarities;
 import net.vainnglory.masksnglory.util.ModDeathSource;
@@ -45,7 +47,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Queue;
-import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -57,7 +58,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     private static final WeakHashMap<PlayerEntity, Integer> hitsTaken = new WeakHashMap<>();
 
     private static final float MIN_FALL_DISTANCE = 2.5f;
-    private static final float SKULL_CRATER_THRESHOLD = 12.0f;
+    private static final float SLAM_SOUND_THRESHOLD = 11.0f;
 
     private static final String DENTS_KEY = "MNG_Dents";
     private static final String LAST_REPAIR_KEY = "MNG_LastRepairTick";
@@ -83,11 +84,6 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_SPEED,
                 new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -1.8F, EntityAttributeModifier.Operation.ADDITION)
-        );
-        builder.put(
-                ReachEntityAttributes.ATTACK_RANGE,
-                new EntityAttributeModifier(UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
-                        "Weapon reach", 0.5, EntityAttributeModifier.Operation.ADDITION)
         );
         this.attributeModifiers = builder.build();
     }
@@ -122,7 +118,13 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     public Text getName(ItemStack stack) {
         Text baseName = super.getName(stack);
         if (EnchantmentHelper.getLevel(ModEnchantments.SKULL, stack) > 0) {
-            return super.getName(stack).copy().styled(style -> style.withColor(0xE3BCF5));
+            return super.getName(stack).copy().styled(style -> style.withColor(0xA33E43));
+        }
+        if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, stack) > 0) {
+            return super.getName(stack).copy().styled(style -> style.withColor(0x450C21));
+        }
+        if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, stack) > 0) {
+            return super.getName(stack).copy().styled(style -> style.withColor(0x75C3D1));
         }
         return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
@@ -131,9 +133,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     public void playHitSound(PlayerEntity player) {
         player.getWorld().playSound(
                 null,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
+                player.getX(), player.getY(), player.getZ(),
                 MasksNGlorySounds.ITEM_PAN_HIT,
                 player.getSoundCategory(),
                 1F,
@@ -203,6 +203,13 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             }
             tooltip.add(Text.literal(label).setStyle(Style.EMPTY.withColor(color)));
         }
+        if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, stack) > 0) {
+            int charge = CastIronManager.readChargeFromWeapon(stack);
+            if (charge > 0) {
+                tooltip.add(Text.literal("Shield Charge: " + charge + "/5")
+                        .setStyle(Style.EMPTY.withColor(0x888888)));
+            }
+        }
         super.appendTooltip(stack, world, tooltip, context);
     }
 
@@ -211,8 +218,83 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         return false;
     }
 
+    @Override
     public int getEnchantability() {
         return 1;
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        ItemStack stack = user.getStackInHand(hand);
+        if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, stack) > 0) {
+            if (!world.isClient) {
+                CastIronManager.setBlocking(user, true);
+            }
+            user.setCurrentHand(hand);
+            return TypedActionResult.consume(stack);
+        }
+        if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, stack) > 0 && user.isSneaking()) {
+            if (!world.isClient) {
+                GreaseManager.applyGrease(user);
+            }
+            return TypedActionResult.success(stack);
+        }
+        return TypedActionResult.pass(stack);
+    }
+
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (!world.isClient && user instanceof PlayerEntity player) {
+            CastIronManager.setBlocking(player, false);
+        }
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, stack) > 0) {
+            return UseAction.BLOCK;
+        }
+        return UseAction.NONE;
+    }
+
+    @Override
+    public int getMaxUseTime(ItemStack stack) {
+        return 72000;
+
+    }
+
+    private static void spawnGroundParticles(ServerWorld serverWorld, Vec3d pos, float totalBonus) {
+        BlockPos belowTarget = BlockPos.ofFloored(pos.x, pos.y, pos.z).down();
+        BlockState groundBlock = serverWorld.getBlockState(belowTarget);
+        if (groundBlock.isAir()) {
+            groundBlock = Blocks.STONE.getDefaultState();
+        }
+        BlockStateParticleEffect fallbackParticle = new BlockStateParticleEffect(ParticleTypes.BLOCK, groundBlock);
+
+        int particlesPerPos = MathHelper.clamp((int)(totalBonus * 0.8f), 3, 20);
+        float maxRadius = MathHelper.clamp(totalBonus * 0.2f, 1.5f, 4.5f);
+        int radiusCeil = (int) maxRadius + 1;
+
+        for (int dx = -radiusCeil; dx <= radiusCeil; dx++) {
+            for (int dz = -radiusCeil; dz <= radiusCeil; dz++) {
+                double dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist > maxRadius) continue;
+
+                BlockPos samplePos = belowTarget.add(dx, 0, dz);
+                BlockState sampleBlock = serverWorld.getBlockState(samplePos);
+                BlockStateParticleEffect localParticle = sampleBlock.isAir()
+                        ? fallbackParticle
+                        : new BlockStateParticleEffect(ParticleTypes.BLOCK, sampleBlock);
+
+                serverWorld.spawnParticles(
+                        localParticle,
+                        pos.x + dx, pos.y + 0.1, pos.z + dz,
+                        particlesPerPos,
+                        0.3, 0.1, 0.3,
+                        0.15
+                );
+            }
+        }
     }
 
     public static void registerCallbacks() {
@@ -325,10 +407,31 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             }
             if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
 
+            if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, weapon) > 0
+                    && CastIronManager.isBlocking(player)) {
+                return ActionResult.PASS;
+            }
+
             Float startY = fallStarts.remove(player);
             if (startY == null) {
                 final LivingEntity capturedTarget = target;
                 final ItemStack capturedWeapon = weapon;
+
+                if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0
+                        && capturedTarget instanceof PlayerEntity cp && GreaseManager.isGreased(cp)) {
+                    pendingSlams.offer(() -> {
+                        if (capturedTarget.isAlive()) {
+                            capturedTarget.hurtTime = 0;
+                            capturedTarget.timeUntilRegen = 0;
+                            capturedTarget.damage(world.getDamageSources().playerAttack(player), 1.0f);
+                        }
+                    });
+                }
+
+                if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0) {
+                    GreaseManager.applyGrease(capturedTarget);
+                }
+
                 pendingKillChecks.offer(() -> {
                     if (!capturedTarget.isAlive()) {
                         int curDents = getDents(capturedWeapon);
@@ -355,10 +458,9 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             if (cooldown <= 0.65f) return ActionResult.PASS;
 
             int skullLevel = EnchantmentHelper.getLevel(ModEnchantments.SKULL, weapon);
-
             float dentMultiplier = getDentMultiplier(weapon);
 
-            final float baseFallBonus = fallDistance * 0.18f;
+            final float baseFallBonus = fallDistance * 0.7f;
             final float skullBonus    = skullLevel > 0 ? fallDistance * 2.50f * skullLevel + 8.0f : 0f;
             final float totalBonus    = (baseFallBonus + skullBonus) * dentMultiplier;
 
@@ -368,6 +470,12 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             }
             setLastRepairTick(weapon, serverWorld.getTime());
 
+            final float capturedFallDistance = fallDistance;
+
+            if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0) {
+                GreaseManager.applyGrease(target);
+            }
+
             pendingSlams.offer(() -> {
                 if (target.isAlive()) {
                     if (BoneKnifeParryManager.tryPanParry(target, player, world, totalBonus)) {
@@ -375,7 +483,9 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                     }
                     target.hurtTime = 0;
                     target.timeUntilRegen = 0;
-                    target.damage(world.getDamageSources().playerAttack(player), totalBonus);
+                    float greasedBonus = (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0
+                            && target instanceof PlayerEntity gp && GreaseManager.isGreased(gp)) ? 1.0f : 0.0f;
+                    target.damage(world.getDamageSources().playerAttack(player), totalBonus + greasedBonus);
 
                     if (!target.isAlive()) {
                         int curDents = getDents(weapon);
@@ -409,64 +519,44 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             for (LivingEntity near : nearby) {
                 if (near != target && near != player && near.isAlive()) {
                     near.damage(source, shockwaveDamage);
+                    Vec3d toNear = near.getPos().subtract(pos);
+                    double dist = toNear.length();
+                    if (dist > 0) {
+                        Vec3d knockDir = toNear.normalize();
+                        float knockStrength = Math.min(totalBonus * 0.04f, 1.8f);
+                        near.addVelocity(
+                                knockDir.x * knockStrength,
+                                0.2f + knockStrength * 0.1f,
+                                knockDir.z * knockStrength
+                        );
+                        near.velocityModified = true;
+                    }
                 }
             }
 
             serverWorld.spawnParticles(
                     ParticleTypes.CAMPFIRE_COSY_SMOKE,
                     pos.x, pos.y + 0.5, pos.z,
-                    18,
-                    0.4, 0.3, 0.4,
-                    0.02
+                    18, 0.4, 0.3, 0.4, 0.02
             );
 
             float launchVelocity = Math.min(fallDistance * 0.50f, 1.5f);
             player.setVelocity(player.getVelocity().x, launchVelocity, player.getVelocity().z);
             player.velocityModified = true;
 
-            if (skullLevel > 0 && fallDistance >= SKULL_CRATER_THRESHOLD) {
-                BlockPos belowTarget = target.getBlockPos().down();
-                BlockState groundBlock = serverWorld.getBlockState(belowTarget);
-                if (groundBlock.isAir()) {
-                    groundBlock = Blocks.STONE.getDefaultState();
-                }
-
-                BlockStateParticleEffect fallbackParticle = new BlockStateParticleEffect(ParticleTypes.BLOCK, groundBlock);
-
-                for (int dx = -3; dx <= 3; dx++) {
-                    for (int dz = -3; dz <= 3; dz++) {
-                        double dist = Math.sqrt(dx * dx + dz * dz);
-                        if (dist < 1.5 || dist > 3.5) continue;
-
-                        BlockPos samplePos = belowTarget.add(dx, 0, dz);
-                        BlockState sampleBlock = serverWorld.getBlockState(samplePos);
-                        BlockStateParticleEffect localParticle = sampleBlock.isAir()
-                                ? fallbackParticle
-                                : new BlockStateParticleEffect(ParticleTypes.BLOCK, sampleBlock);
-
-                        serverWorld.spawnParticles(
-                                localParticle,
-                                pos.x + dx, pos.y + 0.1, pos.z + dz,
-                                6,
-                                0.3, 0.1, 0.3,
-                                0.12
-                        );
-                    }
-                }
-
+            if (capturedFallDistance >= SLAM_SOUND_THRESHOLD) {
                 serverWorld.playSound(
                         null,
                         pos.x, pos.y, pos.z,
                         SoundEvents.BLOCK_ANVIL_LAND,
                         SoundCategory.PLAYERS,
-                        3.5f,
-                        0.85f
+                        6.0f, 0.85f
                 );
             }
+
+            spawnGroundParticles(serverWorld, pos, totalBonus);
 
             return ActionResult.PASS;
         });
     }
 }
-
-

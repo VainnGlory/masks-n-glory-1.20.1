@@ -5,6 +5,8 @@
   "mixins": [
     "AnvilNullKnifeMixin",
     "BowParryMixin",
+    "CastIronBlockMixin",
+    "CastIronIsBlockingMixin",
     "CoinRicochetMixin",
     "DamageTrackerAccessor",
     "DeathMixin",
@@ -37,6 +39,7 @@
   "client": [
     "ArmorFeatureRendererMixin",
     "GlaiveInventoryCycleMixin",
+    "GreaseTravelMixin",
     "HeldItemFeatureRendererMixin",
     "InGameHudRottingMixin",
     "SugarRushCameraMixin",

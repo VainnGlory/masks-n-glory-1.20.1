@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTracker;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.vainnglory.masksnglory.item.custom.GoldenPanItem;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,8 +21,15 @@ public class PanDeathMessageMixin {
         DamageSource src = entity.getRecentDamageSource();
         if (src == null) return;
         if (!(src.getAttacker() instanceof PlayerEntity killer)) return;
-        if (!(killer.getMainHandStack().getItem() instanceof GoldenPanItem)) return;
-        cir.setReturnValue(Text.translatable("death.attack.pan.player",
-                entity.getDisplayName(), killer.getDisplayName()));
+        ItemStack panStack = killer.getMainHandStack();
+        if (!(panStack.getItem() instanceof GoldenPanItem)) return;
+
+        if (panStack.hasCustomName()) {
+            cir.setReturnValue(Text.translatable("death.attack.pan.item",
+                    entity.getDisplayName(), killer.getDisplayName(), panStack.toHoverableText()));
+        } else {
+            cir.setReturnValue(Text.translatable("death.attack.pan.player",
+                    entity.getDisplayName(), killer.getDisplayName()));
+        }
     }
 }

@@ -67,7 +67,7 @@ public class RetributionHelmet extends ArmorItem {
                 .formatted(storedDamage >= DAMAGE_THRESHOLD ? Formatting.GOLD : Formatting.GRAY));
 
         if (storedDamage >= DAMAGE_THRESHOLD) {
-            tooltip.add(Text.literal("Ready to unleash! Press V").formatted(Formatting.YELLOW));
+            tooltip.add(Text.literal("Ready to unleash.").formatted(Formatting.YELLOW));
         }
     }
 
@@ -129,7 +129,7 @@ public class RetributionHelmet extends ArmorItem {
                 );
             }
 
-            player.sendMessage(Text.literal("Golden Retribution Helmet fully charged!").formatted(Formatting.GOLD), true);
+            player.sendMessage(Text.literal("Golden Retribution Helmet fully charged").formatted(Formatting.GOLD), true);
         }
     }
 
