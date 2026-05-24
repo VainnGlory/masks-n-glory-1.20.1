@@ -50,6 +50,15 @@ public class ModEntityTypes {
                     .build()
     );
 
+    public static final EntityType<ShearProjectileEntity> SHEAR_PROJECTILE_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MasksNGlory.MOD_ID, "shear_projectile"),
+            FabricEntityTypeBuilder.<ShearProjectileEntity>create(SpawnGroup.MISC, ShearProjectileEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.3F, 0.3F))
+                    .trackRangeBlocks(64)
+                    .trackedUpdateRate(2)
+                    .build()
+    );
 
     public static void registerEntityTypes() {}
 

@@ -11,6 +11,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.vainnglory.masksnglory.item.ModItems;
 
 import java.util.*;
 
@@ -125,6 +126,7 @@ public class BoneKnifeParryManager {
 
         targetPlayer.swingHand(Hand.MAIN_HAND);
         playParryEffects(targetPlayer, world);
+        targetPlayer.getItemCooldownManager().set(ModItems.BONE_KNIFE, 40);
         return true;
     }
 

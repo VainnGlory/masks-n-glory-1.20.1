@@ -1,8 +1,10 @@
 package net.vainnglory.masksnglory.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
@@ -24,6 +26,8 @@ public class ModDamageTypes {
             RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "ego_last_word"));
     public static final RegistryKey<DamageType> BLEEDING_DAMAGE =
             RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "bleeding"));
+    public static final RegistryKey<DamageType> SHEAR_PROJECTILE =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "shear_projectile"));
 
     public static DamageSource pan(LivingEntity attacker, LivingEntity target) {
         return target.getDamageSources().create(PAN_DAMAGE, attacker, attacker);
@@ -38,6 +42,14 @@ public class ModDamageTypes {
 
     public static DamageSource bleeding(LivingEntity entity) {
         return entity.getDamageSources().create(BLEEDING_DAMAGE); }
+
+    public static DamageSource shearProjectile(LivingEntity target) {
+        return target.getDamageSources().create(SHEAR_PROJECTILE);
+    }
+
+    public static DamageSource shearProjectile(PlayerEntity attacker, LivingEntity target) {
+        return target.getDamageSources().create(SHEAR_PROJECTILE, attacker, attacker);
+    }
 
     public static void initialize() {
         MasksNGlory.LOGGER.info("Registered Player's Souls");

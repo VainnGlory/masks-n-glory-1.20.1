@@ -1,6 +1,7 @@
 package net.vainnglory.masksnglory.enchantments;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -19,6 +20,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.PrideItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NotorietyEnchantment extends Enchantment {
 
@@ -58,6 +62,8 @@ public class NotorietyEnchantment extends Enchantment {
         return nbt.getList(KILLS_KEY, NbtElement.STRING_TYPE);
     }
 
+    private record PendingDamage(LivingEntity target, PlayerEntity attacker, float bonus) {}
+
     public static void registerCallbacks() {
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (!(entity instanceof ServerPlayerEntity killed)) return;
@@ -88,24 +94,29 @@ public class NotorietyEnchantment extends Enchantment {
             if (nbt != null) nbt.remove(KILLS_KEY);
         });
 
+        List<PendingDamage> pendingDamages = new ArrayList<>();
+
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (world.isClient || hand != Hand.MAIN_HAND) return ActionResult.PASS;
             if (!(entity instanceof LivingEntity target)) return ActionResult.PASS;
             ItemStack weapon = player.getMainHandStack();
             if (!(weapon.getItem() instanceof PrideItem)) return ActionResult.PASS;
             if (EnchantmentHelper.getLevel(ModEnchantments.NOTORIETY, weapon) <= 0) return ActionResult.PASS;
-
             float bonus = getBonusDamage(weapon);
             if (bonus <= 0) return ActionResult.PASS;
-
-            world.getServer().execute(() -> {
-                if (!target.isAlive()) return;
-                target.hurtTime = 0;
-                target.timeUntilRegen = 0;
-                target.damage(target.getDamageSources().playerAttack((PlayerEntity) player), bonus);
-            });
-
+            pendingDamages.add(new PendingDamage(target, player, bonus));
             return ActionResult.PASS;
+        });
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            if (pendingDamages.isEmpty()) return;
+            for (PendingDamage pd : pendingDamages) {
+                if (!pd.target().isAlive()) continue;
+                pd.target().hurtTime = 0;
+                pd.target().timeUntilRegen = 0;
+                pd.target().damage(pd.target().getDamageSources().playerAttack(pd.attacker()), pd.bonus());
+            }
+            pendingDamages.clear();
         });
     }
 }

@@ -18,9 +18,11 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -56,9 +58,13 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     private static final Queue<Runnable> pendingKillChecks = new ConcurrentLinkedQueue<>();
     private static final WeakHashMap<PlayerEntity, Integer> lastHurtTime = new WeakHashMap<>();
     private static final WeakHashMap<PlayerEntity, Integer> hitsTaken = new WeakHashMap<>();
+    private static final WeakHashMap<LivingEntity, FallSnapshot> recentFallData = new WeakHashMap<>();
 
     private static final float MIN_FALL_DISTANCE = 2.5f;
     private static final float SLAM_SOUND_THRESHOLD = 11.0f;
+    private static final float PLUMMET_MIN_FALL = 2.0f;
+    private static final int PLUMMET_WINDOW_TICKS = 5;
+    private static final float PLUMMET_ANVIL_THRESHOLD = 5.0f;
 
     private static final String DENTS_KEY = "MNG_Dents";
     private static final String LAST_REPAIR_KEY = "MNG_LastRepairTick";
@@ -71,6 +77,8 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     private final float attackDamage;
     private final ModRarities rarity;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
+
+    private record FallSnapshot(float peakDistance, long tick) {}
 
     public GoldenPanItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, ModRarities rarity) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
@@ -125,6 +133,9 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         }
         if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, stack) > 0) {
             return super.getName(stack).copy().styled(style -> style.withColor(0x75C3D1));
+        }
+        if (EnchantmentHelper.getLevel(ModEnchantments.PLUMMET, stack) > 0) {
+            return super.getName(stack).copy().styled(style -> style.withColor(0x6A4FA8));
         }
         return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
     }
@@ -260,7 +271,6 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     @Override
     public int getMaxUseTime(ItemStack stack) {
         return 72000;
-
     }
 
     private static void spawnGroundParticles(ServerWorld serverWorld, Vec3d pos, float totalBonus) {
@@ -367,6 +377,24 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                         }
                     }
                 }
+
+                if (EnchantmentHelper.getLevel(ModEnchantments.PLUMMET, weapon) > 0) {
+                    long currentTick = player.getServerWorld().getTime();
+                    List<LivingEntity> nearbyTargets = player.getServerWorld().getNonSpectatingEntities(
+                            LivingEntity.class,
+                            player.getBoundingBox().expand(8.0)
+                    );
+                    for (LivingEntity nearbyTarget : nearbyTargets) {
+                        if (nearbyTarget == player) continue;
+                        if (nearbyTarget.fallDistance >= PLUMMET_MIN_FALL) {
+                            FallSnapshot existing = recentFallData.get(nearbyTarget);
+                            float peak = (existing != null)
+                                    ? Math.max(existing.peakDistance(), nearbyTarget.fallDistance)
+                                    : nearbyTarget.fallDistance;
+                            recentFallData.put(nearbyTarget, new FallSnapshot(peak, currentTick));
+                        }
+                    }
+                }
             }
         });
 
@@ -430,6 +458,56 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
 
                 if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0) {
                     GreaseManager.applyGrease(capturedTarget);
+                }
+
+                if (EnchantmentHelper.getLevel(ModEnchantments.PLUMMET, capturedWeapon) > 0) {
+                    long currentTick = serverWorld.getTime();
+                    FallSnapshot snapshot = recentFallData.get(capturedTarget);
+                    float effectiveFall = capturedTarget.fallDistance;
+                    if (snapshot != null && currentTick - snapshot.tick() <= PLUMMET_WINDOW_TICKS) {
+                        effectiveFall = Math.max(effectiveFall, snapshot.peakDistance());
+                    }
+                    if (effectiveFall >= PLUMMET_MIN_FALL) {
+                        final float finalEffectiveFall = effectiveFall;
+                        final float plummetBonus = (finalEffectiveFall * 3.2f + 8.0f) * getDentMultiplier(capturedWeapon);
+                        final Vec3d capturedLookVec = player.getRotationVec(1.0f);
+                        recentFallData.remove(capturedTarget);
+                        pendingSlams.offer(() -> {
+                            if (!capturedTarget.isAlive()) return;
+                            capturedTarget.hurtTime = 0;
+                            capturedTarget.timeUntilRegen = 0;
+                            capturedTarget.damage(world.getDamageSources().playerAttack(player), plummetBonus);
+                            Vec3d pos = capturedTarget.getPos();
+                            Vec3d horizontal = new Vec3d(capturedLookVec.x, 0, capturedLookVec.z);
+                            float blastPower = MathHelper.clamp(finalEffectiveFall * 0.35f + 2.0f, 3.0f, 6.0f);
+                            float blastVertical = MathHelper.clamp(finalEffectiveFall * 0.08f + 0.9f, 0.9f, 1.5f);
+                            Vec3d launch = horizontal.lengthSquared() > 0.001
+                                    ? horizontal.normalize().multiply(blastPower)
+                                    : new Vec3d(blastPower, 0, 0);
+                            capturedTarget.setVelocity(launch.x, blastVertical, launch.z);
+                            capturedTarget.velocityModified = true;
+                            if (capturedTarget instanceof ServerPlayerEntity serverPlayer) {
+                                serverPlayer.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(serverPlayer));
+                            }
+                            if (world instanceof ServerWorld sw) {
+                                sw.spawnParticles(
+                                        ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                                        pos.x, pos.y + 0.5, pos.z,
+                                        18, 0.4, 0.3, 0.4, 0.02
+                                );
+                                spawnGroundParticles(sw, pos, plummetBonus);
+                                if (finalEffectiveFall >= PLUMMET_ANVIL_THRESHOLD) {
+                                    sw.playSound(
+                                            null,
+                                            pos.x, pos.y, pos.z,
+                                            SoundEvents.BLOCK_ANVIL_LAND,
+                                            SoundCategory.PLAYERS,
+                                            6.0f, 0.85f
+                                    );
+                                }
+                            }
+                        });
+                    }
                 }
 
                 pendingKillChecks.offer(() -> {

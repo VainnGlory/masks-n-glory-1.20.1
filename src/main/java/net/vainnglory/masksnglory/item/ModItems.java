@@ -130,6 +130,9 @@ public class ModItems {
     public static final Item WARDEN = registerItem("warden",
             new WardenItem(new FabricItemSettings().maxCount(1).fireproof()));
 
+    public static final Item PALE_WAR_PICKAXE = registerItem("pale_war_pickaxe",
+            new PaleWarPickaxeItem(ModToolMaterial.RUSTED, 3, -2.4f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
+
 
 
 

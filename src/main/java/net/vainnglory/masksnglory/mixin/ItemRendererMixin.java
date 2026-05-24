@@ -1,6 +1,11 @@
 package net.vainnglory.masksnglory.mixin;
 
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.item.Items;
 import net.vainnglory.masksnglory.MasksNGlory;
+import net.vainnglory.masksnglory.enchantments.ModEnchantments;
+import net.vainnglory.masksnglory.entity.ModEntities;
+import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -16,65 +21,72 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
     @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
-
     public BakedModel useRustedSwordModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (stack.isOf(ModItems.RUSTED_SWORD) && renderMode != ModelTransformationMode.GUI)
             return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "rusted_sword_detail", "inventory"));
-
         return value;
     }
 
     @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
-
     public BakedModel useGoldenPanModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (stack.isOf(ModItems.GOLDEN_PAN) && renderMode != ModelTransformationMode.GUI)
             return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "golden_pan_detail", "inventory"));
-
         return value;
     }
 
     @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
-
     public BakedModel usePaleSwordModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (stack.isOf(ModItems.PALE_SWORD) && renderMode != ModelTransformationMode.GUI)
             return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "pale_sword_detail", "inventory"));
-
         return value;
     }
 
     @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
-
     public BakedModel useBoneKnifeModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (stack.isOf(ModItems.BONE_KNIFE) && renderMode != ModelTransformationMode.GUI)
             return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "bone_knife_detail", "inventory"));
-
         return value;
     }
 
     @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
-
     public BakedModel useGlaiveModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (stack.isOf(ModItems.GLAIVE) && renderMode != ModelTransformationMode.GUI)
             return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "glaive_detail", "inventory"));
-
         return value;
     }
 
     @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
-
     public BakedModel usePrideModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (stack.isOf(ModItems.PRIDE) && renderMode != ModelTransformationMode.GUI)
             return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "pride_detail", "inventory"));
-
         return value;
     }
 
     @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
-
     public BakedModel useNullModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (stack.isOf(ModItems.NULL_KNIFE) && renderMode != ModelTransformationMode.GUI)
             return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager().getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "null_knife_detail", "inventory"));
+        return value;
+    }
 
+    @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
+    public BakedModel usePickModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        if (stack.isOf(ModItems.PALE_WAR_PICKAXE)
+                && renderMode != ModelTransformationMode.GUI
+                && EnchantmentHelper.getLevel(ModEnchantments.ARTILLERY, stack) <= 0) {
+            return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager()
+                    .getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "pale_war_pickaxe_detail", "inventory"));
+        }
+        return value;
+    }
+    @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
+    public BakedModel usePickArtilleryGuiModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        if (stack.isOf(ModItems.PALE_WAR_PICKAXE)
+                && renderMode == ModelTransformationMode.GUI
+                && EnchantmentHelper.getLevel(ModEnchantments.ARTILLERY, stack) > 0) {
+            return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager()
+                    .getModel(new ModelIdentifier(MasksNGlory.MOD_ID, "pale_war_pickaxe", "inventory"));
+        }
         return value;
     }
 }

@@ -31,6 +31,8 @@ public class ModEnchantments {
     public static Enchantment EXCEPTION = new ExceptionNotCaughtEnchantment();
     public static Enchantment CAST_IRON = new CastIronEnchantment();
     public static Enchantment GREASE = new GreaseEnchantment();
+    public static Enchantment ARTILLERY = new ArtilleryEnchantment();
+    public static Enchantment PLUMMET = new PlummetEnchantment();
 
     public static void registerEnchantments() {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "fear"), FEAR);
@@ -58,6 +60,8 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "exception_not_caught"), EXCEPTION);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "cast_iron"), CAST_IRON);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "grease"), GREASE);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "artillery"), ARTILLERY);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "plummet"), PLUMMET);
     }
 }
 

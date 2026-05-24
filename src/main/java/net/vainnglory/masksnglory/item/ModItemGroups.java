@@ -73,6 +73,7 @@ public class ModItemGroups {
                         entries.add(ModItems.PRIDE);
                         entries.add(ModItems.NULL_KNIFE);
                         entries.add(ModItems.PALE_SWORD);
+                        entries.add(ModItems.PALE_WAR_PICKAXE);
                         entries.add(ModItems.GLAIVE);
                         entries.add(ModItems.GOLDEN_PAN);
 

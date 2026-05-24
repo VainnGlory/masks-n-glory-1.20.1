@@ -74,6 +74,9 @@
   "item.masks-n-glory.null_knife": "Nulled Knife",
   "tooltip.masks-n-glory.null_knife": "§8*a name is written on the handle 'Ego'.*",
 
+  "item.masks-n-glory.pale_war_pickaxe": "Pale War-Pickaxe",
+  "tooltip.masks-n-glory.pale_war_pickaxe": "§8*a tool made for combat.*",
+
 
   "item.masks-n-glory.rust": "Pale Steel Ingot",
 
@@ -161,7 +164,10 @@
   "enchantment.masks-n-glory.cast_iron.desc": "Right-click to raise the pan as a shield. Each hit absorbed charges it; at full charge, it releases a shockwave that sends attackers flying.",
   "enchantment.masks-n-glory.grease": "Grease",
   "enchantment.masks-n-glory.grease.desc": "Coats the target in grease on hit, causing them to slide uncontrollably for 5 seconds. sneak right click to coat yourself",
-
+  "enchantment.masks-n-glory.artillery": "Artillery",
+  "enchantment.masks-n-glory.artillery.desc": "Fire shears with your pickaxe by using it like a crossbow. Shears can be attracted to lightning rod and inflict bleeding on hit.",
+  "enchantment.masks-n-glory.plummet": "Home Run",
+  "enchantment.masks-n-glory.plummet.desc": "Deals bonus damage scaling with the target's fall distance and launches them away.",
 
   "effect.masks-n-glory.pinning": "Pinning",
   "effect.masks-n-glory.bleeding": "Bleeding",
@@ -206,6 +212,9 @@
   "item.masks-n-glory.warden": "Warden",
   "effect.masks-n-glory.wardeneffect": "Imprisoned",
   "tooltip.masks-n-glory.warden": "§8...",
+
+  "death.attack.shear_projectile": "%1$s suffered from a shear heart attack",
+  "death.attack.shear_projectile.player": "%1$s was shredded by %2$s's flying shear",
 
   "advancements.Masks N Glory.pale_armor.description": "An Alchemist's Dream",
   "advancements.Masks N Glory.pale_armor.title": "Cover Me in Nostalgia",
