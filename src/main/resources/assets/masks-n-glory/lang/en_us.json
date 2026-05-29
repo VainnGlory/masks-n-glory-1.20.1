@@ -127,7 +127,7 @@
   "enchantment.masks-n-glory.skull": "Skull Breaker",
   "enchantment.masks-n-glory.skull.desc": "Deals additional damage scaling with blocks fallen.",
   "enchantment.masks-n-glory.death": "Guillotine",
-  "enchantment.masks-n-glory.death.desc": "If the opponent is under 5 hearts, you have a 8% chance to simply execute them.",
+  "enchantment.masks-n-glory.death.desc": "If the opponent is under 5 hearts, you can catch them 'using' an item to execute them.",
   "enchantment.masks-n-glory.combo": "Combo",
   "enchantment.masks-n-glory.combo.desc": "Quickly attack your opponent, if you manage to kill them in the same combo, all the hits you've landed will be turned into absorption for you.",
   "enchantment.masks-n-glory.antiseptic": "Antiseptic",
@@ -168,6 +168,8 @@
   "enchantment.masks-n-glory.artillery.desc": "Fire shears with your pickaxe by using it like a crossbow. Shears can be attracted to lightning rod and inflict bleeding on hit.",
   "enchantment.masks-n-glory.plummet": "Home Run",
   "enchantment.masks-n-glory.plummet.desc": "Deals bonus damage scaling with the target's fall distance and launches them away.",
+  "enchantment.masks-n-glory.surge": "Surge",
+  "enchantment.masks-n-glory.surge.desc": "Right-click the sword again after throwing it to boost it mid-air.",
 
   "effect.masks-n-glory.pinning": "Pinning",
   "effect.masks-n-glory.bleeding": "Bleeding",

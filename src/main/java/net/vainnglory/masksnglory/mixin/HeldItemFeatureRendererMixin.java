@@ -26,12 +26,14 @@ public class HeldItemFeatureRendererMixin {
             ci.cancel();
             return;
         }
-        if (stack.hasNbt() && stack.getNbt().getBoolean("RemorseActive")
-                && (renderMode == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND
+        boolean isHandMode = renderMode == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND
                 || renderMode == ModelTransformationMode.FIRST_PERSON_LEFT_HAND
                 || renderMode == ModelTransformationMode.THIRD_PERSON_RIGHT_HAND
-                || renderMode == ModelTransformationMode.THIRD_PERSON_LEFT_HAND)) {
-            ci.cancel();
+                || renderMode == ModelTransformationMode.THIRD_PERSON_LEFT_HAND;
+        if (stack.hasNbt() && isHandMode) {
+            if (stack.getNbt().getBoolean("RemorseActive") || stack.getNbt().getBoolean("SurgeActive")) {
+                ci.cancel();
+            }
         }
     }
 }

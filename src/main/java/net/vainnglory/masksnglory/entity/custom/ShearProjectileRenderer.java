@@ -16,11 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import net.vainnglory.masksnglory.MasksNGlory;
 
 @Environment(EnvType.CLIENT)
 public class ShearProjectileRenderer extends EntityRenderer<ShearProjectileEntity> {
-
     private static final ModelIdentifier MODEL_ID =
             new ModelIdentifier(MasksNGlory.MOD_ID, "shear_projectile", "inventory");
 
@@ -34,15 +34,15 @@ public class ShearProjectileRenderer extends EntityRenderer<ShearProjectileEntit
     @Override
     public void render(ShearProjectileEntity entity, float yaw, float tickDelta,
                        MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(MODEL_ID);
+        Vec3d camPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+        RibbonTrailRenderer.render(entity.getTrailPositions(), entity.getPos(), camPos, matrices, vertexConsumers, light, 110);
 
+        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(MODEL_ID);
         matrices.push();
         matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(entity.getYaw(tickDelta) + 180f));
         matrices.scale(0.6f, 0.6f, 0.6f);
-
         itemRenderer.renderItem(new ItemStack(Items.SHEARS), ModelTransformationMode.NONE, false,
                 matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV, model);
-
         matrices.pop();
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
     }

@@ -2,5 +2,8 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "masks-n-glory:item/pale_sword"
-  }
+  },
+  "overrides": [
+    { "predicate": { "custom_model_data": 1 }, "model": "masks-n-glory:item/pale_sword_invisible" }
+  ]
 }

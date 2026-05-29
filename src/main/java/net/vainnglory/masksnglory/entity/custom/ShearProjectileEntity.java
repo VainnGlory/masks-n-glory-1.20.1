@@ -1,5 +1,8 @@
 package net.vainnglory.masksnglory.entity.custom;
 
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -34,6 +37,8 @@ public class ShearProjectileEntity extends Entity {
     private static final int ROD_CHECK_INTERVAL = 2;
     private static final float PROJECTILE_DAMAGE = 3.5f;
     private static final float ORBIT_DAMAGE = 2.5f;
+    private static final TrackedData<Boolean> ORBITING =
+            DataTracker.registerData(ShearProjectileEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     private Vec3d velocity = Vec3d.ZERO;
     private int lifetime = 0;
@@ -42,6 +47,8 @@ public class ShearProjectileEntity extends Entity {
     private BlockPos orbitPos = null;
     private float orbitAngle = 0f;
     private int orbitTicksLeft = 0;
+    private final Deque<Vec3d> trailPositions = new ArrayDeque<>();
+    private static final int TRAIL_MAX = 24;
 
     private final Set<UUID> hitThisFlight = new HashSet<>();
     private final Map<UUID, Integer> orbitHitCooldowns = new HashMap<>();
@@ -65,10 +72,22 @@ public class ShearProjectileEntity extends Entity {
                 .stream().filter(p -> p.getUuid().equals(ownerUUID)).findFirst().orElse(null);
     }
 
+    public List<Vec3d> getTrailPositions() {
+        return new ArrayList<>(trailPositions);
+    }
+
     @Override
     public void tick() {
         super.tick();
-        if (this.getWorld().isClient) return;
+        if (this.getWorld().isClient) {
+            if (this.dataTracker.get(ORBITING)) {
+                trailPositions.clear();
+            } else {
+                trailPositions.addFirst(this.getPos());
+                if (trailPositions.size() > TRAIL_MAX) trailPositions.removeLast();
+            }
+            return;
+        }
 
         lifetime++;
 
@@ -175,6 +194,7 @@ public class ShearProjectileEntity extends Entity {
                 if (count >= 20) continue;
 
                 orbitPos = rodPos;
+                this.dataTracker.set(ORBITING, true);
                 orbitAngle = (float) Math.atan2(getZ() - (check.getZ() + 0.5), getX() - (check.getX() + 0.5));
                 orbitTicksLeft = ORBIT_DURATION;
                 velocity = Vec3d.ZERO;
@@ -228,7 +248,9 @@ public class ShearProjectileEntity extends Entity {
     }
 
     @Override
-    protected void initDataTracker() {}
+    protected void initDataTracker() {
+        this.dataTracker.startTracking(ORBITING, false);
+    }
 
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {

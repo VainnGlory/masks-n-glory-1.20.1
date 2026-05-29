@@ -18,13 +18,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.vainnglory.masksnglory.block.ModBlocks;
 import net.vainnglory.masksnglory.cosmetic.GoldenShardLayer;
+import net.vainnglory.masksnglory.cosmetic.SheathLayer;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.entity.client.MaelstromModel;
 import net.vainnglory.masksnglory.entity.client.ModModelLayers;
-import net.vainnglory.masksnglory.entity.custom.MaelstromEntityRenderer;
-import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
-import net.vainnglory.masksnglory.entity.custom.PaleSteelCoinRenderer;
-import net.vainnglory.masksnglory.entity.custom.ShearProjectileRenderer;
+import net.vainnglory.masksnglory.entity.custom.*;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.PaleWarPickaxeItem;
 import net.vainnglory.masksnglory.util.FlashEffectPacket;
@@ -85,6 +83,9 @@ public class MasksNGloryclient implements ClientModInitializer {
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, renderer, registrationHelper, context) -> {
             if (entityType == EntityType.PLAYER) {
                 registrationHelper.register(new GoldenShardLayer(
+                        (FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>>) renderer
+                ));
+                registrationHelper.register(new SheathLayer(
                         (FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>>) renderer
                 ));
             }

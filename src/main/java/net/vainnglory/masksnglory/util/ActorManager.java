@@ -11,4 +11,5 @@ public class ActorManager {
     public static final Map<UUID, Long> lastDamageTicks = new HashMap<>();
     public static final Map<UUID, Integer> offScriptCooldowns = new HashMap<>();
     public static final Set<UUID> sympathyInProgress = new HashSet<>();
+    public static final Set<UUID> offScriptAddedInvis = new HashSet<>();
 }

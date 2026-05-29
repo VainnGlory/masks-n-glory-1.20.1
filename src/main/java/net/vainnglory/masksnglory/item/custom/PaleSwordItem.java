@@ -20,6 +20,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.Vanishable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -27,6 +28,7 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
@@ -120,14 +122,67 @@ public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSou
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world,
-     List<Text> tooltip, TooltipContext context) {
+                              List<Text> tooltip, TooltipContext context) {
         tooltip.add(Text.translatable("tooltip.masks-n-glory.pale_sword"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
+    public int getMaxUseTime(ItemStack stack) {
+        return EnchantmentHelper.getLevel(ModEnchantments.SURGE, stack) > 0 ? 72000 : 0;
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return EnchantmentHelper.getLevel(ModEnchantments.SURGE, stack) > 0 ? UseAction.SPEAR : UseAction.NONE;
+    }
+
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (!(user instanceof PlayerEntity player)) return;
+        if (world.isClient) return;
+        if (EnchantmentHelper.getLevel(ModEnchantments.SURGE, stack) <= 0) return;
+        if (player.getItemCooldownManager().isCoolingDown(stack.getItem())) return;
+        if (MaelstromEntity.getActiveSurgeEntity(player.getUuid()) != null) return;
+
+        int ticksUsed = getMaxUseTime(stack) - remainingUseTicks;
+        if (ticksUsed < 10) return;
+
+        float chargeRatio = Math.min(1.0F, ticksUsed / 30.0F);
+        float speed = 1.5F + chargeRatio * 2.0F;
+
+        MaelstromEntity maelstrom = new MaelstromEntity(world, player, stack);
+        maelstrom.setOwnerSelectedSlot(player.getInventory().selectedSlot);
+        maelstrom.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, speed, 1.0F);
+        maelstrom.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
+        maelstrom.setSurge(true);
+
+        world.spawnEntity(maelstrom);
+        MaelstromEntity.registerSurgeEntity(player.getUuid(), maelstrom);
+
+        if (!player.getAbilities().creativeMode) {
+            stack.decrement(1);
+        }
+
+        world.playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 0.8F);
+
+        player.incrementStat(Stats.USED.getOrCreateStat(this));
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+
+        int surgeLevel = EnchantmentHelper.getLevel(ModEnchantments.SURGE, itemStack);
+
+        if (surgeLevel > 0) {
+            if (user.getItemCooldownManager().isCoolingDown(itemStack.getItem())) {
+                return TypedActionResult.fail(itemStack);
+            }
+            user.setCurrentHand(hand);
+            return TypedActionResult.consume(itemStack);
+        }
 
         if (!world.isClient) {
             int remorseLevel = EnchantmentHelper.getLevel(ModEnchantments.REMORSE, itemStack);
@@ -184,8 +239,6 @@ public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSou
         return TypedActionResult.success(itemStack, world.isClient());
     }
 
-
     @Override
     public int getEnchantability() { return 1; }
 }
-

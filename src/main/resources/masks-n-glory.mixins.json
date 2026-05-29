@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AnvilNullKnifeMixin",
+    "AnvilPeripheralMixin",
     "BowParryMixin",
     "CastIronBlockMixin",
     "CastIronIsBlockingMixin",
@@ -46,6 +47,7 @@
     "GreaseTravelMixin",
     "HeldItemFeatureRendererMixin",
     "InGameHudRottingMixin",
+    "PeripheralRenderMixin",
     "SugarRushCameraMixin",
     "SugarRushHudMixin"
   ],

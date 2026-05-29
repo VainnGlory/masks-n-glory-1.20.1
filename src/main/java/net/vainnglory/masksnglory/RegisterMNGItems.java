@@ -5,6 +5,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.vainnglory.masksnglory.cosmetic.GoldenShardItem;
+import net.vainnglory.masksnglory.cosmetic.SheathItem;
 
 import static net.vainnglory.masksnglory.MasksNGlory.*;
 import static net.vainnglory.masksnglory.item.ModItems.*;
@@ -18,6 +19,7 @@ public class RegisterMNGItems {
     private static void registerMNGItems() {
         registerItem("pale_upgrade_template", PALE_TEMPLATE);
         registerItem("golden_shard", GoldenShardItem.INSTANCE);
+        registerItem("sheath", SheathItem.INSTANCE);
     }
 
     public static void registerPaleItems() {

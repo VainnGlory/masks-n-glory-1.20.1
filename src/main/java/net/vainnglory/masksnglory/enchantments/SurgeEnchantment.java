@@ -1,0 +1,32 @@
+package net.vainnglory.masksnglory.enchantments;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentTarget;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.vainnglory.masksnglory.item.ModItems;
+
+public class SurgeEnchantment extends Enchantment {
+    public SurgeEnchantment() {
+        super(Rarity.RARE, EnchantmentTarget.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+    }
+
+    @Override public int getMinPower(int level) { return 25; }
+    @Override public int getMaxLevel() { return 1; }
+    @Override public boolean isTreasure() { return false; }
+    @Override public boolean isAvailableForRandomSelection() { return true; }
+    @Override public boolean isAvailableForEnchantedBookOffer() { return true; }
+
+    @Override
+    public boolean isAcceptableItem(ItemStack stack) {
+        return stack.isOf(ModItems.PALE_SWORD) || stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
+    }
+
+    @Override
+    public boolean canAccept(Enchantment other) {
+        return !(other instanceof RemorseEnchantment)
+                && !(other instanceof HomingEnchantment)
+                && super.canAccept(other);
+    }
+}

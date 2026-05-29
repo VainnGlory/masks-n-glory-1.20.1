@@ -25,7 +25,6 @@
   },
   "item.pride.hit": {
     "sounds": [
-      "masks-n-glory:item/pride_hit_1",
       "masks-n-glory:item/pride_hit_2",
       "masks-n-glory:item/pride_hit_3"
     ],

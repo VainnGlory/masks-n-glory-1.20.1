@@ -142,6 +142,12 @@ public class MasksNGlory implements ModInitializer {
             ExceptionNotCaughtEnchantment.cleanup(id);
             GoldenScrapManager.cleanupOnDisconnect(id);
             GoldenScrapManager.pauseHealthPenalty(id);
+            ActorManager.offScriptActive.remove(id);
+            ActorManager.actorSneakTicks.remove(id);
+            ActorManager.lastDamageTicks.remove(id);
+            ActorManager.offScriptCooldowns.remove(id);
+            ActorManager.sympathyInProgress.remove(id);
+            ActorManager.offScriptAddedInvis.remove(id);
             CastIronManager.setBlocking(handler.player, false);
         });
 
@@ -261,6 +267,7 @@ public class MasksNGlory implements ModInitializer {
                     ActorManager.actorSneakTicks.remove(id);
                     ActorManager.offScriptCooldowns.remove(id);
                     ActorManager.lastDamageTicks.remove(id);
+                    ActorManager.offScriptAddedInvis.remove(id);
                 }
 
                 if (!player.hasStatusEffect(ModEffects.ACTOR)) continue;
@@ -269,9 +276,17 @@ public class MasksNGlory implements ModInitializer {
                     ActorManager.offScriptCooldowns.merge(id, -1, Integer::sum);
                 }
 
-                if (ActorManager.offScriptActive.contains(id) && !player.hasStatusEffect(StatusEffects.INVISIBILITY)) {
-                    ActorManager.offScriptActive.remove(id);
-                    player.removeStatusEffect(ModEffects.OFF_SCRIPT_FLAG);
+                if (ActorManager.offScriptActive.contains(id)) {
+                    if (!player.hasStatusEffect(StatusEffects.INVISIBILITY)) {
+                        ActorManager.offScriptActive.remove(id);
+                        ActorManager.offScriptAddedInvis.remove(id);
+                        player.removeStatusEffect(ModEffects.OFF_SCRIPT_FLAG);
+                    } else if (!player.hasStatusEffect(ModEffects.OFF_SCRIPT_FLAG)) {
+                        ActorManager.offScriptActive.remove(id);
+                        if (ActorManager.offScriptAddedInvis.remove(id)) {
+                            player.removeStatusEffect(StatusEffects.INVISIBILITY);
+                        }
+                    }
                 }
 
                 if (ActorManager.offScriptCooldowns.getOrDefault(id, 0) <= 0 && !ActorManager.offScriptActive.contains(id)) {
@@ -284,6 +299,7 @@ public class MasksNGlory implements ModInitializer {
                             ActorManager.offScriptCooldowns.put(id, 600);
                             if (!player.hasStatusEffect(StatusEffects.INVISIBILITY)) {
                                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 100, 0, false, false, false));
+                                ActorManager.offScriptAddedInvis.add(id);
                             }
                             player.addStatusEffect(new StatusEffectInstance(ModEffects.OFF_SCRIPT_FLAG, 100, 0, false, false, true));
 

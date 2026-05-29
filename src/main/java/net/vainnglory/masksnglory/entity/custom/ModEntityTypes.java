@@ -16,7 +16,7 @@ public class ModEntityTypes {
             FabricEntityTypeBuilder.<MaelstromEntity>create(SpawnGroup.MISC, MaelstromEntity::new)
                     .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
                     .trackRangeBlocks(64)
-                    .trackedUpdateRate(10)
+                    .trackedUpdateRate(1)
                     .build()
     );
 

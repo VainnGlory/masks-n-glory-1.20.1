@@ -17,13 +17,13 @@ public class SkullBreakerEnchantment extends Enchantment {
     public int getMaxLevel() { return 1; }
 
     @Override
-    public boolean isTreasure() { return true; }
+    public boolean isTreasure() { return false; }
 
     @Override
     public boolean isAvailableForEnchantedBookOffer() { return true; }
 
     @Override
-    public boolean isAvailableForRandomSelection() { return false; }
+    public boolean isAvailableForRandomSelection() { return true; }
 
     @Override
     public boolean canAccept(Enchantment other) {

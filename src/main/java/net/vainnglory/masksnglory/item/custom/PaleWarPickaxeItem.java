@@ -31,7 +31,7 @@ public class PaleWarPickaxeItem extends PickaxeItem implements CustomHitSoundIte
     public static final int PULL_TIME = 25;
     private static final int MAX_SHOTS = 10;
     private static final int FIRE_INTERVAL = 2;
-    private static final int COOLDOWN_TICKS = 200;
+    private static final int COOLDOWN_TICKS = 100;
 
     private static final String LOADED_KEY = "MNG_Artillery_Loaded";
     private static final String SHOTS_KEY = "MNG_Artillery_Shots";

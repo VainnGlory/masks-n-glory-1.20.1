@@ -1,5 +1,9 @@
 package net.vainnglory.masksnglory.entity.custom;
 
+import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -12,6 +16,8 @@ import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -39,8 +45,13 @@ public class MaelstromEntity extends PersistentProjectileEntity {
             DataTracker.registerData(MaelstromEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> REMORSE_STUCK =
             DataTracker.registerData(MaelstromEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> SURGE =
+            DataTracker.registerData(MaelstromEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     private static final Map<UUID, MaelstromEntity> activeRemorseEntities = new HashMap<>();
+    private static final Map<UUID, MaelstromEntity> activeSurgeEntities = new HashMap<>();
+    private final Deque<Vec3d> trailPositions = new ArrayDeque<>();
+    private static final int TRAIL_MAX = 24;
 
     private ItemStack swordStack;
     private Vec3d startPos;
@@ -50,6 +61,8 @@ public class MaelstromEntity extends PersistentProjectileEntity {
 
     private UUID stuckTargetUUID;
     private int remorseTimer = 0;
+    private int boostCooldown = 0;
+    private int ownerSelectedSlot = -1;
 
     private final Set<UUID> nearbyFireworkIds = new HashSet<>();
 
@@ -72,6 +85,7 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         this.dataTracker.startTracking(HOMING, false);
         this.dataTracker.startTracking(REMORSE, false);
         this.dataTracker.startTracking(REMORSE_STUCK, false);
+        this.dataTracker.startTracking(SURGE, false);
     }
 
     public boolean isReturning() { return this.dataTracker.get(RETURNING); }
@@ -82,8 +96,11 @@ public class MaelstromEntity extends PersistentProjectileEntity {
     public void setRemorse(boolean v) { this.dataTracker.set(REMORSE, v); }
     public boolean isRemorseStuck() { return this.dataTracker.get(REMORSE_STUCK); }
     public void setRemorseStuck(boolean v) { this.dataTracker.set(REMORSE_STUCK, v); }
+    public boolean isSurge() { return this.dataTracker.get(SURGE); }
+    public void setSurge(boolean v) { this.dataTracker.set(SURGE, v); }
 
     public void setHomingTargetUUID(UUID uuid) { this.homingTargetUUID = uuid; }
+    public void setOwnerSelectedSlot(int slot) { this.ownerSelectedSlot = slot; }
 
     public static MaelstromEntity getActiveRemorseEntity(UUID ownerUUID) {
         MaelstromEntity entity = activeRemorseEntities.get(ownerUUID);
@@ -94,10 +111,28 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         return entity;
     }
 
+    public static MaelstromEntity getActiveSurgeEntity(UUID ownerUUID) {
+        MaelstromEntity entity = activeSurgeEntities.get(ownerUUID);
+        if (entity != null && entity.isRemoved()) {
+            activeSurgeEntities.remove(ownerUUID);
+            return null;
+        }
+        return entity;
+    }
+
+    public List<Vec3d> getTrailPositions() {
+        return new ArrayList<>(trailPositions);
+    }
+
+    public static void registerSurgeEntity(UUID ownerUUID, MaelstromEntity entity) {
+        activeSurgeEntities.put(ownerUUID, entity);
+    }
+
     @Override
     public void remove(RemovalReason reason) {
         if (this.getOwner() != null) {
             activeRemorseEntities.remove(this.getOwner().getUuid());
+            activeSurgeEntities.remove(this.getOwner().getUuid());
         }
         super.remove(reason);
     }
@@ -127,14 +162,81 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         this.noClip = true;
     }
 
+    public boolean triggerBoost(PlayerEntity player) {
+        if (this.getWorld().isClient) return false;
+        if (boostCooldown > 0) return false;
+
+        Vec3d lookDir = player.getRotationVec(1.0F);
+        Vec3d boostDir = lookDir;
+
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            Vec3d eyePos = player.getEyePos();
+            LivingEntity nearest = null;
+            double bestDot = Math.cos(Math.toRadians(30));
+
+            for (LivingEntity e : serverWorld.getEntitiesByClass(LivingEntity.class,
+                    new Box(eyePos.x, eyePos.y, eyePos.z, eyePos.x, eyePos.y, eyePos.z).expand(20),
+                    e -> e != player && !e.isDead())) {
+                Vec3d toEntity = e.getEyePos().subtract(eyePos).normalize();
+                double dot = toEntity.dotProduct(lookDir);
+                if (dot > bestDot) {
+                    bestDot = dot;
+                    nearest = e;
+                }
+            }
+
+            if (nearest != null) {
+                Vec3d targetCenter = nearest.getPos().add(0, nearest.getHeight() * 0.5, 0);
+                boostDir = targetCenter.subtract(this.getPos()).normalize();
+            }
+        }
+
+        double boostSpeed = Math.min(Math.max(this.getVelocity().length(), 2.5) + 1.0, 4.0);
+        this.setVelocity(boostDir.multiply(boostSpeed));
+        this.noClip = false;
+        setReturning(false);
+
+        ticksInAir = 0;
+        boostCooldown = 40;
+
+        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 0.8F, 1.5F);
+
+        return true;
+    }
+
     @Override
     public void tick() {
+        if (this.getWorld().isClient) {
+            trailPositions.addFirst(this.getPos());
+            if (trailPositions.size() > TRAIL_MAX) trailPositions.removeLast();
+        }
         if (startPos == null) {
             startPos = this.getPos();
         }
 
         if (!this.getWorld().isClient && isRemorse() && this.getOwner() instanceof PlayerEntity owner) {
             activeRemorseEntities.putIfAbsent(owner.getUuid(), this);
+        }
+
+        if (!this.getWorld().isClient && isSurge() && this.getOwner() instanceof PlayerEntity owner) {
+            activeSurgeEntities.putIfAbsent(owner.getUuid(), this);
+
+            if (ticksInAir == 0 && owner instanceof ServerPlayerEntity spe && ownerSelectedSlot >= 0) {
+                ItemStack phantom = swordStack.copy();
+                phantom.setCount(1);
+                phantom.getOrCreateNbt().putBoolean("SurgeActive", true);
+                phantom.getOrCreateNbt().putInt("CustomModelData", 1);
+                owner.getInventory().setStack(ownerSelectedSlot, phantom);
+                spe.networkHandler.sendPacket(
+                        new ScreenHandlerSlotUpdateS2CPacket(-2, 0, ownerSelectedSlot, phantom));
+            }
+
+            if (owner.isUsingItem() && owner.getActiveItem().isOf(ModItems.PALE_SWORD)
+                    && boostCooldown == 0) {
+                triggerBoost(owner);
+                owner.stopUsingItem();
+            }
         }
 
         if (isRemorseStuck()) {
@@ -171,6 +273,8 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         this.inGround = false;
         ticksInAir++;
 
+        if (boostCooldown > 0) boostCooldown--;
+
         if (!this.getWorld().isClient && !isReturning() && !isRemorseStuck()) {
             checkForFireworkExplosion();
         }
@@ -179,15 +283,37 @@ public class MaelstromEntity extends PersistentProjectileEntity {
             applyHomingGuidance();
         }
 
-        int maxDist  = isHoming() ? 50 : 35;
-        int maxTicks = isHoming() ? 100 : 40;
-        if (!isReturning() && startPos != null &&
-                (distanceTo(startPos) > maxDist || ticksInAir > maxTicks)) {
-            setReturning(true);
+        if (!isReturning()) {
+            if (isSurge() && this.getOwner() instanceof PlayerEntity surgeOwner) {
+                if (distanceTo(surgeOwner.getPos()) > 50 || ticksInAir > 200) {
+                    setReturning(true);
+                }
+            } else {
+                int maxDist  = isHoming() ? 50 : 35;
+                int maxTicks = isHoming() ? 100 : 40;
+                if (startPos != null && (distanceTo(startPos) > maxDist || ticksInAir > maxTicks)) {
+                    setReturning(true);
+                }
+            }
         }
 
         if (isReturning()) {
             this.noClip = true;
+        }
+
+        if (isReturning() && !this.getWorld().isClient && this.getOwner() == null) {
+            this.discard();
+            return;
+        }
+
+        if (isSurge() && !isReturning() && this.getOwner() instanceof PlayerEntity surgeOwner) {
+            Vec3d lookDir = surgeOwner.getRotationVec(1.0F);
+            Vec3d vel = this.getVelocity();
+            double speed = vel.length();
+            if (speed > 0.1) {
+                Vec3d steered = vel.normalize().multiply(0.85).add(lookDir.multiply(0.15)).normalize();
+                this.setVelocity(steered.multiply(speed / 0.99));
+            }
         }
 
         if (isReturning() && this.getOwner() instanceof PlayerEntity owner) {
@@ -207,17 +333,26 @@ public class MaelstromEntity extends PersistentProjectileEntity {
 
                 if (this.distanceTo(owner) < 2.0) {
                     this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 1.0F, 1.0F);
-                    if (!isRemorse()) {
+                    if (!isRemorse() && !isSurge()) {
                         if (!owner.getInventory().insertStack(swordStack)) {
                             owner.dropItem(swordStack, false);
                         }
-                    } else {
+                    } else if (isRemorse()) {
                         for (int i = 0; i < owner.getInventory().size(); i++) {
                             ItemStack s = owner.getInventory().getStack(i);
                             if (s.hasNbt() && s.getNbt().getBoolean("RemorseActive")) {
                                 s.getNbt().remove("RemorseActive");
                                 owner.getItemCooldownManager().set(s.getItem(), 100);
                                 break;
+                            }
+                        }
+                    } else {
+                        if (ownerSelectedSlot >= 0) {
+                            owner.getInventory().setStack(ownerSelectedSlot, swordStack);
+                            owner.getItemCooldownManager().set(swordStack.getItem(), 120);
+                            if (owner instanceof ServerPlayerEntity spe) {
+                                spe.networkHandler.sendPacket(
+                                        new ScreenHandlerSlotUpdateS2CPacket(-2, 0, ownerSelectedSlot, swordStack));
                             }
                         }
                     }
@@ -316,22 +451,23 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         if (this.getWorld().isClient) return;
 
         Entity hit = entityHitResult.getEntity();
-        if (!(hit instanceof LivingEntity target) || hit == this.getOwner()) return;
+        Entity owner = this.getOwner();
+        if (!(hit instanceof LivingEntity target) || hit == owner) return;
 
         if (isRemorse() && !isReturning() && !isRemorseStuck()) {
-            target.damage(this.getDamageSources().trident(this, this.getOwner()), 5.0F);
+            target.damage(this.getDamageSources().trident(this, owner), 5.0F);
             stuckTargetUUID = target.getUuid();
             setRemorseStuck(true);
             this.setVelocity(Vec3d.ZERO);
             this.noClip = true;
-            if (this.getOwner() != null) {
-                activeRemorseEntities.put(this.getOwner().getUuid(), this);
+            if (owner != null) {
+                activeRemorseEntities.put(owner.getUuid(), this);
             }
             return;
         }
 
         if (isHoming() && !isReturning()) {
-            target.damage(this.getDamageSources().trident(this, this.getOwner()), 4.0F);
+            target.damage(this.getDamageSources().trident(this, owner), 4.0F);
             target.addStatusEffect(new StatusEffectInstance(
                     ModEffects.PINNING, 300, 0, false, true, true));
             setReturning(true);
@@ -339,7 +475,14 @@ public class MaelstromEntity extends PersistentProjectileEntity {
             return;
         }
 
-        target.damage(this.getDamageSources().trident(this, this.getOwner()), 8.0F);
+        if (isSurge() && !isReturning()) {
+            target.damage(this.getDamageSources().trident(this, owner), 10.0F);
+            setReturning(true);
+            this.noClip = true;
+            return;
+        }
+
+        target.damage(this.getDamageSources().trident(this, owner), 8.0F);
 
         if (isReturning()) {
             this.noClip = true;
@@ -350,6 +493,7 @@ public class MaelstromEntity extends PersistentProjectileEntity {
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
+        if (this.getWorld().isClient) return;
         if (isReturning() || isRemorseStuck()) return;
         this.setVelocity(this.getVelocity().multiply(-0.25));
         setReturning(true);
@@ -407,8 +551,11 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         nbt.putBoolean("Homing", isHoming());
         nbt.putBoolean("Remorse", isRemorse());
         nbt.putBoolean("RemorseStuck", isRemorseStuck());
+        nbt.putBoolean("Surge", isSurge());
         nbt.putInt("TicksInAir", ticksInAir);
         nbt.putInt("RemorseTimer", remorseTimer);
+        nbt.putInt("BoostCooldown", boostCooldown);
+        nbt.putInt("OwnerSelectedSlot", ownerSelectedSlot);
         if (startPos != null) {
             nbt.putDouble("StartX", startPos.x);
             nbt.putDouble("StartY", startPos.y);
@@ -428,8 +575,11 @@ public class MaelstromEntity extends PersistentProjectileEntity {
         setHoming(nbt.getBoolean("Homing"));
         setRemorse(nbt.getBoolean("Remorse"));
         setRemorseStuck(nbt.getBoolean("RemorseStuck"));
+        setSurge(nbt.getBoolean("Surge"));
         ticksInAir = nbt.getInt("TicksInAir");
         remorseTimer = nbt.getInt("RemorseTimer");
+        boostCooldown = nbt.getInt("BoostCooldown");
+        if (nbt.contains("OwnerSelectedSlot")) ownerSelectedSlot = nbt.getInt("OwnerSelectedSlot");
         if (nbt.contains("StartX")) {
             this.startPos = new Vec3d(
                     nbt.getDouble("StartX"),

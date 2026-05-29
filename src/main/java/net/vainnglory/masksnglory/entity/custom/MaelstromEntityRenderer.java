@@ -1,5 +1,6 @@
 package net.vainnglory.masksnglory.entity.custom;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -9,6 +10,7 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 
 public class MaelstromEntityRenderer extends EntityRenderer<MaelstromEntity> {
     private final ItemRenderer itemRenderer;
@@ -19,19 +21,19 @@ public class MaelstromEntityRenderer extends EntityRenderer<MaelstromEntity> {
     }
 
     @Override
-    public void render(MaelstromEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        matrices.push();
+    public void render(MaelstromEntity entity, float yaw, float tickDelta, MatrixStack matrices,
+                       VertexConsumerProvider vertexConsumers, int light) {
+        Vec3d camPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+        RibbonTrailRenderer.render(entity.getTrailPositions(), entity.getPos(), camPos, matrices, vertexConsumers, light, 220);
 
+        matrices.push();
         if (entity.isRemorseStuck()) {
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(45.0F));
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(30.0F));
         } else {
-            float rotation = (entity.age + tickDelta) * 90.0F;
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((entity.age + tickDelta) * 90.0F));
         }
-
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90.0F));
-
         this.itemRenderer.renderItem(
                 entity.asItemStack(),
                 ModelTransformationMode.GROUND,
@@ -42,7 +44,6 @@ public class MaelstromEntityRenderer extends EntityRenderer<MaelstromEntity> {
                 entity.getWorld(),
                 entity.getId()
         );
-
         matrices.pop();
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
     }

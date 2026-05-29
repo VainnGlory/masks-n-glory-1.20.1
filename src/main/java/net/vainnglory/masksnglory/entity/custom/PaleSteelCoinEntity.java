@@ -1,5 +1,9 @@
 package net.vainnglory.masksnglory.entity.custom;
 
+import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -15,6 +19,8 @@ public class PaleSteelCoinEntity extends Entity {
 
     private static final double GRAVITY = 0.015;
     private static final double DRAG = 0.99;
+    private final Deque<Vec3d> trailPositions = new ArrayDeque<>();
+    private static final int TRAIL_MAX = 24;
 
     public PaleSteelCoinEntity(EntityType<? extends PaleSteelCoinEntity> type, World world) {
         super(type, world);
@@ -41,6 +47,10 @@ public class PaleSteelCoinEntity extends Entity {
 
     @Override
     public void tick() {
+        if (this.getWorld().isClient) {
+            trailPositions.addFirst(this.getPos());
+            if (trailPositions.size() > TRAIL_MAX) trailPositions.removeLast();
+        }
         super.tick();
 
         Vec3d vel = this.getVelocity();
@@ -57,6 +67,10 @@ public class PaleSteelCoinEntity extends Entity {
                 dropCoin();
             }
         }
+    }
+
+    public List<Vec3d> getTrailPositions() {
+        return new ArrayList<>(trailPositions);
     }
 
     private void dropCoin() {

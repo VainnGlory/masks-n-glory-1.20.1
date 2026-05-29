@@ -20,6 +20,7 @@ public class ModEnchantments {
     public static Enchantment UNDEAD = new UndeadArmyEnchantment();
     public static Enchantment HOMING = new HomingEnchantment();
     public static Enchantment REMORSE = new RemorseEnchantment();
+    public static Enchantment SURGE = new SurgeEnchantment();
     public static Enchantment STUNT_DOUBLE = new StuntDoubleEnchantment();
     public static Enchantment AFTERLIFE = new AfterlifeEnchantment();
     public static Enchantment RISK = new RiskEnchantment();
@@ -33,6 +34,7 @@ public class ModEnchantments {
     public static Enchantment GREASE = new GreaseEnchantment();
     public static Enchantment ARTILLERY = new ArtilleryEnchantment();
     public static Enchantment PLUMMET = new PlummetEnchantment();
+    public static Enchantment PERIPHERAL = new PeripheralEnchantment();
 
     public static void registerEnchantments() {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "fear"), FEAR);
@@ -49,6 +51,7 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "undead"), UNDEAD);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "homing"), HOMING);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "remorse"), REMORSE);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "surge"), SURGE);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "stunt_double"), STUNT_DOUBLE);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "afterlife"), AFTERLIFE);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "risk"), RISK);
@@ -62,6 +65,7 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "grease"), GREASE);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "artillery"), ARTILLERY);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "plummet"), PLUMMET);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "peripheral"), PERIPHERAL);
     }
 }
 
