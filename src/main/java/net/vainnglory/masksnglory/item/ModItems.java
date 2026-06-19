@@ -45,7 +45,7 @@ public class ModItems {
     public static final Item DUST = registerItem("dust", new Item(new FabricItemSettings().rarity(Rarity.COMMON)));
 
     public static final Item EGO_MASK = registerItem("ego_mask",
-        new ModArmorItem(ModArmorMaterials.ESHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
+            new ModArmorItem(ModArmorMaterials.ESHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
     public static final Item DMAN_MASK = registerItem("d_man_mask",
             new ModArmorItem(ModArmorMaterials.DSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item BLANK_MASK = registerItem("blank_mask",
@@ -82,7 +82,9 @@ public class ModItems {
             new ModArmorItem(ModArmorMaterials.DVSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
     public static final Item STONEI_MASK = registerItem("stonei_mask",
             new ModArmorItem(ModArmorMaterials.STSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
-
+    public static final Item ROSENSHARD = registerItem("rosenshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
+    public static final Item ROSEN_BLINDFOLD = registerItem("rosen_blindfold",
+            new ModArmorItem(ModArmorMaterials.ROSENM, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
 
     public static final Item PALE_HELMET = registerItem("pale_helmet",
             new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
@@ -95,46 +97,32 @@ public class ModItems {
     public static final Item RET_HELMET = registerItem("ret_helmet",
             new RetributionHelmet(ModArmorMaterials.GOLDEN, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.GOLDEN));
 
-
-
     public static final Item RUSTED_SWORD = registerItem("rusted_sword",
             new RustedSwordItem(ModToolMaterial.RUSTED, 3 , -2.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.BONE));
-
     public static final Item GOLDEN_PAN = registerItem("golden_pan",
             new GoldenPanItem(ModToolMaterial.RUSTED,0, -1.8f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.GOLDEN));
-
     public static final Item PALE_SWORD = registerItem("pale_sword",
             new PaleSwordItem(ModToolMaterial.RUSTED, 4 , -2.8f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
-
     public static final Item BONE_KNIFE = registerItem("bone_knife",
             new BoneKnifeItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.BONE));
-
     public static final Item GLAIVE = registerItem("glaive",
             new GlaiveItem(ModToolMaterial.RUSTED,1, -1.2f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
-
     public static final Item PRIDE = registerItem("pride",
             new PrideItem(ModToolMaterial.RUSTED,3, -2.4f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE, 3));
-
     public static final Item NULL_KNIFE = registerItem("null_knife",
             new NullKnifeItem(ModToolMaterial.RUSTED, new FabricItemSettings().maxCount(1).fireproof()));
-
     public static final Item ASH_CHARGE = registerItem("ash_charge",
             new AshChargeItem(new FabricItemSettings().rarity(Rarity.RARE).maxCount(64).fireproof()));
-
     public static final Item PALE_STEEL_COIN = registerItem("pale_steel_coin",
             new PaleSteelCoinItem(new FabricItemSettings().maxCount(4), ModRarities.PALE));
-
     public static final Item HUNTERS_SATCHEL = registerItem("hunters_satchel",
             new HuntersSatchelItem(new FabricItemSettings()));
-
     public static final Item WARDEN = registerItem("warden",
             new WardenItem(new FabricItemSettings().maxCount(1).fireproof()));
-
     public static final Item PALE_WAR_PICKAXE = registerItem("pale_war_pickaxe",
             new PaleWarPickaxeItem(ModToolMaterial.RUSTED, 3, -2.4f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
-
-
-
+    public static final Item PANICKEDLY_CARVED_WOODEN_SWORD = registerItem("panickedly_carved_wooden_sword",
+            new PanickEdlyCarvedWoodenSword(new FabricItemSettings().maxCount(1)));
 
     public static final Item PALE_TEMPLATE = PaleTemplateItem.createPaleUpgrade();
 
@@ -147,7 +135,9 @@ public class ModItems {
     public static final Item GILDED_HEART = registerItem("gilded_heart", new GildedHeartItem(new FabricItemSettings().maxCount(1).food(ModFoodComponents.GILDED_HEART).rarity(Rarity.EPIC)));
     public static final Item MARROWED_BONES = registerItem("marrowed_bones", new Item(new FabricItemSettings().food(ModFoodComponents.MARROWED_BONES)));
     public static final Item COOKED_BONES = registerItem("cooked_bones", new CookedBonesItem(new FabricItemSettings()));
+    public static final Item ORIGINAL_AIR_BOTTLE = registerItem("original_air_bottle", new Item(new FabricItemSettings().maxCount(16)));
 
+    public static final Item AMALGAM = registerItem("amalgam", new AmalgamItem(new FabricItemSettings().maxCount(1).maxDamage(2100).fireproof(), ModRarities.PALE));
 
     private static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
         entries.add(ESHARD);
@@ -163,6 +153,7 @@ public class ModItems {
         entries.add(DVSHARD);
         entries.add(HHSHARD);
         entries.add(STSHARD);
+        entries.add(AMALGAM);
     }
 
     private static Item registerItem(String name, Item item) {
@@ -171,7 +162,6 @@ public class ModItems {
 
     public static void registerModItems() {
         MasksNGlory.LOGGER.info("That one rat jumping at your face " + MasksNGlory.MOD_ID);
-
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(ModItems::addItemsToIngredientItemGroup);
     }
 }

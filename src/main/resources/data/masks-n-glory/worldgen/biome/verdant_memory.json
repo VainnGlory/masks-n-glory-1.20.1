@@ -1,0 +1,43 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.7,
+  "downfall": 0.4,
+  "effects": {
+    "sky_color": 8714963,
+    "fog_color": 12763625,
+    "water_color": 3847081,
+    "water_fog_color": 3847081,
+    "grass_color": 10346375,
+    "foliage_color": 9362531,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "spawners": {
+    "monster": [],
+    "creature": [],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [
+    [], [], [], [], [], [], [], [], [],
+    [
+      "masks-n-glory:verdant_memory_trees",
+      "masks-n-glory:verdant_memory_grass",
+      "masks-n-glory:verdant_memory_tall_grass",
+      "masks-n-glory:verdant_memory_lily",
+      "masks-n-glory:verdant_memory_stones",
+      "masks-n-glory:verdant_memory_monolith"
+    ],
+    []
+  ]
+}

@@ -60,6 +60,26 @@ public class ModEntityTypes {
                     .build()
     );
 
+    public static final EntityType<ArmorStandThingEntity> ARMOR_STAND_THING_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MasksNGlory.MOD_ID, "armor_stand_thing"),
+            FabricEntityTypeBuilder.<ArmorStandThingEntity>create(SpawnGroup.MONSTER, ArmorStandThingEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.5F, 1.975F))
+                    .trackRangeBlocks(80)
+                    .trackedUpdateRate(3)
+                    .build()
+    );
+
+    public static final EntityType<WatcherEntity> WATCHER_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MasksNGlory.MOD_ID, "watcher"),
+            FabricEntityTypeBuilder.<WatcherEntity>create(SpawnGroup.CREATURE, WatcherEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.6F, 1.8F))
+                    .trackRangeBlocks(64)
+                    .trackedUpdateRate(3)
+                    .build()
+    );
+
     public static void registerEntityTypes() {}
 
     public static void registerModEntities() {

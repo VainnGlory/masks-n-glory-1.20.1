@@ -1,0 +1,13 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "masks-n-glory:item/panickedly_carved_wooden_sword"
+  },
+  "overrides": [
+    { "predicate": { "masks-n-glory:inserted": 0.1 }, "model": "masks-n-glory:item/panickedly_carved_wooden_sword_charged" },
+    { "predicate": { "masks-n-glory:inserted": 0.2 }, "model": "masks-n-glory:item/panickedly_carved_wooden_sword_charged" },
+    { "predicate": { "masks-n-glory:inserted": 0.3 }, "model": "masks-n-glory:item/panickedly_carved_wooden_sword_charged" },
+    { "predicate": { "masks-n-glory:inserted": 0.4 }, "model": "masks-n-glory:item/panickedly_carved_wooden_sword_charged" },
+    { "predicate": { "masks-n-glory:inserted": 0.5 }, "model": "masks-n-glory:item/panickedly_carved_wooden_sword_charged" }
+  ]
+}

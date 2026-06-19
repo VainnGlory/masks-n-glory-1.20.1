@@ -289,7 +289,7 @@ public class MaelstromEntity extends PersistentProjectileEntity {
                     setReturning(true);
                 }
             } else {
-                int maxDist  = isHoming() ? 50 : 35;
+                int maxDist = isHoming() ? 50 : 35;
                 int maxTicks = isHoming() ? 100 : 40;
                 if (startPos != null && (distanceTo(startPos) > maxDist || ticksInAir > maxTicks)) {
                     setReturning(true);
@@ -587,6 +587,6 @@ public class MaelstromEntity extends PersistentProjectileEntity {
                     nbt.getDouble("StartZ"));
         }
         if (nbt.containsUuid("HomingTargetUUID")) homingTargetUUID = nbt.getUuid("HomingTargetUUID");
-        if (nbt.containsUuid("StuckTargetUUID"))  stuckTargetUUID  = nbt.getUuid("StuckTargetUUID");
+        if (nbt.containsUuid("StuckTargetUUID")) stuckTargetUUID = nbt.getUuid("StuckTargetUUID");
     }
 }

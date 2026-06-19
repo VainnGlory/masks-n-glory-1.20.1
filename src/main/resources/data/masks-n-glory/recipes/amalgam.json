@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RRR",
+    "RAR",
+    "RRR"
+  ],
+  "key": {
+    "R": { "item": "masks-n-glory:rust" },
+    "A": { "item": "masks-n-glory:original_air_bottle" }
+  },
+  "result": {
+    "item": "masks-n-glory:amalgam",
+    "count": 1
+  }
+}

@@ -22,12 +22,11 @@ import net.vainnglory.masksnglory.cosmetic.SheathLayer;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.entity.client.MaelstromModel;
 import net.vainnglory.masksnglory.entity.client.ModModelLayers;
+import net.vainnglory.masksnglory.entity.client.WatcherRenderer;
 import net.vainnglory.masksnglory.entity.custom.*;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.PaleWarPickaxeItem;
-import net.vainnglory.masksnglory.util.FlashEffectPacket;
-import net.vainnglory.masksnglory.util.FlashOverlayRenderer;
-import net.vainnglory.masksnglory.util.ModKeybindings;
+import net.vainnglory.masksnglory.util.*;
 
 public class MasksNGloryclient implements ClientModInitializer {
     @Override
@@ -46,6 +45,8 @@ public class MasksNGloryclient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntityTypes.SOUL_RAVAGER_TYPE, RavagerEntityRenderer::new);
         EntityRendererRegistry.register(ModEntityTypes.SOUL_PROJECTILE_TYPE, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(ModEntityTypes.SHEAR_PROJECTILE_TYPE, ShearProjectileRenderer::new);
+        EntityRendererRegistry.register(ModEntityTypes.ARMOR_STAND_THING_TYPE, ArmorStandThingRenderer::new);
+        EntityRendererRegistry.register(ModEntityTypes.WATCHER_TYPE, WatcherRenderer::new);
 
         ModelPredicateProviderRegistry.register(ModItems.PALE_WAR_PICKAXE, new Identifier("artillery"),
                 (stack, world, entity, seed) ->
@@ -76,9 +77,29 @@ public class MasksNGloryclient implements ClientModInitializer {
                                 && PaleWarPickaxeItem.isLoaded(stack) ? 1.0f : 0.0f
         );
 
+        ModelPredicateProviderRegistry.register(
+                ModItems.PANICKEDLY_CARVED_WOODEN_SWORD,
+                new Identifier("masks-n-glory", "inserted"),
+                (stack, world, entity, seed) -> {
+                    if (!stack.hasNbt() || !stack.getNbt().contains("InsertedItem")) return 0.0f;
+                    return switch (stack.getNbt().getString("InsertedItem")) {
+                        case "minecraft:heart_of_the_sea" -> 0.1f;
+                        case "minecraft:ender_eye" -> 0.2f;
+                        case "minecraft:ghast_tear" -> 0.3f;
+                        case "masks-n-glory:void" -> 0.4f;
+                        case "masks-n-glory:rust" -> 0.5f;
+                        default -> 0.0f;
+                    };
+                }
+        );
+
         ModKeybindings.register();
         FlashEffectPacket.registerClientReceiver();
         FlashOverlayRenderer.register();
+        FarlandsAmbientManager.register();
+        VerdantAmbientManager.register();
+        FarlandsMusicManager.register();
+        FarlandsNullOverlayRenderer.register();
 
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, renderer, registrationHelper, context) -> {
             if (entityType == EntityType.PLAYER) {
@@ -92,4 +113,3 @@ public class MasksNGloryclient implements ClientModInitializer {
         });
     }
 }
-

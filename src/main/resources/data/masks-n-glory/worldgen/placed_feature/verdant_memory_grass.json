@@ -1,0 +1,9 @@
+{
+  "feature": "masks-n-glory:verdant_memory_grass",
+  "placement": [
+    { "type": "minecraft:noise_threshold_count", "noise_level": -0.3, "below_noise": 0, "above_noise": 5 },
+    { "type": "minecraft:in_square" },
+    { "type": "minecraft:heightmap", "heightmap": "MOTION_BLOCKING_NO_LEAVES" },
+    { "type": "minecraft:biome" }
+  ]
+}

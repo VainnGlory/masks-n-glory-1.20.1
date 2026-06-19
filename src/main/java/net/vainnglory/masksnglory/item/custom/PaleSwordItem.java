@@ -186,7 +186,7 @@ public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSou
 
         if (!world.isClient) {
             int remorseLevel = EnchantmentHelper.getLevel(ModEnchantments.REMORSE, itemStack);
-            int homingLevel  = EnchantmentHelper.getLevel(ModEnchantments.HOMING, itemStack);
+            int homingLevel = EnchantmentHelper.getLevel(ModEnchantments.HOMING, itemStack);
 
             if (remorseLevel > 0) {
                 MaelstromEntity existing = MaelstromEntity.getActiveRemorseEntity(user.getUuid());

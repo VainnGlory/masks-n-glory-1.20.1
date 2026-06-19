@@ -80,6 +80,14 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
+    @Inject(method = "dropEquipment", at = @At(value = "TAIL"))
+    private void masksnglory$dropRshard(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo ci) {
+        if (source.getAttacker() instanceof PlayerEntity
+                && getUuidAsString().equals("d406faf7-51bd-4c99-930d-0613942d56d8")) {
+            dropStack(new ItemStack(ModItems.ROSENSHARD));
+        }
+    }
+
     @Inject(method = "damage", at = @At("TAIL"))
     private void masksnglory$retributionHelmetCharge(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;

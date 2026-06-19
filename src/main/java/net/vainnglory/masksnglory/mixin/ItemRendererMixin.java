@@ -89,6 +89,24 @@ public abstract class ItemRendererMixin {
         }
         return value;
     }
+
+    @ModifyVariable(method = "renderItem", at = @At(value = "HEAD"), argsOnly = true)
+    public BakedModel usePanickEdlySwordModel(BakedModel value, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        if (!stack.isOf(ModItems.PANICKEDLY_CARVED_WOODEN_SWORD)) return value;
+        if (renderMode == ModelTransformationMode.GUI) return value;
+        if (!net.vainnglory.masksnglory.item.custom.PanickEdlyCarvedWoodenSword.hasInserted(stack)) return value;
+        String detailName = switch (net.vainnglory.masksnglory.item.custom.PanickEdlyCarvedWoodenSword.getInserted(stack)) {
+            case net.vainnglory.masksnglory.item.custom.PanickEdlyCarvedWoodenSword.ID_HEART_OF_SEA -> "panickedly_carved_wooden_sword_detail_eye_of_sea";
+            case net.vainnglory.masksnglory.item.custom.PanickEdlyCarvedWoodenSword.ID_ENDER_EYE   -> "panickedly_carved_wooden_sword_detail_ender_eye";
+            case net.vainnglory.masksnglory.item.custom.PanickEdlyCarvedWoodenSword.ID_GHAST_TEAR  -> "panickedly_carved_wooden_sword_detail_ghast_tear";
+            case net.vainnglory.masksnglory.item.custom.PanickEdlyCarvedWoodenSword.ID_VOID        -> "panickedly_carved_wooden_sword_detail_void";
+            case net.vainnglory.masksnglory.item.custom.PanickEdlyCarvedWoodenSword.ID_RUST        -> "panickedly_carved_wooden_sword_detail_rust";
+            default -> null;
+        };
+        if (detailName == null) return value;
+        return ((ItemRendererAccessor) this).mccourse$getModels().getModelManager()
+                .getModel(new ModelIdentifier(MasksNGlory.MOD_ID, detailName, "inventory"));
+    }
 }
 
 

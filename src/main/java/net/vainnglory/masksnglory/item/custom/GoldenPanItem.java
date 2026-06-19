@@ -122,6 +122,17 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         return this.attackDamage;
     }
 
+    private static float effectiveFallDistance(LivingEntity entity) {
+        float fd = entity.fallDistance;
+        if (fd < PLUMMET_MIN_FALL && !entity.isOnGround()) {
+            double vy = entity.getVelocity().y;
+            if (vy < -0.5) {
+                fd = Math.min((float)(vy * vy * 6.25), 20.0f);
+            }
+        }
+        return fd;
+    }
+
     @Override
     public Text getName(ItemStack stack) {
         Text baseName = super.getName(stack);
@@ -382,15 +393,16 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                     long currentTick = player.getServerWorld().getTime();
                     List<LivingEntity> nearbyTargets = player.getServerWorld().getNonSpectatingEntities(
                             LivingEntity.class,
-                            player.getBoundingBox().expand(8.0)
+                            player.getBoundingBox().expand(7.0)
                     );
                     for (LivingEntity nearbyTarget : nearbyTargets) {
                         if (nearbyTarget == player) continue;
-                        if (nearbyTarget.fallDistance >= PLUMMET_MIN_FALL) {
+                        float eff = effectiveFallDistance(nearbyTarget);
+                        if (eff >= PLUMMET_MIN_FALL) {
                             FallSnapshot existing = recentFallData.get(nearbyTarget);
                             float peak = (existing != null)
-                                    ? Math.max(existing.peakDistance(), nearbyTarget.fallDistance)
-                                    : nearbyTarget.fallDistance;
+                                    ? Math.max(existing.peakDistance(), eff)
+                                    : eff;
                             recentFallData.put(nearbyTarget, new FallSnapshot(peak, currentTick));
                         }
                     }
@@ -463,13 +475,13 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 if (EnchantmentHelper.getLevel(ModEnchantments.PLUMMET, capturedWeapon) > 0) {
                     long currentTick = serverWorld.getTime();
                     FallSnapshot snapshot = recentFallData.get(capturedTarget);
-                    float effectiveFall = capturedTarget.fallDistance;
+                    float effectiveFall = effectiveFallDistance(capturedTarget);
                     if (snapshot != null && currentTick - snapshot.tick() <= PLUMMET_WINDOW_TICKS) {
                         effectiveFall = Math.max(effectiveFall, snapshot.peakDistance());
                     }
                     if (effectiveFall >= PLUMMET_MIN_FALL) {
                         final float finalEffectiveFall = effectiveFall;
-                        final float plummetBonus = (finalEffectiveFall * 3.2f + 8.0f) * getDentMultiplier(capturedWeapon);
+                        final float plummetBonus = (finalEffectiveFall * 3.2f + 4.0f) * getDentMultiplier(capturedWeapon);
                         final Vec3d capturedLookVec = player.getRotationVec(1.0f);
                         recentFallData.remove(capturedTarget);
                         pendingSlams.offer(() -> {
@@ -539,8 +551,8 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             float dentMultiplier = getDentMultiplier(weapon);
 
             final float baseFallBonus = fallDistance * 0.7f;
-            final float skullBonus    = skullLevel > 0 ? fallDistance * 2.50f * skullLevel + 8.0f : 0f;
-            final float totalBonus    = (baseFallBonus + skullBonus) * dentMultiplier;
+            final float skullBonus = skullLevel > 0 ? fallDistance * 2.50f * skullLevel + 8.0f : 0f;
+            final float totalBonus = (baseFallBonus + skullBonus) * dentMultiplier;
 
             int currentDents = getDents(weapon);
             if (currentDents < MAX_DENTS) {
@@ -582,7 +594,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 }
             });
 
-            float baseDamage   = (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            float baseDamage = (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
             float enchantBonus = EnchantmentHelper.getAttackDamage(weapon, target.getGroup());
             float shockwaveDamage = (baseDamage + enchantBonus) * 0.80f;
             if (skullLevel > 0) {

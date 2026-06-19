@@ -26,6 +26,7 @@ public class ModItemGroups {
                         entries.add(ModItems.HHSHARD);
                         entries.add(ModItems.DVSHARD);
                         entries.add(ModItems.STSHARD);
+                        entries.add(ModItems.ROSENSHARD);
                         entries.add(ModItems.GILDEDINGOT);
                         entries.add(ModItems.RAWPALEINGOT);
                         entries.add(ModItems.NUGGET);
@@ -39,6 +40,7 @@ public class ModItemGroups {
                         entries.add(ModItems.DUST);
                         entries.add(ModItems.PALE_STEEL_COIN);
                         entries.add(ModItems.HUNTERS_SATCHEL);
+                        entries.add(ModItems.AMALGAM);
 
 
 
@@ -54,6 +56,7 @@ public class ModItemGroups {
                         entries.add(ModItems.HOUND_MASK);
                         entries.add(ModItems.DAVE_MASK);
                         entries.add(ModItems.STONEI_MASK);
+                        entries.add(ModItems.ROSEN_BLINDFOLD);
                         entries.add(ModItems.BLANK_MASK);
                         entries.add(ModItems.GRIN_MASK);
                         entries.add(ModItems.SAD_MASK);
@@ -75,11 +78,13 @@ public class ModItemGroups {
                         entries.add(ModItems.PALE_SWORD);
                         entries.add(ModItems.PALE_WAR_PICKAXE);
                         entries.add(ModItems.GLAIVE);
+                        entries.add(ModItems.PANICKEDLY_CARVED_WOODEN_SWORD);
                         entries.add(ModItems.GOLDEN_PAN);
 
                         entries.add(ModItems.PALE_TEMPLATE);
 
                         entries.add(ModItems.GLORIOUS);
+                        entries.add(ModItems.ORIGINAL_AIR_BOTTLE);
 
                         entries.add(ModBlocks.PALE_STEEL_BLOCK);
                         entries.add(ModBlocks.PALE_STEEL_TILES);

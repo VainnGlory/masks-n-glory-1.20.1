@@ -21,6 +21,8 @@
   "item.masks-n-glory.cooked_bones": "Cooked Bone",
   "item.masks-n-glory.dust": "Bone Dust",
   "item.masks-n-glory.hunters_satchel": "Hunter's Satchel",
+  "item.masks-n-glory.amalgam": "Pale Steel Amalgam",
+  "item.masks-n-glory.original_air_bottle": "Bottle of Original Air",
 
   "item.masks-n-glory.goldenscrap": "Golden Scrap",
   "tooltip.masks-n-glory.goldenscrap": "§7*seems to be a part of a greater whole...*",
@@ -198,11 +200,11 @@
   "death.attack.death.player": "%1$s was executed in the public square by %2$s",
   "death.attack.death.item": "%1$s was executed in the public square by %2$s using %3$s",
 
-  "death.attack.pan": "%1$s got fried",
+  "death.attack.pan": "%1$s was served their eggs and bakey by %2$s.",
   "death.attack.pan.player": "%1$s was served their eggs and bakey by %2$s.",
   "death.attack.pan.item": "%1$s was served their eggs and bacon by %2$s using %3$s.",
 
-  "death.attack.rusted": "%1$s forgot how to pump blood in their veins",
+  "death.attack.rusted": "%1$s was sliced and diced by %2$s",
   "death.attack.rusted.player": "%1$s was sliced and diced by %2$s",
   "death.attack.rusted.item": "%1$s was sliced and diced by %2$s using %3$s",
 
@@ -239,6 +241,17 @@
   "item.minecraft.potion.effect.masks_n_glory.spit": "Bottle of Spit",
   "item.minecraft.potion.effect.masks_n_glory.spite": "Potion of Spite",
   "item.minecraft.splash_potion.effect.masks_n_glory.spite": "Splash Potion of Spite",
+
+  "entity.masks-n-glory.armor_stand_thing": "Armor Stand Thing",
+
+  "effect.masks-n-glory.insomnia": "Insomnia",
+  "item.minecraft.potion.effect.masks_n_glory.insomnia": "Potion of Insomnia",
+  "item.minecraft.splash_potion.effect.masks_n_glory.insomnia": "Splash Potion of Insomnia",
+
+  "item.masks-n-glory.panickedly_carved_wooden_sword": "Panickedly Carved Wooden Sword",
+  "item.masks-n-glory.panickedly_carved_wooden_sword.empty": "Something feels hollow.",
+  "item.masks-n-glory.panickedly_carved_wooden_sword.inserted": "Holds: %s",
+  "effect.masks-n-glory.deafened": "Deafened",
 
   "itemgroup.shards": "Masks N Glory"
 }

@@ -1,0 +1,28 @@
+{
+  "parent": "masks-n-glory:masks_n_glory",
+  "criteria": {
+    "entered_farlands": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "text": "say that again"
+    },
+    "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:stone"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "These lands sure are far."
+    }
+  },
+  "requirements": [["entered_farlands"]],
+  "rewards": {
+    "experience": 50
+  },
+  "sends_telemetry_event": false
+}

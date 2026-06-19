@@ -14,93 +14,41 @@ import net.vainnglory.masksnglory.item.ModItems;
 public class ModLootTableModifier {
     private static final Identifier EVOKER_ID =
             new Identifier("minecraft", "entities/evoker");
-
     private static final Identifier WITHER_SKELETON_ID =
             new Identifier("minecraft", "entities/wither_skeleton");
-
     private static final Identifier PIGLIN_ID =
             new Identifier("minecraft", "entities/piglin");
-
     private static final Identifier ZOMBIE_PIGLIN_ID =
             new Identifier("minecraft", "entities/zombified_piglin");
-
     private static final Identifier GOAT_ID =
             new Identifier("minecraft", "entities/goat");
-
     private static final Identifier CAT_ID =
             new Identifier("minecraft", "entities/cat");
-
     private static final Identifier ELDER_ID =
             new Identifier("minecraft", "entities/elder_guardian");
-
     private static final Identifier CREEPER_ID =
             new Identifier("minecraft", "entities/creeper");
-
     private static final Identifier VILLAGER_ID =
             new Identifier("minecraft", "entities/villager");
-
+    private static final Identifier WITHER_ID =
+            new Identifier("minecraft", "entities/wither");
     private static final Identifier COBBLE_ID =
             new Identifier("minecraft", "chests/pillager_outpost");
-
     private static final Identifier DARK_OAK_ID =
             new Identifier("minecraft", "blocks/dark_oak_log");
-
     private static final Identifier BLACKSTONE_ID =
             new Identifier("minecraft", "blocks/blackstone");
-
     private static final Identifier SEA_PICKLE_ID =
             new Identifier("minecraft", "blocks/sea_pickle");
-
     private static final Identifier ECHO_SHARD_ID =
             new Identifier("minecraft", "blocks/sculk");
-
     private static final Identifier CRIMPED =
             new Identifier("masks-n-glory", "blocks/crimped_chiseled_pale_steel_block");
-
     private static final Identifier JUNGLE_TEMPLE_ID =
             new Identifier("minecraft", "chests/shipwreck_treasure");
 
-    private static final Identifier STRONGHOLD_ID=
-            new Identifier("minecraft", "chests/stronghold_corridor");
-
-    private static final Identifier STRONGHOLD2_ID=
-            new Identifier("minecraft", "chests/stronghold_crossing");
-
-    private static final Identifier STRONGHOLD3_ID=
-            new Identifier("minecraft", "chests/stronghold_library");
-
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, Source) -> {
-
-            if (STRONGHOLD_ID.equals(id)) {
-                LootPool.Builder poolBuilder = LootPool.builder()
-                        .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.01f))
-                        .with(ItemEntry.builder(ModItems.GLORIOUS))
-                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
-                tableBuilder.pool(poolBuilder.build());
-            }
-
-            if (STRONGHOLD2_ID.equals(id)) {
-                LootPool.Builder poolBuilder = LootPool.builder()
-                        .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.03f))
-                        .with(ItemEntry.builder(ModItems.GLORIOUS))
-                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
-                tableBuilder.pool(poolBuilder.build());
-            }
-
-            if (STRONGHOLD3_ID.equals(id)) {
-                LootPool.Builder poolBuilder = LootPool.builder()
-                        .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.08f))
-                        .with(ItemEntry.builder(ModItems.GLORIOUS))
-                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
-                tableBuilder.pool(poolBuilder.build());
-            }
 
             if (JUNGLE_TEMPLE_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
@@ -108,7 +56,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.05f))
                         .with(ItemEntry.builder(ModItems.PALE_TEMPLATE))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -118,7 +65,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.02f))
                         .with(ItemEntry.builder(ModItems.GOLDENSCRAP))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -128,7 +74,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.01f))
                         .with(ItemEntry.builder(ModItems.HSSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -138,7 +83,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.009f))
                         .with(ItemEntry.builder(ModItems.STSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -148,7 +92,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.25f))
                         .with(ItemEntry.builder(Items.ECHO_SHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -158,10 +101,8 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(1.0f))
                         .with(ItemEntry.builder(Items.AMETHYST_SHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
-
 
             if (WITHER_SKELETON_ID.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
@@ -169,7 +110,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.01f))
                         .with(ItemEntry.builder(ModItems.ESHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -179,7 +119,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.1f))
                         .with(ItemEntry.builder(ModItems.HHSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -189,7 +128,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.1f))
                         .with(ItemEntry.builder(ModItems.DOSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -199,7 +137,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.1f))
                         .with(ItemEntry.builder(ModItems.DVSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -209,7 +146,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.5f))
                         .with(ItemEntry.builder(ModItems.OSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -219,7 +155,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.3f))
                         .with(ItemEntry.builder(ModItems.PSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -229,7 +164,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.3f))
                         .with(ItemEntry.builder(ModItems.TSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -239,7 +173,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.1f))
                         .with(ItemEntry.builder(ModItems.CRSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -249,7 +182,6 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.45f))
                         .with(ItemEntry.builder(ModItems.CSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
@@ -259,11 +191,17 @@ public class ModLootTableModifier {
                         .conditionally(RandomChanceLootCondition.builder(0.005f))
                         .with(ItemEntry.builder(ModItems.DSHARD))
                         .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
-
                 tableBuilder.pool(poolBuilder.build());
             }
 
+            if (WITHER_ID.equals(id)) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .conditionally(RandomChanceLootCondition.builder(0.5f))
+                        .with(ItemEntry.builder(ModItems.ROSENSHARD))
+                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 1.0f)).build());
+                tableBuilder.pool(poolBuilder.build());
+            }
         });
     }
-
 }

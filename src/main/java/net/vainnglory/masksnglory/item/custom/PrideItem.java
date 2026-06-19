@@ -1,11 +1,16 @@
 package net.vainnglory.masksnglory.item.custom;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -32,6 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundItem {
@@ -107,6 +113,26 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
     }
 
     @Override
+    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
+        Multimap<EntityAttribute, EntityAttributeModifier> base = super.getAttributeModifiers(stack, slot);
+        if (slot != EquipmentSlot.MAINHAND) return base;
+        if (EnchantmentHelper.getLevel(ModEnchantments.NOTORIETY, stack) <= 0) return base;
+        float bonus = NotorietyEnchantment.getBonusDamage(stack);
+        if (bonus <= 0) return base;
+        ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+        for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : base.entries()) {
+            if (entry.getKey().equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
+                EntityAttributeModifier orig = entry.getValue();
+                builder.put(entry.getKey(), new EntityAttributeModifier(
+                        orig.getId(), orig.getName(), orig.getValue() + bonus, orig.getOperation()));
+            } else {
+                builder.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder.build();
+    }
+
+    @Override
     public Text getName(ItemStack stack) {
         Text baseName = super.getName(stack);
         return baseName.copy().setStyle(Style.EMPTY.withColor(rarity.color));
@@ -152,7 +178,6 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
         if (hitCounter < this.maxHits && effects != null && !effects.isEmpty()) {
             hitCounter++;
             setHitCounter(stack, hitCounter);
-
             for (StatusEffectInstance effect : effects) {
                 target.addStatusEffect(new StatusEffectInstance(
                         effect.getEffectType(),

@@ -10,7 +10,12 @@ import net.vainnglory.masksnglory.item.ModItems;
 public class ArtilleryEnchantment extends Enchantment {
 
     public ArtilleryEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentTarget.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+        super(Rarity.VERY_RARE, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+    }
+
+    @Override
+    public int getMinPower(int level) {
+        return 5;
     }
 
     @Override

@@ -98,10 +98,10 @@ public class AshChargeItem extends Item {
 
 
     private boolean isWearingFullPaleArmor(PlayerEntity player) {
-        ItemStack helmet   = player.getEquippedStack(EquipmentSlot.HEAD);
-        ItemStack chest    = player.getEquippedStack(EquipmentSlot.CHEST);
+        ItemStack helmet = player.getEquippedStack(EquipmentSlot.HEAD);
+        ItemStack chest = player.getEquippedStack(EquipmentSlot.CHEST);
         ItemStack leggings = player.getEquippedStack(EquipmentSlot.LEGS);
-        ItemStack boots    = player.getEquippedStack(EquipmentSlot.FEET);
+        ItemStack boots = player.getEquippedStack(EquipmentSlot.FEET);
 
         return helmet.isOf(ModItems.PALE_HELMET)
                 && chest.isOf(ModItems.PALE_CHESTPLATE)

@@ -1,0 +1,11 @@
+{
+  "type": "masks-n-glory:verdant_memory",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "masks-n-glory:verdant_memory",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "masks-n-glory:verdant_memory"
+    }
+  }
+}

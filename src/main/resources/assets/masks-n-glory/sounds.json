@@ -37,5 +37,67 @@
       "masks-n-glory:item/pale_hit_3"
     ],
     "subtitle": "masks-n-glory.subtitles.item.pale.hit"
+  },
+  "ambient.farlands.wind": {
+    "sounds": [
+      {
+        "name": "masks-n-glory:ambient/farlands/wind",
+        "stream": true
+      }
+    ],
+    "subtitle": "masks-n-glory.subtitles.ambient.farlands.wind"
+  },
+  "ambient.farlands.hum": {
+    "sounds": [
+      {
+        "name": "masks-n-glory:ambient/farlands/hum",
+        "stream": true
+      }
+    ],
+    "subtitle": "masks-n-glory.subtitles.ambient.farlands.hum"
+  },
+
+  "ambient.verdant_memory.bird1": {
+    "sounds": [
+      { "name": "masks-n-glory:ambient/verdant_memory/bird1" }
+    ]
+  },
+  "ambient.verdant_memory.bird2": {
+    "sounds": [
+      { "name": "masks-n-glory:ambient/verdant_memory/bird2" }
+    ]
+  },
+  "ambient.verdant_memory.cheers": {
+    "sounds": [
+      { "name": "masks-n-glory:ambient/verdant_memory/cheers" }
+    ]
+  },
+
+  "music.farlands.a": {
+    "sounds": [
+      {
+        "name": "masks-n-glory:music/solitaire",
+        "stream": true
+      }
+    ],
+    "subtitle": "masks-n-glory.subtitles.music.farlands"
+  },
+  "music.farlands.b": {
+    "sounds": [
+      {
+        "name": "masks-n-glory:music/nullified",
+        "stream": true
+      }
+    ],
+    "subtitle": "masks-n-glory.subtitles.music.farlands"
+  },
+  "entity.armor_stand_thing.wail": {
+    "sounds": [
+      "masks-n-glory:entity/armor_stand_thing/wail"
+    ],
+    "subtitle": "masks-n-glory.subtitles.entity.armor_stand_thing.wail"
+  },
+  "item.panickedly_carved_sword.whisper": {
+    "sounds": ["masks-n-glory:item/panickedly_carved_sword/whisper"]
   }
 }

@@ -34,7 +34,8 @@ import java.util.*;
 
 public class MaskAbilityManager {
 
-    private record DecayData(int stacks, long lastHitTick) {}
+    private record DecayData(int stacks, long lastHitTick) {
+    }
 
     private static final UUID DMAN_BOOST_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-012345678901");
     private static final UUID STONEI_ARMOR_UUID = UUID.fromString("d4e5f6a7-b8c9-0123-def0-123456789012");
@@ -60,6 +61,8 @@ public class MaskAbilityManager {
     private static final Map<UUID, Long> grinWearStart = new HashMap<>();
     private static final Set<UUID> pikoModifierActive = new HashSet<>();
     private static final Set<UUID> happyWearing = new HashSet<>();
+    private static final Map<UUID, Map<UUID, Integer>> rosenStareTicks = new HashMap<>();
+    private static final Set<UUID> rosenWearing = new HashSet<>();
 
     public static ArmorMaterial getMaskMaterial(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
@@ -76,6 +79,11 @@ public class MaskAbilityManager {
         grinWearStart.remove(id);
         pikoModifierActive.remove(id);
         happyWearing.remove(id);
+        rosenStareTicks.remove(id);
+        rosenWearing.remove(id);
+        for (Map<UUID, Integer> map : rosenStareTicks.values()) {
+            map.remove(id);
+        }
     }
 
     public static void recordHoundAttacker(UUID playerUUID, UUID attackerUUID) {
@@ -105,12 +113,26 @@ public class MaskAbilityManager {
     public static boolean isOjiFirstHit(UUID id, long currentTime) {
         return currentTime - ojiLastHit.getOrDefault(id, 0L) > 80;
     }
-    public static void ojiRecordHit(UUID id, long time) { ojiLastHit.put(id, time); }
-    public static boolean ojiEnterGuard(UUID id) { return ojiGuard.add(id); }
-    public static void ojiExitGuard(UUID id) { ojiGuard.remove(id); }
 
-    public static boolean corvEnterGuard(UUID id) { return corvGuard.add(id); }
-    public static void corvExitGuard(UUID id) { corvGuard.remove(id); }
+    public static void ojiRecordHit(UUID id, long time) {
+        ojiLastHit.put(id, time);
+    }
+
+    public static boolean ojiEnterGuard(UUID id) {
+        return ojiGuard.add(id);
+    }
+
+    public static void ojiExitGuard(UUID id) {
+        ojiGuard.remove(id);
+    }
+
+    public static boolean corvEnterGuard(UUID id) {
+        return corvGuard.add(id);
+    }
+
+    public static void corvExitGuard(UUID id) {
+        corvGuard.remove(id);
+    }
 
     public static void tick(PlayerEntity player, ArmorMaterial material) {
         if (material == ModArmorMaterials.EMASKS) {
@@ -181,6 +203,12 @@ public class MaskAbilityManager {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.UNLUCK, 400, 0, false, true, true));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 200, 1, false, true, true));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1, false, true, true));
+        }
+
+        if (material == ModArmorMaterials.ROSENM) {
+            tickRosen(player);
+        } else {
+            cleanupRosen(player);
         }
     }
 
@@ -400,6 +428,56 @@ public class MaskAbilityManager {
         }
     }
 
+    private static void tickRosen(PlayerEntity player) {
+        if (!(player.getWorld() instanceof ServerWorld world)) return;
+        UUID wearerId = player.getUuid();
+
+        if (rosenWearing.add(wearerId)) {
+            player.addStatusEffect(new StatusEffectInstance(
+                    StatusEffects.BLINDNESS, Integer.MAX_VALUE, 0, false, false, false));
+        }
+
+        Map<UUID, Integer> stareMap = rosenStareTicks.computeIfAbsent(wearerId, k -> new HashMap<>());
+        Set<UUID> currentObservers = new HashSet<>();
+        Vec3d wearerEye = player.getEyePos();
+
+        for (ServerPlayerEntity observer : world.getEntitiesByClass(
+                ServerPlayerEntity.class,
+                new Box(player.getBlockPos()).expand(100),
+                e -> e != player)) {
+            Vec3d toWearer = wearerEye.subtract(observer.getEyePos()).normalize();
+            double dot = toWearer.dotProduct(observer.getRotationVec(1.0f));
+            if (dot > 0.97) {
+                UUID observerId = observer.getUuid();
+                int ticks = stareMap.merge(observerId, 1, Integer::sum);
+                currentObservers.add(observerId);
+                applyRosenDebuff(observer, ticks);
+            }
+        }
+
+        stareMap.keySet().retainAll(currentObservers);
+    }
+
+    private static void applyRosenDebuff(ServerPlayerEntity observer, int stareTicks) {
+        if (stareTicks >= 160) {
+            observer.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 2, false, false, false));
+            observer.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 40, 1, false, false, false));
+            observer.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 40, 0, false, false, false));
+        } else if (stareTicks >= 80) {
+            observer.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 1, false, false, false));
+            observer.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 40, 0, false, false, false));
+        } else if (stareTicks >= 40) {
+            observer.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 0, false, false, false));
+        }
+    }
+
+    private static void cleanupRosen(PlayerEntity player) {
+        if (rosenWearing.remove(player.getUuid())) {
+            player.removeStatusEffect(StatusEffects.BLINDNESS);
+        }
+        rosenStareTicks.remove(player.getUuid());
+    }
+
     public static void registerCallbacks() {
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (world.isClient || !(entity instanceof LivingEntity target))
@@ -509,6 +587,15 @@ public class MaskAbilityManager {
                 }
             }
             pendingEgoGrudgeRemoval.clear();
+
+            for (UUID id : new HashSet<>(rosenWearing)) {
+                ServerPlayerEntity p = server.getPlayerManager().getPlayer(id);
+                if (p == null || getMaskMaterial(p) != ModArmorMaterials.ROSENM) {
+                    if (p != null) p.removeStatusEffect(StatusEffects.BLINDNESS);
+                    rosenWearing.remove(id);
+                    rosenStareTicks.remove(id);
+                }
+            }
         });
     }
 }

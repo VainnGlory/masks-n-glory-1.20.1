@@ -140,11 +140,8 @@ public class RustedSwordItem extends SwordItem implements Vanishable, CustomHitS
         super.appendTooltip(stack, world, tooltip, context);
     }
     public int getEnchantability()
-
     {
-
         return 1;
-
     }
 }
 

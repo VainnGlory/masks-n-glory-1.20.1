@@ -13,9 +13,9 @@ public enum ModArmorMaterials implements ArmorMaterial {
     ESHARD("eshard", 25, new int[] { 3, 8, 6, 3 }, 19,
             SoundEvents.ENTITY_WARDEN_DEATH, 3f, 0.1f, () -> Ingredient.ofItems(ModItems.ESHARD)),
     DSHARD("dshard", 25, new int[] { 1, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DSHARD)),
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DSHARD)),
     MASKS("masks", 25, new int[] { 3, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.MASKS)),
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.MASKS)),
     HMASKS("hmasks", 25, new int[] { 1, 8, 6, 3 }, 19,
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HMASKS)),
     GMASKS("gmasks", 25, new int[] { 1, 8, 6, 3 }, 19,
@@ -31,19 +31,19 @@ public enum ModArmorMaterials implements ArmorMaterial {
     OSHARD("oshard", 25, new int[] { 3, 8, 6, 3 }, 19,
             SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.OSHARD)),
     PSHARD("pshard", 25, new int[] { 2, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.1f, () -> Ingredient.ofItems(ModItems.PSHARD)),
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.1f, () -> Ingredient.ofItems(ModItems.PSHARD)),
     TSHARD("tshard", 25, new int[] { 2, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.TSHARD)),
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.TSHARD)),
     HSSHARD("hsshard", 25, new int[] { 2, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HSSHARD)),
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HSSHARD)),
     DOSHARD("doshard", 25, new int[] { 3, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DOSHARD)),
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DOSHARD)),
     CSHARD("cshard", 25, new int[] { 3, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.CSHARD)),
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.CSHARD)),
     CRSHARD("crshard", 25, new int[] { 3, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.CRSHARD)),
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.CRSHARD)),
     HHSHARD("hhshard", 25, new int[] { 2, 8, 6, 3 }, 19,
-    SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HHSHARD)),
+            SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.HHSHARD)),
     DVSHARD("dvshard", 25, new int[] { 3, 8, 6, 3 }, 19,
             SoundEvents.BLOCK_MUD_STEP, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.DVSHARD)),
     RUSTED("rust", 25, new int[] { 3, 8, 6, 3 }, 25,
@@ -51,11 +51,9 @@ public enum ModArmorMaterials implements ArmorMaterial {
     GOLDEN("golden", 25, new int[] { 2, 8, 6, 3 }, 25,
             SoundEvents.BLOCK_CHAIN_BREAK, 1f, 0.2f, () -> Ingredient.ofItems(ModItems.RUSTED)),
     STSHARD("stshard", 25, new int[] { 2, 8, 6, 3 }, 19,
-    SoundEvents.BLOCK_SCULK_CHARGE, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.STSHARD));
-
-
-
-
+            SoundEvents.BLOCK_SCULK_CHARGE, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.STSHARD)),
+    ROSENM("rosenm", 25, new int[] { 1, 8, 6, 3 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.ROSENSHARD));
 
     private final String name;
     private final int[] protectionAmounts;
@@ -65,9 +63,11 @@ public enum ModArmorMaterials implements ArmorMaterial {
     private final float knockbackResistance;
     private final Supplier<Ingredient> repairIngredient;
 
-    private static final int[] BASE_DURABILITY = {30, 45, 40, 35 };
+    private static final int[] BASE_DURABILITY = { 30, 45, 40, 35 };
 
-    ModArmorMaterials(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
+    ModArmorMaterials(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability,
+                      SoundEvent equipSound, float toughness, float knockbackResistance,
+                      Supplier<Ingredient> repairIngredient) {
         this.name = name;
         this.protectionAmounts = protectionAmounts;
         this.enchantability = enchantability;

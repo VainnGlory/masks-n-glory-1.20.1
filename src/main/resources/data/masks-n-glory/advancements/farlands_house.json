@@ -1,0 +1,28 @@
+{
+  "parent": "masks-n-glory:farlands_enter",
+  "criteria": {
+    "approached_house": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "text": "went out for food..."
+    },
+    "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:oak_planks"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "knock knock."
+    }
+  },
+  "requirements": [["approached_house"]],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": false
+}

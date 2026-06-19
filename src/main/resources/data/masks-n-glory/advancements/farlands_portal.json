@@ -1,0 +1,28 @@
+{
+  "parent": "masks-n-glory:farlands_enter",
+  "criteria": {
+    "approached_portal": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "text": "at least they tried."
+    },
+    "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:obsidian"
+    },
+    "show_toast": true,
+    "title": {
+      "text": "attempts full of meaning."
+    }
+  },
+  "requirements": [["approached_portal"]],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": false
+}

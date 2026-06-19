@@ -53,9 +53,9 @@ public abstract class CoinRicochetMixin {
                 world.getEntitiesByClass(PaleSteelCoinEntity.class, broadSearch, c -> !c.isRemoved())
         );
 
-        Set<PaleSteelCoinEntity> used      = new HashSet<>();
-        PaleSteelCoinEntity      current   = startCoin;
-        Vec3d                    lastCenter = startCenter;
+        Set<PaleSteelCoinEntity> used = new HashSet<>();
+        PaleSteelCoinEntity current = startCoin;
+        Vec3d lastCenter = startCenter;
 
         while (current != null) {
             PENDING_SOUNDS.computeIfAbsent(arrow.getId(), k -> new LinkedList<>())
