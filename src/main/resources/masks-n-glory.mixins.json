@@ -41,7 +41,6 @@
     "NullScreenHandlerMixin",
     "PanDeathMessageMixin",
     "PlayerEntityMixin",
-    "RosenGlowMixin",
     "ServerPlayerInteractionManagerMixin",
     "ShearsStackMixin",
     "StuntDoubleMixin",
@@ -69,6 +68,7 @@
     "SoundInstanceVolumeAccessor",
     "SoundSystemDeafenMixin",
     "SugarRushCameraMixin",
+    "RosenGlowMixin",
     "SugarRushHudMixin"
   ],
   "injectors": {

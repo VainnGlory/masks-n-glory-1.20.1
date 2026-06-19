@@ -1,5 +1,7 @@
 package net.vainnglory.masksnglory.mixin;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ArmorItem;
@@ -10,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Environment(EnvType.CLIENT)
 @Mixin(Entity.class)
 public class RosenGlowMixin {
     @Inject(method = "isGlowing", at = @At("RETURN"), cancellable = true)
