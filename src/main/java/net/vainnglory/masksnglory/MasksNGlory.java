@@ -153,6 +153,7 @@ public class MasksNGlory implements ModInitializer {
         GlitchBlock.register();
         StabShotManager.register();
         NukeShotManager.register();
+        EnderPearlChunkLoader.register();
         FlashAttackPacket.registerReceiver();
 
         UseItemCallback.EVENT.register((player, world, hand) -> {

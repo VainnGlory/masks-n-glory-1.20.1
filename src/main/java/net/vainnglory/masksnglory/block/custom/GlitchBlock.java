@@ -20,6 +20,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
@@ -37,9 +38,8 @@ public class GlitchBlock extends Block {
     private static final int STAB_COOLDOWN_TICKS = 6000;
     private static final int NUKE_COOLDOWN_TICKS = 36000;
     private static final double CANCEL_RADIUS = 5.0;
-    private static final double SHAKE_RADIUS = 5.0;
     private static final int SHAKE_INTERVAL = 30;
-    private static final double DAMAGE_RADIUS = 4.0;
+    private static final double AURA_RADIUS = 5.0;
     private static final int DAMAGE_INTERVAL = 5;
     private static final float DAMAGE_AMOUNT = 8.0f;
     private static final Vec3d RITUAL_CENTER = new Vec3d(-11.5, 78.5, -0.5);
@@ -85,23 +85,31 @@ public class GlitchBlock extends Block {
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            ServerWorld world = server.getWorld(ModDimensions.VERDANT_MEMORY_KEY);
-            if (world == null) return;
+            for (ServerWorld world : server.getWorlds()) {
+                long worldTick = world.getTime();
+                boolean shakeDue = worldTick % SHAKE_INTERVAL == 0;
+                boolean damageDue = worldTick % DAMAGE_INTERVAL == 0;
+                if (!shakeDue && !damageDue) continue;
 
-            long currentTick = world.getTime();
+                for (ServerPlayerEntity player : world.getPlayers()) {
+                    if (player.isCreative() || player.isSpectator()) continue;
+                    if (!isNearGlitchBlock(world, player)) continue;
 
-            for (ServerPlayerEntity player : world.getPlayers()) {
-                double dist = player.getPos().distanceTo(RITUAL_CENTER);
+                    if (shakeDue) {
+                        float angle = (float)(Math.random() * 360.0);
+                        player.networkHandler.sendPacket(new DamageTiltS2CPacket(player.getId(), angle));
+                    }
 
-                if (currentTick % SHAKE_INTERVAL == 0 && dist <= SHAKE_RADIUS) {
-                    float angle = (float)(Math.random() * 360.0);
-                    player.networkHandler.sendPacket(new DamageTiltS2CPacket(player.getId(), angle));
-                }
-
-                if (currentTick % DAMAGE_INTERVAL == 0 && dist <= DAMAGE_RADIUS) {
-                    applyGlitchDamage(world, player);
+                    if (damageDue) {
+                        applyGlitchDamage(world, player);
+                    }
                 }
             }
+
+            ServerWorld ritualWorld = server.getWorld(ModDimensions.VERDANT_MEMORY_KEY);
+            if (ritualWorld == null) return;
+
+            long currentTick = ritualWorld.getTime();
 
             Iterator<Map.Entry<UUID, ChargeSession>> it = charging.entrySet().iterator();
             while (it.hasNext()) {
@@ -118,7 +126,7 @@ public class GlitchBlock extends Block {
                 ChargeSession session = entry.getValue();
                 session.ticks--;
 
-                spawnGlitchEffects(world, currentTick);
+                spawnGlitchEffects(ritualWorld, currentTick);
 
                 if (session.ticks <= 0) {
                     boolean consumed = false;
@@ -135,9 +143,9 @@ public class GlitchBlock extends Block {
                         player.giveItemStack(new ItemStack(session.item, 1));
                         int cooldownTicks = session.item == ModItems.NUKE_SHOT ? NUKE_COOLDOWN_TICKS : STAB_COOLDOWN_TICKS;
                         cooldownUntilTick = currentTick + cooldownTicks;
-                        world.spawnParticles(ParticleTypes.PORTAL, RITUAL_CENTER.x, RITUAL_CENTER.y + 1, RITUAL_CENTER.z, 120, 0.6, 0.6, 0.6, 0.4);
-                        world.spawnParticles(ParticleTypes.REVERSE_PORTAL, RITUAL_CENTER.x, RITUAL_CENTER.y + 1, RITUAL_CENTER.z, 60, 0.4, 0.4, 0.4, 0.2);
-                        world.playSound(null, BlockPos.ofFloored(RITUAL_CENTER), SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.BLOCKS, 2.0f, 0.4f);
+                        ritualWorld.spawnParticles(ParticleTypes.PORTAL, RITUAL_CENTER.x, RITUAL_CENTER.y + 1, RITUAL_CENTER.z, 120, 0.6, 0.6, 0.6, 0.4);
+                        ritualWorld.spawnParticles(ParticleTypes.REVERSE_PORTAL, RITUAL_CENTER.x, RITUAL_CENTER.y + 1, RITUAL_CENTER.z, 60, 0.4, 0.4, 0.4, 0.2);
+                        ritualWorld.playSound(null, BlockPos.ofFloored(RITUAL_CENTER), SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.BLOCKS, 2.0f, 0.4f);
                     }
                     it.remove();
                 }
@@ -145,8 +153,24 @@ public class GlitchBlock extends Block {
         });
     }
 
+    private static boolean isNearGlitchBlock(ServerWorld world, ServerPlayerEntity player) {
+        Vec3d playerPos = player.getPos();
+        BlockPos origin = player.getBlockPos();
+        int reach = MathHelper.ceil(AURA_RADIUS);
+        double radiusSq = AURA_RADIUS * AURA_RADIUS;
+
+        for (BlockPos pos : BlockPos.iterate(origin.add(-reach, -reach, -reach), origin.add(reach, reach, reach))) {
+            if (!(world.getBlockState(pos).getBlock() instanceof GlitchBlock)) continue;
+
+            double dx = pos.getX() + 0.5 - playerPos.x;
+            double dy = pos.getY() + 0.5 - playerPos.y;
+            double dz = pos.getZ() + 0.5 - playerPos.z;
+            if (dx * dx + dy * dy + dz * dz <= radiusSq) return true;
+        }
+        return false;
+    }
+
     private static void applyGlitchDamage(ServerWorld world, ServerPlayerEntity player) {
-        if (player.isCreative() || player.isSpectator()) return;
         if (player.getOffHandStack().isOf(ModItems.NULL_KNIFE)) return;
 
         player.timeUntilRegen = 0;
