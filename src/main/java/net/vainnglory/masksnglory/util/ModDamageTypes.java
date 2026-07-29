@@ -30,6 +30,8 @@ public class ModDamageTypes {
             RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "shear_projectile"));
     public static final RegistryKey<DamageType> MANIA_DAMAGE =
             RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "mania"));
+    public static final RegistryKey<DamageType> GLITCH_DAMAGE =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "glitch"));
 
     public static DamageSource pan(LivingEntity attacker, LivingEntity target) {
         return target.getDamageSources().create(PAN_DAMAGE, attacker, attacker);
@@ -55,6 +57,10 @@ public class ModDamageTypes {
 
     public static DamageSource mania(LivingEntity entity) {
         return entity.getDamageSources().create(MANIA_DAMAGE);
+    }
+
+    public static DamageSource glitch(LivingEntity entity) {
+        return entity.getDamageSources().create(GLITCH_DAMAGE);
     }
 
     public static void initialize() {

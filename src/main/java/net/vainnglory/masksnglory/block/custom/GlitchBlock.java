@@ -24,6 +24,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.item.ModItems;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.world.ModDimensions;
 
 import java.util.HashMap;
@@ -38,6 +39,9 @@ public class GlitchBlock extends Block {
     private static final double CANCEL_RADIUS = 5.0;
     private static final double SHAKE_RADIUS = 5.0;
     private static final int SHAKE_INTERVAL = 30;
+    private static final double DAMAGE_RADIUS = 4.0;
+    private static final int DAMAGE_INTERVAL = 5;
+    private static final float DAMAGE_AMOUNT = 8.0f;
     private static final Vec3d RITUAL_CENTER = new Vec3d(-11.5, 78.5, -0.5);
     private static final double[][] BLOCK_POSITIONS = {
             {-11, 78, 0}, {-11, 78, -1}, {-12, 78, -1}, {-12, 78, 0}
@@ -87,12 +91,15 @@ public class GlitchBlock extends Block {
             long currentTick = world.getTime();
 
             for (ServerPlayerEntity player : world.getPlayers()) {
-                if (currentTick % SHAKE_INTERVAL == 0) {
-                    double dist = player.getPos().distanceTo(RITUAL_CENTER);
-                    if (dist <= SHAKE_RADIUS) {
-                        float angle = (float)(Math.random() * 360.0);
-                        player.networkHandler.sendPacket(new DamageTiltS2CPacket(player.getId(), angle));
-                    }
+                double dist = player.getPos().distanceTo(RITUAL_CENTER);
+
+                if (currentTick % SHAKE_INTERVAL == 0 && dist <= SHAKE_RADIUS) {
+                    float angle = (float)(Math.random() * 360.0);
+                    player.networkHandler.sendPacket(new DamageTiltS2CPacket(player.getId(), angle));
+                }
+
+                if (currentTick % DAMAGE_INTERVAL == 0 && dist <= DAMAGE_RADIUS) {
+                    applyGlitchDamage(world, player);
                 }
             }
 
@@ -136,6 +143,23 @@ public class GlitchBlock extends Block {
                 }
             }
         });
+    }
+
+    private static void applyGlitchDamage(ServerWorld world, ServerPlayerEntity player) {
+        if (player.isCreative() || player.isSpectator()) return;
+        if (player.getOffHandStack().isOf(ModItems.NULL_KNIFE)) return;
+
+        player.timeUntilRegen = 0;
+        player.damage(ModDamageTypes.glitch(player), DAMAGE_AMOUNT);
+
+        world.spawnParticles(ParticleTypes.REVERSE_PORTAL,
+                player.getX(), player.getY() + 1.0, player.getZ(),
+                12, 0.3, 0.5, 0.3, 0.25);
+        world.spawnParticles(ParticleTypes.SQUID_INK,
+                player.getX(), player.getY() + 1.0, player.getZ(),
+                6, 0.25, 0.4, 0.25, 0.02);
+        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT,
+                SoundCategory.HOSTILE, 0.6f, 0.4f + (float)(Math.random() * 0.5));
     }
 
     private static void spawnGlitchEffects(ServerWorld world, long tick) {

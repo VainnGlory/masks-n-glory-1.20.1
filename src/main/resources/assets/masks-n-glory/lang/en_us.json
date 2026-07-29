@@ -269,5 +269,8 @@
   "death.attack.mania.player": "%1$s succumbed to their own MANIA",
   "masks-n-glory.subtitles.item.pride.notoriety_jingle": "Notoriety grows",
 
+  "death.attack.glitch": "%1$s was overwritten",
+  "death.attack.glitch.player": "%1$s was overwritten",
+
   "itemgroup.shards": "Masks N Glory"
 }
