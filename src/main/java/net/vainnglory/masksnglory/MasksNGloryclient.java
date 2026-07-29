@@ -1,7 +1,9 @@
 package net.vainnglory.masksnglory;
 
+import net.vainnglory.masksnglory.util.GreaseEffectPacket;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
@@ -17,15 +19,18 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.vainnglory.masksnglory.block.ModBlocks;
+import net.vainnglory.masksnglory.cosmetic.AscensionGlowLayer;
 import net.vainnglory.masksnglory.cosmetic.GoldenShardLayer;
 import net.vainnglory.masksnglory.cosmetic.SheathLayer;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.entity.client.MaelstromModel;
 import net.vainnglory.masksnglory.entity.client.ModModelLayers;
+import net.vainnglory.masksnglory.entity.client.VanguardRenderer;
 import net.vainnglory.masksnglory.entity.client.WatcherRenderer;
 import net.vainnglory.masksnglory.entity.custom.*;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.PaleWarPickaxeItem;
+import net.vainnglory.masksnglory.particle.*;
 import net.vainnglory.masksnglory.util.*;
 
 public class MasksNGloryclient implements ClientModInitializer {
@@ -47,6 +52,13 @@ public class MasksNGloryclient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntityTypes.SHEAR_PROJECTILE_TYPE, ShearProjectileRenderer::new);
         EntityRendererRegistry.register(ModEntityTypes.ARMOR_STAND_THING_TYPE, ArmorStandThingRenderer::new);
         EntityRendererRegistry.register(ModEntityTypes.WATCHER_TYPE, WatcherRenderer::new);
+        EntityRendererRegistry.register(ModEntityTypes.VANGUARD_TYPE, VanguardRenderer::new);
+
+        ParticleFactoryRegistry.getInstance().register(ModParticles.NULL_EFFECT, NullEffectParticle.Factory::new);
+        NullParticles.register();
+
+        ParticleFactoryRegistry.getInstance().register(ModParticles.MANIA_EFFECT, ManiaEffectParticle.Factory::new);
+        ManiaParticles.register();
 
         ModelPredicateProviderRegistry.register(ModItems.PALE_WAR_PICKAXE, new Identifier("artillery"),
                 (stack, world, entity, seed) ->
@@ -95,11 +107,15 @@ public class MasksNGloryclient implements ClientModInitializer {
 
         ModKeybindings.register();
         FlashEffectPacket.registerClientReceiver();
-        FlashOverlayRenderer.register();
-        FarlandsAmbientManager.register();
-        VerdantAmbientManager.register();
-        FarlandsMusicManager.register();
-        FarlandsNullOverlayRenderer.register();
+        FlashOverlay.register();
+        FarlandsAmbience.register();
+        VerdantAmbience.register();
+        FarlandsMusic.register();
+        NullOverlay.register();
+        MemoryOverlay.register();
+        MemoryAmbience.register();
+        ManiaOverlay.register();
+        GreaseEffectPacket.registerClientReceiver();
 
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, renderer, registrationHelper, context) -> {
             if (entityType == EntityType.PLAYER) {
@@ -107,6 +123,9 @@ public class MasksNGloryclient implements ClientModInitializer {
                         (FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>>) renderer
                 ));
                 registrationHelper.register(new SheathLayer(
+                        (FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>>) renderer
+                ));
+                registrationHelper.register(new AscensionGlowLayer(
                         (FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>>) renderer
                 ));
             }

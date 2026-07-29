@@ -1,6 +1,9 @@
 package net.vainnglory.masksnglory.world;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.ChunkPos;
+import net.vainnglory.masksnglory.item.custom.AmalgamItem;
 
 public class FarlandsHelper {
     public static final int THRESHOLD = 50000;
@@ -19,6 +22,15 @@ public class FarlandsHelper {
                 || isInFarlands(pos.getEndX(), pos.getEndZ())
                 || isInFarlands(pos.getStartX(), pos.getEndZ())
                 || isInFarlands(pos.getEndX(), pos.getStartZ());
+    }
+
+    public static boolean hasActiveAmalgam(PlayerEntity player) {
+        for (ItemStack stack : player.getInventory().main) {
+            if (stack.getItem() instanceof AmalgamItem && stack.getDamage() < stack.getMaxDamage()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isSolid(int worldX, int y, int worldZ) {

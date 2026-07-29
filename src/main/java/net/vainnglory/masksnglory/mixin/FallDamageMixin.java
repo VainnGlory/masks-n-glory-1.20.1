@@ -12,7 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.item.custom.AshChargeItem;
-import net.vainnglory.masksnglory.util.MaskAbilityManager;
+import net.vainnglory.masksnglory.util.MaskAbilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -43,7 +43,7 @@ public abstract class FallDamageMixin extends Entity {
         if (!source.equals(this.getWorld().getDamageSources().fall())) return;
         if (!((Object) this instanceof PlayerEntity player)) return;
         if (!(player.getWorld() instanceof ServerWorld world)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.HSSHARD) return;
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.HSSHARD) return;
 
         float damagePortion = Math.min(5f, amount * 0.5f);
         float knockbackMult = 0.4f + amount * 0.06f;

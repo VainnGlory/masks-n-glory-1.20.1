@@ -28,6 +28,8 @@ public class ModDamageTypes {
             RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "bleeding"));
     public static final RegistryKey<DamageType> SHEAR_PROJECTILE =
             RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "shear_projectile"));
+    public static final RegistryKey<DamageType> MANIA_DAMAGE =
+            RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(MOD_ID, "mania"));
 
     public static DamageSource pan(LivingEntity attacker, LivingEntity target) {
         return target.getDamageSources().create(PAN_DAMAGE, attacker, attacker);
@@ -49,6 +51,10 @@ public class ModDamageTypes {
 
     public static DamageSource shearProjectile(PlayerEntity attacker, LivingEntity target) {
         return target.getDamageSources().create(SHEAR_PROJECTILE, attacker, attacker);
+    }
+
+    public static DamageSource mania(LivingEntity entity) {
+        return entity.getDamageSources().create(MANIA_DAMAGE);
     }
 
     public static void initialize() {

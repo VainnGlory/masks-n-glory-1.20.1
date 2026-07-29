@@ -18,6 +18,7 @@ public class ModPaintingVariantGenerator extends PaintingTagProvider {
         getOrCreateTagBuilder(PaintingVariantTags.PLACEABLE)
                 .add(ModPaintings.HUSK)
                 .add(ModPaintings.STOP)
+                .add(ModPaintings.FAR)
                 .add(ModPaintings.RATS);
 
     }

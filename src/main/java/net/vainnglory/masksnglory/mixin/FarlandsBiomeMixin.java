@@ -15,14 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class FarlandsBiomeMixin {
 
     @Inject(method = "getBiome", at = @At("HEAD"), cancellable = true)
-    private void masksnglory$farlandsBiome(
-            int x, int y, int z,
-            MultiNoiseUtil.MultiNoiseSampler noise,
-            CallbackInfoReturnable<RegistryEntry<Biome>> cir
-    ) {
+    private void masksnglory$farlandsBiome(int x, int y, int z,
+                                           MultiNoiseUtil.MultiNoiseSampler noise,
+                                           CallbackInfoReturnable<RegistryEntry<Biome>> cir) {
         if (FarlandsBiomeCache.nullBiomeEntry == null) return;
-        if (Math.abs(x) > (FarlandsHelper.THRESHOLD >> 2) || Math.abs(z) > (FarlandsHelper.THRESHOLD >> 2)) {
-            cir.setReturnValue(FarlandsBiomeCache.nullBiomeEntry);
-        }
+        if (Math.abs(x) <= (FarlandsHelper.THRESHOLD >> 2) && Math.abs(z) <= (FarlandsHelper.THRESHOLD >> 2)) return;
+        cir.setReturnValue(FarlandsBiomeCache.nullBiomeEntry);
     }
 }

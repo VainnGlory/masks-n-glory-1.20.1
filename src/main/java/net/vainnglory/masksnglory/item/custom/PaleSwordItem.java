@@ -60,7 +60,7 @@ public class PaleSwordItem extends SwordItem implements Vanishable, CustomHitSou
                         -3F, EntityAttributeModifier.Operation.ADDITION));
         builder.put(
                 ReachEntityAttributes.ATTACK_RANGE,
-                new EntityAttributeModifier(UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789012"),
+                new EntityAttributeModifier(UUID.fromString("06060388-320b-46db-b6ee-8a8be81e11ec"),
                         "Weapon reach", 0.5, EntityAttributeModifier.Operation.ADDITION)
         );
         this.attributeModifiers = builder.build();

@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.item.custom.CustomHitSoundItem;
 import net.vainnglory.masksnglory.util.ActorManager;
-import net.vainnglory.masksnglory.util.MaskAbilityManager;
+import net.vainnglory.masksnglory.util.MaskAbilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,7 +45,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     private void masksnglory$togCanConsume(boolean ignoreHunger, CallbackInfoReturnable<Boolean> cir) {
         PlayerEntity player = (PlayerEntity) (Object) this;
         if (!player.getWorld().isClient &&
-                MaskAbilityManager.getMaskMaterial(player) == ModArmorMaterials.TSHARD) {
+                MaskAbilities.getMaskMaterial(player) == ModArmorMaterials.TSHARD) {
             cir.setReturnValue(true);
         }
     }

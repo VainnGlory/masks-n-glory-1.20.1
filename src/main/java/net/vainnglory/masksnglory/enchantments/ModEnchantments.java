@@ -35,6 +35,7 @@ public class ModEnchantments {
     public static Enchantment ARTILLERY = new ArtilleryEnchantment();
     public static Enchantment PLUMMET = new PlummetEnchantment();
     public static Enchantment PERIPHERAL = new PeripheralEnchantment();
+    public static Enchantment ASCENSION = new AscensionEnchantment();
 
     public static void registerEnchantments() {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "fear"), FEAR);
@@ -66,6 +67,7 @@ public class ModEnchantments {
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "artillery"), ARTILLERY);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "plummet"), PLUMMET);
         Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "peripheral"), PERIPHERAL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier("masks-n-glory", "ascension"), ASCENSION);
     }
 }
 

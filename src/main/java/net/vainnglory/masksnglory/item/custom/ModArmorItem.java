@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.vainnglory.masksnglory.util.MaskAbilityManager;
+import net.vainnglory.masksnglory.util.MaskAbilities;
 import net.vainnglory.masksnglory.util.ModRarities;
 
 public class ModArmorItem extends ArmorItem {
@@ -30,7 +30,7 @@ public class ModArmorItem extends ArmorItem {
         if (!world.isClient() && entity instanceof PlayerEntity player) {
             ItemStack helmet = player.getInventory().getArmorStack(3);
             if (helmet == stack) {
-                MaskAbilityManager.tick(player, this.getMaterial());
+                MaskAbilities.tick(player, this.getMaterial());
             }
         }
         super.inventoryTick(stack, world, entity, slot, selected);

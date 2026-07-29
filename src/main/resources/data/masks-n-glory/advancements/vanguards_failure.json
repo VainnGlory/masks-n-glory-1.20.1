@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "minecraft:netherite_ingot" },
+    "title": "Vanguard's Failure.",
+    "description": "not even worth looting.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "entered_area": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

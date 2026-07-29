@@ -13,6 +13,7 @@ public class ModKeybindings {
 
     public static KeyBinding flashAttackKey;
     public static KeyBinding blackoutKey;
+    public static KeyBinding luneriSwapKey;
 
     public static void register() {
         flashAttackKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -29,6 +30,13 @@ public class ModKeybindings {
                 "category.masks-n-glory.keybinds"
         ));
 
+        luneriSwapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.masks-n-glory.luneri_swap",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_B,
+                "category.masks-n-glory.keybinds"
+        ));
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (flashAttackKey.wasPressed()) {
                 if (client.player != null) {
@@ -38,6 +46,11 @@ public class ModKeybindings {
             while (blackoutKey.wasPressed()) {
                 if (client.player != null) {
                     BlackoutC2SPacket.send();
+                }
+            }
+            while (luneriSwapKey.wasPressed()) {
+                if (client.player != null) {
+                    LuneriSwapC2SPacket.send();
                 }
             }
         });

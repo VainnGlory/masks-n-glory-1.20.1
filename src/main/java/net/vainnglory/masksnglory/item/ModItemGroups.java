@@ -27,6 +27,8 @@ public class ModItemGroups {
                         entries.add(ModItems.DVSHARD);
                         entries.add(ModItems.STSHARD);
                         entries.add(ModItems.ROSENSHARD);
+                        entries.add(ModItems.VSHARD);
+                        entries.add(ModItems.RATSHARD);
                         entries.add(ModItems.GILDEDINGOT);
                         entries.add(ModItems.RAWPALEINGOT);
                         entries.add(ModItems.NUGGET);
@@ -57,6 +59,8 @@ public class ModItemGroups {
                         entries.add(ModItems.DAVE_MASK);
                         entries.add(ModItems.STONEI_MASK);
                         entries.add(ModItems.ROSEN_BLINDFOLD);
+                        entries.add(ModItems.LUNERI_HEADPHONES);
+                        entries.add(ModItems.RAT_MASK);
                         entries.add(ModItems.BLANK_MASK);
                         entries.add(ModItems.GRIN_MASK);
                         entries.add(ModItems.SAD_MASK);
@@ -79,6 +83,8 @@ public class ModItemGroups {
                         entries.add(ModItems.PALE_WAR_PICKAXE);
                         entries.add(ModItems.GLAIVE);
                         entries.add(ModItems.PANICKEDLY_CARVED_WOODEN_SWORD);
+                        entries.add(ModItems.STAB_SHOT);
+                        entries.add(ModItems.NUKE_SHOT);
                         entries.add(ModItems.GOLDEN_PAN);
 
                         entries.add(ModItems.PALE_TEMPLATE);

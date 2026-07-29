@@ -17,6 +17,7 @@ import net.minecraft.nbt.NbtString;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.PrideItem;
+import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
 
 public class NotorietyEnchantment extends Enchantment {
 
@@ -56,36 +57,55 @@ public class NotorietyEnchantment extends Enchantment {
         return nbt.getList(KILLS_KEY, NbtElement.STRING_TYPE);
     }
 
+    public static boolean addName(ServerPlayerEntity player, ItemStack weapon, String name) {
+        NbtCompound nbt = weapon.getOrCreateNbt();
+        NbtList kills = nbt.getList(KILLS_KEY, NbtElement.STRING_TYPE);
+
+        for (int i = 0; i < kills.size(); i++) {
+            if (kills.getString(i).equals(name)) return false;
+        }
+
+        Multimap<EntityAttribute, EntityAttributeModifier> oldModifiers =
+                weapon.getAttributeModifiers(EquipmentSlot.MAINHAND);
+
+        kills.add(NbtString.of(name));
+        nbt.put(KILLS_KEY, kills);
+
+        Multimap<EntityAttribute, EntityAttributeModifier> newModifiers =
+                weapon.getAttributeModifiers(EquipmentSlot.MAINHAND);
+
+        player.getAttributes().removeModifiers(oldModifiers);
+        player.getAttributes().addTemporaryModifiers(newModifiers);
+
+        int count = kills.size();
+        float volume = Math.min(2.5F, 1.0F + (count - 1) * 0.1F);
+        float pitch = Math.max(0.3F, 1.05F - (count - 1) * 0.04F + (float) player.getRandom().nextGaussian() * 0.03F);
+
+        player.getWorld().playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                MasksNGlorySounds.ITEM_PRIDE_NOTORIETY_JINGLE,
+                player.getSoundCategory(),
+                volume,
+                pitch
+        );
+
+        return true;
+    }
+
     public static void registerCallbacks() {
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
-                    if (!(entity instanceof ServerPlayerEntity killed)) return;
-                    if (!(damageSource.getAttacker() instanceof ServerPlayerEntity killer)) return;
+            if (!(entity instanceof ServerPlayerEntity killed)) return;
+            if (!(damageSource.getAttacker() instanceof ServerPlayerEntity killer)) return;
 
-                    ItemStack weapon = killer.getMainHandStack();
-                    if (!(weapon.getItem() instanceof PrideItem)) return;
-                    if (EnchantmentHelper.getLevel(ModEnchantments.NOTORIETY, weapon) <= 0) return;
+            ItemStack weapon = killer.getMainHandStack();
+            if (!(weapon.getItem() instanceof PrideItem)) return;
+            if (EnchantmentHelper.getLevel(ModEnchantments.NOTORIETY, weapon) <= 0) return;
 
-                    NbtCompound nbt = weapon.getOrCreateNbt();
-                    NbtList kills = nbt.getList(KILLS_KEY, NbtElement.STRING_TYPE);
-                    String name = killed.getName().getString();
-
-                    for (int i = 0; i < kills.size(); i++) {
-                        if (kills.getString(i).equals(name)) return;
-                    }
-
-                    Multimap<EntityAttribute, EntityAttributeModifier> oldModifiers =
-                            weapon.getAttributeModifiers(EquipmentSlot.MAINHAND);
-
-                    kills.add(NbtString.of(name));
-                    nbt.put(KILLS_KEY, kills);
-
-                    Multimap<EntityAttribute, EntityAttributeModifier> newModifiers =
-                            weapon.getAttributeModifiers(EquipmentSlot.MAINHAND);
-
-                    killer.getAttributes().removeModifiers(oldModifiers);
-                    killer.getAttributes().addTemporaryModifiers(newModifiers);
-
-                });
+            addName(killer, weapon, killed.getName().getString());
+        });
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (!(entity instanceof ServerPlayerEntity player)) return;

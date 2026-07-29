@@ -80,6 +80,16 @@ public class ModEntityTypes {
                     .build()
     );
 
+    public static final EntityType<VanguardEntity> VANGUARD_TYPE = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier(MasksNGlory.MOD_ID, "vanguard"),
+            FabricEntityTypeBuilder.<VanguardEntity>create(SpawnGroup.MONSTER, VanguardEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.6F, 1.8F))
+                    .trackRangeBlocks(80)
+                    .trackedUpdateRate(3)
+                    .build()
+    );
+
     public static void registerEntityTypes() {}
 
     public static void registerModEntities() {

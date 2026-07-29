@@ -1,5 +1,7 @@
 package net.vainnglory.masksnglory.item.custom;
 
+import net.vainnglory.masksnglory.util.Mania;
+import net.vainnglory.masksnglory.util.ModDamageTypes;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
@@ -168,6 +170,11 @@ public class PrideItem extends SwordItem implements Vanishable, CustomHitSoundIt
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        int maniaAmplifier = Mania.getAmplifier(stack);
+        if (maniaAmplifier > 0) {
+            attacker.damage(ModDamageTypes.mania(attacker), maniaAmplifier * 2.0F);
+        }
+
         if (hasSpecialEnchant(stack)) {
             return super.postHit(stack, target, attacker);
         }

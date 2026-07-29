@@ -17,6 +17,6 @@ public class BlackoutC2SPacket {
 
     public static void registerReceiver() {
         ServerPlayNetworking.registerGlobalReceiver(ID, (server, player, handler, buf, responseSender) ->
-                server.execute(() -> BlackoutAbilityManager.toggle(player)));
+                server.execute(() -> Blackout.toggle(player)));
     }
 }

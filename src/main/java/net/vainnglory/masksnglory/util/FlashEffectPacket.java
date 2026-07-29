@@ -20,7 +20,7 @@ public class FlashEffectPacket {
         ClientPlayNetworking.registerGlobalReceiver(ID, (client, handler, buf, responseSender) -> {
             client.execute(() -> {
                 if (client.player != null) {
-                    FlashOverlayRenderer.triggerFlash();
+                    FlashOverlay.triggerFlash();
                 }
             });
         });

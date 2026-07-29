@@ -6,7 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.item.custom.GoldenPanItem;
-import net.vainnglory.masksnglory.util.CastIronManager;
+import net.vainnglory.masksnglory.util.CastIron;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,7 +22,7 @@ public class CastIronIsBlockingMixin {
         ItemStack weapon = player.getMainHandStack();
         if (!(weapon.getItem() instanceof GoldenPanItem)) return;
         if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, weapon) == 0) return;
-        if (CastIronManager.isBlocking(player)) {
+        if (CastIron.isBlocking(player)) {
             cir.setReturnValue(true);
         }
     }

@@ -20,7 +20,7 @@ import java.util.UUID;
 @Mixin(ItemStack.class)
 public class ItemStackPlummetMixin {
 
-    private static final UUID PLUMMET_REACH_ID = UUID.fromString("c4d5e6f7-a8b9-0123-cdef-456789012345");
+    private static final UUID PLUMMET_REACH_ID = UUID.fromString("8f5cbfbc-0da6-47df-8726-1c827576bbb5");
 
     @Inject(method = "getAttributeModifiers", at = @At("RETURN"), cancellable = true)
     private void masksnglory$plummetReach(EquipmentSlot slot, CallbackInfoReturnable<Multimap<EntityAttribute, EntityAttributeModifier>> cir) {

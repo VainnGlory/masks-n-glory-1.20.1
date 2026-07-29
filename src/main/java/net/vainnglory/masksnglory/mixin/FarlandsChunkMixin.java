@@ -36,13 +36,10 @@ public class FarlandsChunkMixin {
 
     @Inject(method = "populateNoise", at = @At("RETURN"), cancellable = true)
     private void masksnglory$farlandsPopulateNoise(
-            Executor executor,
-            Blender blender,
-            NoiseConfig noiseConfig,
-            StructureAccessor structureAccessor,
-            Chunk chunk,
-            CallbackInfoReturnable<CompletableFuture<Chunk>> cir
-    ) {
+            Executor executor, Blender blender, NoiseConfig noiseConfig,
+            StructureAccessor structureAccessor, Chunk chunk,
+            CallbackInfoReturnable<CompletableFuture<Chunk>> cir) {
+
         boolean isCustomDimension = settings.getKey()
                 .map(k -> !"minecraft".equals(k.getValue().getNamespace()))
                 .orElse(false);
@@ -117,9 +114,7 @@ public class FarlandsChunkMixin {
 
     private int masksnglory$findSurfaceY(int worldX, int worldZ, int minY, int maxY) {
         for (int y = maxY - 1; y >= minY; y--) {
-            if (FarlandsHelper.isSolid(worldX, y, worldZ)) {
-                return y + 1;
-            }
+            if (FarlandsHelper.isSolid(worldX, y, worldZ)) return y + 1;
         }
         return minY;
     }
@@ -141,7 +136,6 @@ public class FarlandsChunkMixin {
                 masksnglory$tryPlace(c, pos, baseX + x, baseY, baseZ + z, cobble, startX, startZ);
             }
         }
-
         for (int x = 1; x <= 5; x++) {
             for (int z = 1; z <= 3; z++) {
                 for (int y = 1; y <= 3; y++) {
@@ -149,7 +143,6 @@ public class FarlandsChunkMixin {
                 }
             }
         }
-
         for (int y = 1; y <= 3; y++) {
             for (int x = 0; x < 7; x++) {
                 masksnglory$tryPlace(c, pos, baseX + x, baseY + y, baseZ, planks, startX, startZ);
@@ -160,24 +153,20 @@ public class FarlandsChunkMixin {
                 masksnglory$tryPlace(c, pos, baseX + 6, baseY + y, baseZ + z, planks, startX, startZ);
             }
         }
-
         for (int y = 1; y <= 3; y++) {
             masksnglory$tryPlace(c, pos, baseX, baseY + y, baseZ, log, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 6, baseY + y, baseZ, log, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX, baseY + y, baseZ + 4, log, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 6, baseY + y, baseZ + 4, log, startX, startZ);
         }
-
         masksnglory$tryPlace(c, pos, baseX + 2, baseY + 2, baseZ, glass, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 4, baseY + 2, baseZ, glass, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX, baseY + 2, baseZ + 2, glass, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 6, baseY + 2, baseZ + 2, glass, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 2, baseY + 2, baseZ + 4, glass, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 4, baseY + 2, baseZ + 4, glass, startX, startZ);
-
         masksnglory$tryPlace(c, pos, baseX + 3, baseY + 1, baseZ + 4, air, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 3, baseY + 2, baseZ + 4, air, startX, startZ);
-
         for (int z = 0; z < 5; z++) {
             masksnglory$tryPlace(c, pos, baseX, baseY + 4, baseZ + z, stairE, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 1, baseY + 4, baseZ + z, stairE, startX, startZ);
@@ -187,28 +176,23 @@ public class FarlandsChunkMixin {
             masksnglory$tryPlace(c, pos, baseX + 5, baseY + 4, baseZ + z, stairW, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 6, baseY + 4, baseZ + z, stairW, startX, startZ);
         }
-
         for (int z = 0; z < 5; z++) {
             masksnglory$tryPlace(c, pos, baseX + 2, baseY + 5, baseZ + z, stairE, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 3, baseY + 5, baseZ + z, planks, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 4, baseY + 5, baseZ + z, stairW, startX, startZ);
         }
-
         for (int gz : new int[]{0, 4}) {
             masksnglory$tryPlace(c, pos, baseX + 2, baseY + 4, baseZ + gz, planks, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 3, baseY + 4, baseZ + gz, planks, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 4, baseY + 4, baseZ + gz, planks, startX, startZ);
             masksnglory$tryPlace(c, pos, baseX + 3, baseY + 5, baseZ + gz, planks, startX, startZ);
         }
-
         masksnglory$tryPlace(c, pos, baseX + 1, baseY + 3, baseZ + 1, cobweb, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 5, baseY + 3, baseZ + 1, cobweb, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 5, baseY + 3, baseZ + 3, cobweb, startX, startZ);
-
         masksnglory$tryPlace(c, pos, baseX + 2, baseY + 1, baseZ, air, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 5, baseY + 3, baseZ + 4, air, startX, startZ);
         masksnglory$tryPlace(c, pos, baseX + 6, baseY + 2, baseZ + 1, air, startX, startZ);
-
         masksnglory$tryPlace(c, pos, baseX + 5, baseY + 1, baseZ + 3, crafting, startX, startZ);
 
         int chestX = baseX + 1;
@@ -218,7 +202,9 @@ public class FarlandsChunkMixin {
             pos.set(chestX, chestY, chestZ);
             c.setBlockState(pos, chest, false);
             ChestBlockEntity entity = new ChestBlockEntity(new BlockPos(chestX, chestY, chestZ), chest);
-            entity.setLootTable(new Identifier("masks-n-glory", "chests/farlands_house"), seed);
+            double distFromOrigin = Math.sqrt((double) chestX * chestX + (double) chestZ * chestZ);
+            String lootTablePath = distFromOrigin > 70000.0 ? "chests/farlands_house_far" : "chests/farlands_house";
+            entity.setLootTable(new Identifier("masks-n-glory", lootTablePath), seed);
             c.setBlockEntity(entity);
         }
     }

@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
-import net.vainnglory.masksnglory.util.MaskAbilityManager;
+import net.vainnglory.masksnglory.util.MaskAbilities;
 import net.vainnglory.masksnglory.util.ModDamageTypes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,7 +30,7 @@ public abstract class MaskEffectsMixin {
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.DVSHARD) return;
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.DVSHARD) return;
         if (self.getHealth() <= 1.0f) return;
         if (amount >= self.getHealth()) {
             ItemStack helmet = player.getInventory().getArmorStack(3);
@@ -55,16 +55,16 @@ public abstract class MaskEffectsMixin {
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.OSHARD) return;
-        if (!MaskAbilityManager.ojiEnterGuard(player.getUuid())) return;
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.OSHARD) return;
+        if (!MaskAbilities.ojiEnterGuard(player.getUuid())) return;
         long currentTime = self.getWorld().getTime();
-        if (MaskAbilityManager.isOjiFirstHit(player.getUuid(), currentTime)) {
-            MaskAbilityManager.ojiRecordHit(player.getUuid(), currentTime);
+        if (MaskAbilities.isOjiFirstHit(player.getUuid(), currentTime)) {
+            MaskAbilities.ojiRecordHit(player.getUuid(), currentTime);
             boolean result = self.damage(source, amount * 0.2f);
-            MaskAbilityManager.ojiExitGuard(player.getUuid());
+            MaskAbilities.ojiExitGuard(player.getUuid());
             cir.setReturnValue(result);
         } else {
-            MaskAbilityManager.ojiExitGuard(player.getUuid());
+            MaskAbilities.ojiExitGuard(player.getUuid());
         }
     }
 
@@ -74,11 +74,11 @@ public abstract class MaskEffectsMixin {
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.CSHARD) return;
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.CSHARD) return;
         if (!(source.getSource() instanceof PersistentProjectileEntity)) return;
-        if (!MaskAbilityManager.corvEnterGuard(player.getUuid())) return;
+        if (!MaskAbilities.corvEnterGuard(player.getUuid())) return;
         boolean result = self.damage(source, amount * 0.7f);
-        MaskAbilityManager.corvExitGuard(player.getUuid());
+        MaskAbilities.corvExitGuard(player.getUuid());
         cir.setReturnValue(result);
     }
 
@@ -89,7 +89,7 @@ public abstract class MaskEffectsMixin {
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.SMASKS) return;
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.SMASKS) return;
         if (!(player.getWorld() instanceof ServerWorld world)) return;
         double radius = Math.min(8.0, 3.0 + amount * 0.3);
         Box area = new Box(player.getBlockPos()).expand(radius);
@@ -105,10 +105,10 @@ public abstract class MaskEffectsMixin {
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.HHSHARD) return;
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.HHSHARD) return;
         Entity attacker = source.getAttacker();
         if (attacker != null) {
-            MaskAbilityManager.recordHoundAttacker(player.getUuid(), attacker.getUuid());
+            MaskAbilities.recordHoundAttacker(player.getUuid(), attacker.getUuid());
         }
     }
 
@@ -119,8 +119,8 @@ public abstract class MaskEffectsMixin {
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.ESHARD) return;
-        MaskAbilityManager.addEgoGrudge(player.getUuid(), amount);
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.ESHARD) return;
+        MaskAbilities.addEgoGrudge(player.getUuid(), amount);
     }
 
     @Inject(method = "damage", at = @At("TAIL"))
@@ -130,8 +130,8 @@ public abstract class MaskEffectsMixin {
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.STSHARD) return;
-        MaskAbilityManager.activateStoneiShell(player);
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.STSHARD) return;
+        MaskAbilities.activateStoneiShell(player);
     }
 
     @Inject(method = "damage", at = @At("TAIL"))
@@ -140,7 +140,7 @@ public abstract class MaskEffectsMixin {
         LivingEntity self = (LivingEntity)(Object)this;
         if (self.getWorld().isClient) return;
         if (!(self instanceof PlayerEntity player)) return;
-        if (MaskAbilityManager.getMaskMaterial(player) != ModArmorMaterials.ESHARD) return;
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.ESHARD) return;
         if (!self.isDead()) return;
         Entity killer = source.getAttacker();
         if (!(killer instanceof LivingEntity living)) return;

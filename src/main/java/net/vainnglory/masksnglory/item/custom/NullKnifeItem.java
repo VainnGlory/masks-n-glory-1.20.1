@@ -130,7 +130,7 @@ public class NullKnifeItem extends SwordItem implements Vanishable, CustomHitSou
                 if (!isOnCooldown(player)) {
                     NullManager.applyEffect(target, EFFECT_DURATION_TICKS);
                     target.addStatusEffect(new StatusEffectInstance(
-                            ModEffects.NULL_EFFECT, EFFECT_DURATION_TICKS, 0, false, true, true));
+                            ModEffects.NULL_EFFECT, EFFECT_DURATION_TICKS, 0, false, false, true));
                     setCooldown(player);
                 }
             }

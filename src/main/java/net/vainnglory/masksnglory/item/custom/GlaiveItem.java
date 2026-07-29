@@ -52,7 +52,7 @@ public class GlaiveItem extends SwordItem implements Vanishable, CustomHitSoundI
         );
         builder.put(
                 ReachEntityAttributes.ATTACK_RANGE,
-                new EntityAttributeModifier(UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+                new EntityAttributeModifier(UUID.fromString("cd5c9fec-20df-4246-8d20-58e19ce056da"),
                         "Weapon reach", 1.0, EntityAttributeModifier.Operation.ADDITION)
         );
         this.attributeModifiers = builder.build();

@@ -53,7 +53,11 @@ public enum ModArmorMaterials implements ArmorMaterial {
     STSHARD("stshard", 25, new int[] { 2, 8, 6, 3 }, 19,
             SoundEvents.BLOCK_SCULK_CHARGE, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.STSHARD)),
     ROSENM("rosenm", 25, new int[] { 1, 8, 6, 3 }, 19,
-            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.ROSENSHARD));
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.ROSENSHARD)),
+    VSHARD("vshard", 25, new int[] { 2, 5, 6, 2 }, 19,
+            SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0f, 0f, () -> Ingredient.ofItems(ModItems.VSHARD)),
+    RATSHARD("ratshard", 25, new int[] { 2, 8, 6, 3 }, 19,
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2f, 0.1f, () -> Ingredient.ofItems(ModItems.RATSHARD));
 
     private final String name;
     private final int[] protectionAmounts;

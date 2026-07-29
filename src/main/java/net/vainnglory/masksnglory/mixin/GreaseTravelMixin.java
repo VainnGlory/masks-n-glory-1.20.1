@@ -14,11 +14,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(LivingEntity.class)
 public class GreaseTravelMixin {
 
+    private static final float BASE_SLIPPERINESS = 1.1f;
+    private static final float SLIPPERINESS_PER_STACK = 0.05f;
+
     @Redirect(method = "travel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
     private float grease$redirectSlipperiness(Block block) {
         if (MinecraftClient.getInstance().player == (Object)this && GreaseClientState.isGreased()) {
-            return 1.1f;
+            return BASE_SLIPPERINESS + GreaseClientState.getStacks() * SLIPPERINESS_PER_STACK;
         }
         return block.getSlipperiness();
     }

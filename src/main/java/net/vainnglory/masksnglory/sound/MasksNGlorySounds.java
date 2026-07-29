@@ -17,9 +17,11 @@ public interface MasksNGlorySounds {
     SoundEvent ITEM_PALE_HIT = createSoundEvent("item.pale.hit");
     SoundEvent ITEM_BONE_HIT = createSoundEvent("item.bone.hit");
     SoundEvent ITEM_PRIDE_HIT = createSoundEvent("item.pride.hit");
+    SoundEvent ITEM_PRIDE_NOTORIETY_JINGLE = createSoundEvent("item.pride.notoriety_jingle");
 
     SoundEvent AMBIENT_FARLANDS_WIND = createSoundEvent("ambient.farlands.wind");
     SoundEvent AMBIENT_FARLANDS_HUM = createSoundEvent("ambient.farlands.hum");
+    SoundEvent AMBIENT_FARLANDS_MEMORY_HISS = createSoundEvent("ambient.farlands.memory_hiss");
     SoundEvent MUSIC_FARLANDS_A = createSoundEvent("music.farlands.a");
     SoundEvent MUSIC_FARLANDS_B = createSoundEvent("music.farlands.b");
     SoundEvent AMBIENT_VERDANT_BIRD1 = createSoundEvent("ambient.verdant_memory.bird1");
@@ -29,6 +31,11 @@ public interface MasksNGlorySounds {
     SoundEvent ENTITY_ARMOR_STAND_THING_WAIL = createSoundEvent("entity.armor_stand_thing.wail");
 
     SoundEvent ITEM_PANICKEDLY_CARVED_SWORD_WHISPER = createSoundEvent("item.panickedly_carved_sword.whisper");
+
+    SoundEvent ENTITY_VANGUARD_DMAN_HIT_1 = createSoundEvent("entity.vanguard.dman_hit_1");
+    SoundEvent ENTITY_VANGUARD_DMAN_HIT_2 = createSoundEvent("entity.vanguard.dman_hit_2");
+    SoundEvent ENTITY_VANGUARD_DMAN_HIT_3 = createSoundEvent("entity.vanguard.dman_hit_3");
+    SoundEvent ENTITY_VANGUARD_DMAN_DEATH = createSoundEvent("entity.vanguard.dman_death");
 
     static void initialize() {
         SOUND_EVENTS.keySet().forEach(soundEvent -> Registry.register(Registries.SOUND_EVENT, SOUND_EVENTS.get(soundEvent), soundEvent));

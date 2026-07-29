@@ -30,6 +30,10 @@
     ],
     "subtitle": "masks-n-glory.subtitles.item.pride.hit"
   },
+  "item.pride.notoriety_jingle": {
+    "sounds": ["masks-n-glory:item/pride/notoriety_jingle"],
+    "subtitle": "masks-n-glory.subtitles.item.pride.notoriety_jingle"
+},
   "item.pale.hit": {
     "sounds": [
       "masks-n-glory:item/pale_hit_1",
@@ -55,6 +59,15 @@
       }
     ],
     "subtitle": "masks-n-glory.subtitles.ambient.farlands.hum"
+  },
+  "ambient.farlands.memory_hiss": {
+    "sounds": [
+      {
+        "name": "masks-n-glory:ambient/farlands/memory_hiss",
+        "stream": true
+      }
+    ],
+    "subtitle": "masks-n-glory.subtitles.ambient.farlands.memory_hiss"
   },
 
   "ambient.verdant_memory.bird1": {
@@ -99,5 +112,17 @@
   },
   "item.panickedly_carved_sword.whisper": {
     "sounds": ["masks-n-glory:item/panickedly_carved_sword/whisper"]
+  },
+  "entity.vanguard.dman_hit_1": {
+    "sounds": [ "masks-n-glory:entity/vanguard/dman_hit_1" ]
+  },
+  "entity.vanguard.dman_hit_2": {
+    "sounds": [ "masks-n-glory:entity/vanguard/dman_hit_2" ]
+  },
+  "entity.vanguard.dman_hit_3": {
+    "sounds": [ "masks-n-glory:entity/vanguard/dman_hit_3" ]
+  },
+  "entity.vanguard.dman_death": {
+    "sounds": [ "masks-n-glory:entity/vanguard/dman_death" ]
   }
 }

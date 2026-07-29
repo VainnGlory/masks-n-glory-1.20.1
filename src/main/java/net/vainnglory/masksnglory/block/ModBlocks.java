@@ -14,6 +14,7 @@ import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.block.custom.UnlitLanternBlock;
 import net.vainnglory.masksnglory.block.custom.UnlitTorchBlock;
 import net.vainnglory.masksnglory.block.custom.UnlitWallTorchBlock;
+import net.vainnglory.masksnglory.block.custom.GlitchBlock;
 
 public class ModBlocks {
     public static final Block PALE_STEEL_BLOCK = registerBlock("pale_steel_block",
@@ -47,6 +48,8 @@ public class ModBlocks {
     public static final Block UNLIT_SOUL_LANTERN = registerBlockNoItem("unlit_soul_lantern",
             new UnlitLanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN).luminance(state -> 0).dropsNothing()));
 
+    public static final Block GLITCH_BLOCK = registerBlockNoItem("glitch_block",
+            new GlitchBlock(FabricBlockSettings.create().strength(-1.0f, 3600000.0f).luminance(state -> 4).dropsNothing()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

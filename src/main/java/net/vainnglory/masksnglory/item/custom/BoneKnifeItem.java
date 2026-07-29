@@ -23,7 +23,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
-import net.vainnglory.masksnglory.util.BoneKnifeParryManager;
+import net.vainnglory.masksnglory.util.Parry;
 import net.vainnglory.masksnglory.util.ModRarities;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,8 +78,8 @@ public class BoneKnifeItem extends SwordItem implements Vanishable, CustomHitSou
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (hand != Hand.MAIN_HAND) return TypedActionResult.pass(user.getStackInHand(hand));
         if (!world.isClient) {
-            BoneKnifeParryManager.activatePanParryWindow(user.getUuid(), world.getTime());
-            if (BoneKnifeParryManager.tryProjectileParry(user, world)) {
+            Parry.activatePanParryWindow(user.getUuid(), world.getTime());
+            if (Parry.tryProjectileParry(user, world)) {
                 user.swingHand(hand);
             }
         }

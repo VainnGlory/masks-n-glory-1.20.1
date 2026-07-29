@@ -10,6 +10,7 @@ public class ModPaintings {
     public static final PaintingVariant HUSK = registerPainting("husk",new PaintingVariant(48,64));
     public static final PaintingVariant RATS = registerPainting("rats",new PaintingVariant(64,48));
     public static final PaintingVariant STOP = registerPainting("stop",new PaintingVariant(64,48));
+    public static final PaintingVariant FAR = registerPainting("far",new PaintingVariant(64,64));
     public static PaintingVariant registerPainting(String name, PaintingVariant paintingVariant){
         return Registry.register(Registries.PAINTING_VARIANT,new Identifier(MasksNGlory.MOD_ID,name),paintingVariant);
     }

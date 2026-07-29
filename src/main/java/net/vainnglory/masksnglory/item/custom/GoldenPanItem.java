@@ -39,9 +39,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.sound.MasksNGlorySounds;
-import net.vainnglory.masksnglory.util.BoneKnifeParryManager;
-import net.vainnglory.masksnglory.util.CastIronManager;
-import net.vainnglory.masksnglory.util.GreaseManager;
+import net.vainnglory.masksnglory.util.Parry;
+import net.vainnglory.masksnglory.util.CastIron;
+import net.vainnglory.masksnglory.util.Grease;
 import net.vainnglory.masksnglory.util.ModDamageTypes;
 import net.vainnglory.masksnglory.util.ModRarities;
 import net.vainnglory.masksnglory.util.ModDeathSource;
@@ -226,7 +226,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             tooltip.add(Text.literal(label).setStyle(Style.EMPTY.withColor(color)));
         }
         if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, stack) > 0) {
-            int charge = CastIronManager.readChargeFromWeapon(stack);
+            int charge = CastIron.readChargeFromWeapon(stack);
             if (charge > 0) {
                 tooltip.add(Text.literal("Shield Charge: " + charge + "/5")
                         .setStyle(Style.EMPTY.withColor(0x888888)));
@@ -250,14 +250,14 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
         ItemStack stack = user.getStackInHand(hand);
         if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, stack) > 0) {
             if (!world.isClient) {
-                CastIronManager.setBlocking(user, true);
+                CastIron.setBlocking(user, true);
             }
             user.setCurrentHand(hand);
             return TypedActionResult.consume(stack);
         }
         if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, stack) > 0 && user.isSneaking()) {
             if (!world.isClient) {
-                GreaseManager.applyGrease(user);
+                Grease.applyGrease(user);
             }
             return TypedActionResult.success(stack);
         }
@@ -267,7 +267,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (!world.isClient && user instanceof PlayerEntity player) {
-            CastIronManager.setBlocking(player, false);
+            CastIron.setBlocking(player, false);
         }
     }
 
@@ -448,7 +448,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
 
             if (EnchantmentHelper.getLevel(ModEnchantments.CAST_IRON, weapon) > 0
-                    && CastIronManager.isBlocking(player)) {
+                    && CastIron.isBlocking(player)) {
                 return ActionResult.PASS;
             }
 
@@ -458,7 +458,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 final ItemStack capturedWeapon = weapon;
 
                 if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0
-                        && capturedTarget instanceof PlayerEntity cp && GreaseManager.isGreased(cp)) {
+                        && capturedTarget instanceof PlayerEntity cp && Grease.isGreased(cp)) {
                     pendingSlams.offer(() -> {
                         if (capturedTarget.isAlive()) {
                             capturedTarget.hurtTime = 0;
@@ -469,7 +469,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
                 }
 
                 if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0) {
-                    GreaseManager.applyGrease(capturedTarget);
+                    Grease.applyGrease(capturedTarget);
                 }
 
                 if (EnchantmentHelper.getLevel(ModEnchantments.PLUMMET, capturedWeapon) > 0) {
@@ -563,18 +563,18 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             final float capturedFallDistance = fallDistance;
 
             if (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0) {
-                GreaseManager.applyGrease(target);
+                Grease.applyGrease(target);
             }
 
             pendingSlams.offer(() -> {
                 if (target.isAlive()) {
-                    if (BoneKnifeParryManager.tryPanParry(target, player, world, totalBonus)) {
+                    if (Parry.tryPanParry(target, player, world, totalBonus)) {
                         return;
                     }
                     target.hurtTime = 0;
                     target.timeUntilRegen = 0;
                     float greasedBonus = (EnchantmentHelper.getLevel(ModEnchantments.GREASE, weapon) > 0
-                            && target instanceof PlayerEntity gp && GreaseManager.isGreased(gp)) ? 1.0f : 0.0f;
+                            && target instanceof PlayerEntity gp && Grease.isGreased(gp)) ? 1.0f : 0.0f;
                     target.damage(world.getDamageSources().playerAttack(player), totalBonus + greasedBonus);
 
                     if (!target.isAlive()) {

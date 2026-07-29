@@ -1,9 +1,13 @@
 package net.vainnglory.masksnglory;
 
+import net.vainnglory.masksnglory.block.custom.GlitchBlock;
+import net.vainnglory.masksnglory.particle.ModParticles;
+import net.vainnglory.masksnglory.util.CastleSpawner;
+import net.vainnglory.masksnglory.util.StabShotManager;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.TeleportTarget;
-import net.vainnglory.masksnglory.entity.custom.WatcherEntity;
+import net.vainnglory.masksnglory.entity.custom.*;
 import net.vainnglory.masksnglory.world.ModDimensions;
 import net.vainnglory.masksnglory.world.ModFeatures;
 import net.minecraft.advancement.Advancement;
@@ -17,7 +21,7 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.TypedActionResult;
 import net.vainnglory.masksnglory.block.ModBlocks;
-import net.vainnglory.masksnglory.util.BlackoutAbilityManager;
+import net.vainnglory.masksnglory.util.Blackout;
 import net.vainnglory.masksnglory.util.BlackoutC2SPacket;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Blocks;
@@ -62,9 +66,6 @@ import net.minecraft.world.GameRules;
 import net.vainnglory.masksnglory.effect.ModEffects;
 import net.vainnglory.masksnglory.enchantments.*;
 import net.vainnglory.masksnglory.entity.ModEntities;
-import net.vainnglory.masksnglory.entity.custom.ArmorStandThingEntity;
-import net.vainnglory.masksnglory.entity.custom.ModEntityTypes;
-import net.vainnglory.masksnglory.entity.custom.SoulRavagerEntity;
 import net.vainnglory.masksnglory.events.PlayerDeathEffects;
 import net.vainnglory.masksnglory.item.ModItemGroups;
 import net.vainnglory.masksnglory.item.ModItems;
@@ -111,6 +112,7 @@ public class MasksNGlory implements ModInitializer {
 
         ModEnchantments.registerEnchantments();
         ModEffects.registerEffects();
+        ModParticles.registerParticles();
         ModPotions.registerPotions();
 
         ModDamageTypes.initialize();
@@ -132,8 +134,10 @@ public class MasksNGlory implements ModInitializer {
         TemperEnchantment.registerTickCallback();
         IncumbentEnchantment.registerAttackCallback();
         NotorietyEnchantment.registerCallbacks();
-        CastIronManager.register();
-        GreaseManager.register();
+        NotorietyCommand.register();
+        Mania.register();
+        CastIron.register();
+        Grease.register();
 
         RegisterMNGItems.registerPaleItems();
 
@@ -142,7 +146,13 @@ public class MasksNGlory implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ModEntityTypes.ARMOR_STAND_THING_TYPE, ArmorStandThingEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ModEntityTypes.WATCHER_TYPE, WatcherEntity.createAttributes());
         WatcherEntity.register();
-
+        FabricDefaultAttributeRegistry.register(ModEntityTypes.VANGUARD_TYPE, VanguardEntity.createAttributes());
+        VanguardEntity.register();
+        CastleSpawner.register();
+        MineshaftVaults.register();
+        GlitchBlock.register();
+        StabShotManager.register();
+        NukeShotManager.register();
         FlashAttackPacket.registerReceiver();
 
         UseItemCallback.EVENT.register((player, world, hand) -> {
@@ -160,6 +170,37 @@ public class MasksNGlory implements ModInitializer {
             if (!player.getAbilities().creativeMode) held.decrement(1);
             player.giveItemStack(new ItemStack(ModItems.ORIGINAL_AIR_BOTTLE));
             return TypedActionResult.success(player.getStackInHand(hand));
+        });
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            if (server.getTicks() % 20 != 0) return;
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                ItemStack amalgam = null;
+                for (ItemStack stack : player.getInventory().main) {
+                    if (stack.getItem() instanceof AmalgamItem && stack.getDamage() < stack.getMaxDamage()) {
+                        amalgam = stack;
+                        break;
+                    }
+                }
+                if (amalgam == null) continue;
+
+                boolean justBroke = false;
+                for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+                    if (slot == EquipmentSlot.FEET && !player.isOnGround()) continue;
+                    if (amalgam.getDamage() >= amalgam.getMaxDamage()) break;
+                    ItemStack armor = player.getEquippedStack(slot);
+                    if (armor.isEmpty() || !armor.isDamageable() || armor.getDamage() <= 0) continue;
+                    armor.setDamage(armor.getDamage() - 1);
+                    int prev = amalgam.getDamage();
+                    amalgam.setDamage(Math.min(prev + 1, amalgam.getMaxDamage()));
+                    if (!justBroke && amalgam.getDamage() >= amalgam.getMaxDamage() && prev < amalgam.getMaxDamage()) {
+                        justBroke = true;
+                    }
+                }
+                if (justBroke) {
+                    player.playSound(SoundEvents.ENTITY_ITEM_BREAK, 2.0f, 1.0f);
+                }
+            }
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -184,17 +225,25 @@ public class MasksNGlory implements ModInitializer {
                 if (verdant == null) continue;
                 FarlandsNullManager.cleanup(player.getUuid());
                 player.removeStatusEffect(ModEffects.NULL_EFFECT);
-                player.teleport(verdant, px, 128, pz, player.getYaw(), player.getPitch());
+                if (px >= 70566.5 && px <= 70569.5 && pz >= 7454.5 && pz <= 7457.5) {
+                    player.teleport(verdant, 0, 600, 0, player.getYaw(), player.getPitch());
+                } else {
+                    player.teleport(verdant, px, 128, pz, player.getYaw(), player.getPitch());
+                }
             }
         });
 
-        ServerTickEvents.END_SERVER_TICK.register(server -> FarlandsPortalManager.tick(server));
+        ServerTickEvents.END_SERVER_TICK.register(server -> FarlandsPortal.tick(server));
 
-        MaskAbilityManager.registerCallbacks();
+        MaskAbilities.registerCallbacks();
 
         ModWorldGeneration.addFeaturesToBiomes();
 
         BlackoutC2SPacket.registerReceiver();
+
+        GlaiveModeC2SPacket.registerReceiver();
+        LuneriSwapC2SPacket.registerReceiver();
+        ServerTickEvents.END_SERVER_TICK.register(server -> AfterlifeEnchantment.tickSummonedUndead(server));
 
         ServerPlayConnectionEvents.DISCONNECT.register((handler, s) -> {
             UUID id = handler.player.getUuid();
@@ -203,21 +252,21 @@ public class MasksNGlory implements ModInitializer {
             ActorManager.lastDamageTicks.remove(id);
             ActorManager.offScriptCooldowns.remove(id);
             ActorManager.sympathyInProgress.remove(id);
-            MaskAbilityManager.clearPlayerData(id);
+            MaskAbilities.clearPlayerData(id);
             TemperEnchantment.cleanup(id);
             IncumbentEnchantment.cleanup(id);
             NullManager.cleanup(id);
             NullKnifeItem.cleanup(id);
             ExceptionNotCaughtEnchantment.cleanup(id);
-            GoldenScrapManager.cleanupOnDisconnect(id);
-            GoldenScrapManager.pauseHealthPenalty(id);
+            GoldenScrap.cleanupOnDisconnect(id);
+            GoldenScrap.pauseHealthPenalty(id);
             ActorManager.offScriptActive.remove(id);
             ActorManager.actorSneakTicks.remove(id);
             ActorManager.lastDamageTicks.remove(id);
             ActorManager.offScriptCooldowns.remove(id);
             ActorManager.sympathyInProgress.remove(id);
             ActorManager.offScriptAddedInvis.remove(id);
-            CastIronManager.setBlocking(handler.player, false);
+            CastIron.setBlocking(handler.player, false);
             FarlandsNullManager.cleanup(id);
             lastPlayerChunk.remove(id);
             honeyDrinkStart.remove(id);
@@ -226,7 +275,7 @@ public class MasksNGlory implements ModInitializer {
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            GoldenScrapManager.resumeHealthPenalty(handler.player.getUuid(), handler.player);
+            GoldenScrap.resumeHealthPenalty(handler.player.getUuid(), handler.player);
         });
 
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
@@ -246,7 +295,7 @@ public class MasksNGlory implements ModInitializer {
             }
         });
 
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> BlackoutAbilityManager.onServerStart(server));
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> Blackout.onServerStart(server));
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             VerdantTreeFeature.templateManager = server.getStructureTemplateManager();
@@ -337,11 +386,11 @@ public class MasksNGlory implements ModInitializer {
             });
         });
 
-        ServerTickEvents.END_SERVER_TICK.register(server -> BlackoutAbilityManager.tick(server));
+        ServerTickEvents.END_SERVER_TICK.register(server -> Blackout.tick(server));
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             if (server.getTicks() % 20 == 0) {
-                GoldenScrapManager.tickHealthPenalties(server);
+                GoldenScrap.tickHealthPenalties(server);
             }
         });
 
@@ -414,116 +463,112 @@ public class MasksNGlory implements ModInitializer {
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
+            if (server.getTicks() % 20 != 0) return;
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                UUID id = player.getUuid();
+                if (player.getWorld().getRegistryKey().equals(World.OVERWORLD)) {
+                    double px = player.getX(), pz = player.getZ();
 
-                boolean wearingPaleSet =
-                        player.getEquippedStack(EquipmentSlot.HEAD).isOf(ModItems.PALE_HELMET) &&
-                                player.getEquippedStack(EquipmentSlot.CHEST).isOf(ModItems.PALE_CHESTPLATE) &&
-                                player.getEquippedStack(EquipmentSlot.LEGS).isOf(ModItems.PALE_LEGGINGS) &&
-                                player.getEquippedStack(EquipmentSlot.FEET).isOf(ModItems.PALE_BOOTS);
+                    if (FarlandsHelper.isInFarlands(px, pz)) {
+                        Advancement enterAdv = server.getAdvancementLoader().get(new Identifier("masks-n-glory", "farlands_enter"));
+                        if (enterAdv != null && !player.getAdvancementTracker().getProgress(enterAdv).isDone()) {
+                            player.getAdvancementTracker().grantCriterion(enterAdv, "entered_farlands");
+                        }
+                    }
 
-                if (wearingPaleSet && !player.hasStatusEffect(ModEffects.ACTOR)) {
-                    player.addStatusEffect(new StatusEffectInstance(ModEffects.ACTOR, Integer.MAX_VALUE, 0, false, false, true));
-                } else if (!wearingPaleSet && player.hasStatusEffect(ModEffects.ACTOR)) {
-                    player.removeStatusEffect(ModEffects.ACTOR);
-                    ActorManager.offScriptActive.remove(id);
-                    ActorManager.actorSneakTicks.remove(id);
-                    ActorManager.offScriptCooldowns.remove(id);
-                    ActorManager.lastDamageTicks.remove(id);
-                    ActorManager.offScriptAddedInvis.remove(id);
-                }
+                    if (FarlandsHelper.isInFarlands(px, pz)) {
+                        ServerWorld world = (ServerWorld) player.getWorld();
+                        BlockPos center = player.getBlockPos();
 
-                if (!player.hasStatusEffect(ModEffects.ACTOR)) continue;
+                        Advancement houseAdv = server.getAdvancementLoader().get(new Identifier("masks-n-glory", "farlands_house"));
+                        if (houseAdv != null && !player.getAdvancementTracker().getProgress(houseAdv).isDone()) {
+                            for (BlockPos pos : BlockPos.iterate(center.add(-8, -8, -8), center.add(8, 8, 8))) {
+                                if (world.getBlockState(pos).isOf(Blocks.COBWEB)) {
+                                    player.getAdvancementTracker().grantCriterion(houseAdv, "approached_house");
+                                    break;
+                                }
+                            }
+                        }
 
-                if (ActorManager.offScriptCooldowns.getOrDefault(id, 0) > 0) {
-                    ActorManager.offScriptCooldowns.merge(id, -1, Integer::sum);
-                }
+                        Advancement portalAdv = server.getAdvancementLoader().get(new Identifier("masks-n-glory", "farlands_portal"));
+                        if (portalAdv != null && !player.getAdvancementTracker().getProgress(portalAdv).isDone()) {
+                            for (BlockPos pos : BlockPos.iterate(center.add(-8, -8, -8), center.add(8, 8, 8))) {
+                                if (world.getBlockState(pos).isOf(Blocks.BARRIER)) {
+                                    player.getAdvancementTracker().grantCriterion(portalAdv, "approached_portal");
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
-                if (ActorManager.offScriptActive.contains(id)) {
-                    if (!player.hasStatusEffect(StatusEffects.INVISIBILITY)) {
-                        ActorManager.offScriptActive.remove(id);
-                        ActorManager.offScriptAddedInvis.remove(id);
-                        player.removeStatusEffect(ModEffects.OFF_SCRIPT_FLAG);
-                    } else if (!player.hasStatusEffect(ModEffects.OFF_SCRIPT_FLAG)) {
-                        ActorManager.offScriptActive.remove(id);
-                        if (ActorManager.offScriptAddedInvis.remove(id)) {
-                            player.removeStatusEffect(StatusEffects.INVISIBILITY);
+                    Advancement vanguardsAdv = server.getAdvancementLoader().get(new Identifier("masks-n-glory", "vanguards_failure"));
+                    if (vanguardsAdv != null && !player.getAdvancementTracker().getProgress(vanguardsAdv).isDone()) {
+                        double dx = px - 70560, dz = pz - 7461;
+                        if (dx * dx + dz * dz <= 200.0 * 200.0) {
+                            player.getAdvancementTracker().grantCriterion(vanguardsAdv, "entered_area");
                         }
                     }
                 }
 
-                if (ActorManager.offScriptCooldowns.getOrDefault(id, 0) <= 0 && !ActorManager.offScriptActive.contains(id)) {
-                    boolean inCombat = (server.getTicks() - ActorManager.lastDamageTicks.getOrDefault(id, 0L)) <= 100;
-                    if (player.isSneaking() && inCombat) {
-                        int sneakTicks = ActorManager.actorSneakTicks.merge(id, 1, Integer::sum);
-                        if (sneakTicks >= 40) {
-                            ActorManager.offScriptActive.add(id);
-                            ActorManager.actorSneakTicks.remove(id);
-                            ActorManager.offScriptCooldowns.put(id, 600);
-                            if (!player.hasStatusEffect(StatusEffects.INVISIBILITY)) {
-                                player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 100, 0, false, false, false));
-                                ActorManager.offScriptAddedInvis.add(id);
-                            }
-                            player.addStatusEffect(new StatusEffectInstance(ModEffects.OFF_SCRIPT_FLAG, 100, 0, false, false, true));
-
-                            StatusEffectInstance flagEffect = player.getStatusEffect(ModEffects.OFF_SCRIPT_FLAG);
-                            if (flagEffect != null) {
-                                EntityStatusEffectS2CPacket flagPacket = new EntityStatusEffectS2CPacket(player.getId(), flagEffect);
-                                for (ServerPlayerEntity tracker : PlayerLookup.tracking(player)) {
-                                    tracker.networkHandler.sendPacket(flagPacket);
-                                }
-                            }
+                if (player.getWorld().getRegistryKey().equals(ModDimensions.VERDANT_MEMORY_KEY)) {
+                    Advancement goodAdv = server.getAdvancementLoader().get(new Identifier("masks-n-glory", "good_as_new"));
+                    if (goodAdv != null && !player.getAdvancementTracker().getProgress(goodAdv).isDone()) {
+                        double dx = player.getX(), dz = player.getZ();
+                        if (dx * dx + dz * dz <= 200.0 * 200.0) {
+                            player.getAdvancementTracker().grantCriterion(goodAdv, "entered_area");
                         }
-                    } else {
-                        ActorManager.actorSneakTicks.remove(id);
                     }
                 }
             }
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            List<ServerPlayerEntity> allPlayers = server.getPlayerManager().getPlayerList();
-            Set<UUID> shouldHaveEffect = new HashSet<>();
+            if (server.getTicks() % 20 != 0) return;
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                if (!player.getWorld().getRegistryKey().equals(World.OVERWORLD)) continue;
+                double px = player.getX(), pz = player.getZ();
 
-            for (ServerPlayerEntity player : allPlayers) {
-                ItemStack helmet = player.getEquippedStack(EquipmentSlot.HEAD);
-                if (!helmet.isOf(ModItems.PALE_HELMET)) continue;
-                if (EnchantmentHelper.getLevel(ModEnchantments.STUNT_DOUBLE, helmet) <= 0) continue;
-                Vec3d pos = player.getPos();
-                for (ServerPlayerEntity nearby : allPlayers) {
-                    if (nearby.getWorld() != player.getWorld()) continue;
-                    if (nearby.squaredDistanceTo(pos) <= 225.0) {
-                        shouldHaveEffect.add(nearby.getUuid());
+                if (FarlandsHelper.isInFarlands(px, pz)) {
+                    ServerWorld world = (ServerWorld) player.getWorld();
+                    BlockPos center = player.getBlockPos();
+
+                    for (int dx = -4; dx <= 4; dx++) {
+                        for (int dz = -4; dz <= 4; dz++) {
+                            int cx = player.getChunkPos().x + dx;
+                            int cz = player.getChunkPos().z + dz;
+                            int startX = cx << 4;
+                            int startZ = cz << 4;
+
+                            long houseSeed = ((long) startX * 123456789L) ^ ((long) startZ * 987654321L);
+                            net.minecraft.util.math.random.Random houseRandom = net.minecraft.util.math.random.Random.create(houseSeed);
+
+                            if (houseRandom.nextInt(500) != 0) continue;
+
+                            int houseX = startX + houseRandom.nextInt(10);
+                            int houseZ = startZ + houseRandom.nextInt(10);
+
+                            int houseY = -1;
+                            for (int y = world.getTopY() - 1; y >= world.getBottomY(); y--) {
+                                if (FarlandsHelper.isSolid(houseX + 3, y, houseZ + 2)) {
+                                    houseY = y + 1;
+                                    break;
+                                }
+                            }
+                            if (houseY < world.getBottomY() + 5 || houseY > world.getTopY() - 10) continue;
+
+                            BlockPos spawnPos = new BlockPos(houseX + 4, houseY + 1, houseZ + 3);
+                            List<ArmorStandThingEntity> existing = world.getEntitiesByClass(
+                                    ArmorStandThingEntity.class, new Box(spawnPos).expand(10), e -> true);
+                            if (!existing.isEmpty()) continue;
+
+                            ArmorStandThingEntity entity = new ArmorStandThingEntity(
+                                    ModEntityTypes.ARMOR_STAND_THING_TYPE, world);
+                            entity.refreshPositionAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 90, 0);
+                            world.spawnEntity(entity);
+                        }
                     }
-                }
-            }
-
-            for (ServerPlayerEntity player : allPlayers) {
-                boolean has = player.hasStatusEffect(ModEffects.STUNT_DOUBLE);
-                boolean should = shouldHaveEffect.contains(player.getUuid());
-                if (should && !has) {
-                    player.addStatusEffect(new StatusEffectInstance(ModEffects.STUNT_DOUBLE, Integer.MAX_VALUE, 0, false, false, true));
-                } else if (!should && has) {
-                    player.removeStatusEffect(ModEffects.STUNT_DOUBLE);
                 }
             }
         });
-
-        ServerPlayNetworking.registerGlobalReceiver(
-                new Identifier("masks-n-glory", "cycle_glaive_mode"),
-                (server, player, handler, buf, responseSender) -> server.execute(() -> {
-                    for (int i = 0; i < player.getInventory().size(); i++) {
-                        net.minecraft.item.ItemStack s = player.getInventory().getStack(i);
-                        if (s.getItem() instanceof net.vainnglory.masksnglory.item.custom.GlaiveItem
-                                && net.minecraft.enchantment.EnchantmentHelper.getLevel(
-                                net.vainnglory.masksnglory.enchantments.ModEnchantments.AFTERLIFE, s) > 0) {
-                            AfterlifeEnchantment.cycleMode(s);
-                            break;
-                        }
-                    }
-                })
-        );
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (entity instanceof LlamaEntity && hand == Hand.MAIN_HAND && !world.isClient()) {
@@ -557,10 +602,12 @@ public class MasksNGlory implements ModInitializer {
                 }
             }
 
+            int leatherCost = 5;
+
             Box searchBox = endermite.getBoundingBox().expand(2.0);
             List<ItemEntity> nearbyItems = world.getEntitiesByType(EntityType.ITEM, searchBox, e -> true);
 
-            int leatherNeeded = 4;
+            int leatherNeeded = leatherCost;
             boolean ingotNeeded = true;
             List<ItemEntity> leatherEntities = new ArrayList<>();
             ItemEntity ingotEntity = null;
@@ -578,7 +625,7 @@ public class MasksNGlory implements ModInitializer {
 
             if (leatherNeeded > 0 || ingotNeeded) return ActionResult.PASS;
 
-            int toConsume = 4;
+            int toConsume = leatherCost;
             for (ItemEntity itemEntity : leatherEntities) {
                 if (toConsume <= 0) break;
                 ItemStack stack = itemEntity.getStack();
@@ -671,7 +718,7 @@ public class MasksNGlory implements ModInitializer {
 
         ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
             if (entity instanceof ServerPlayerEntity victim && source.getAttacker() instanceof ServerPlayerEntity dealer) {
-                GoldenScrapManager.recordDamage(dealer.getUuid(), victim.getUuid(), amount);
+                GoldenScrap.recordDamage(dealer.getUuid(), victim.getUuid(), amount);
             }
             return true;
         });
@@ -679,150 +726,14 @@ public class MasksNGlory implements ModInitializer {
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (entity instanceof ServerPlayerEntity victim) {
                 if (damageSource.getAttacker() instanceof ServerPlayerEntity killer) {
-                    GoldenScrapManager.handleKill(killer, victim);
+                    GoldenScrap.handleKill(killer, victim);
                 }
-                if (GoldenScrapManager.isMarkedForHealthPenalty(victim.getUuid())) {
-                    GoldenScrapManager.applyHealthPenalty(victim);
-                    GoldenScrapManager.startHealthPenaltyTimer(victim.getUuid());
+                if (GoldenScrap.isMarkedForHealthPenalty(victim.getUuid())) {
+                    GoldenScrap.applyHealthPenalty(victim);
+                    GoldenScrap.startHealthPenaltyTimer(victim.getUuid());
                 }
-                GoldenScrapManager.resetProgress(victim.getUuid());
-                GoldenScrapManager.cleanupAfterDeath(victim.getUuid());
-            }
-        });
-
-        ServerTickEvents.END_SERVER_TICK.register(server -> AfterlifeEnchantment.tickSummonedUndead(server));
-
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            if (server.getTicks() % 20 != 0) return;
-            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                ItemStack amalgam = null;
-                for (ItemStack stack : player.getInventory().main) {
-                    if (stack.getItem() instanceof AmalgamItem && stack.getDamage() < stack.getMaxDamage()) {
-                        amalgam = stack;
-                        break;
-                    }
-                }
-                if (amalgam == null) continue;
-
-                boolean justBroke = false;
-                for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
-                    if (slot == EquipmentSlot.FEET && !player.isOnGround()) continue;
-                    if (amalgam.getDamage() >= amalgam.getMaxDamage()) break;
-                    ItemStack armor = player.getEquippedStack(slot);
-                    if (armor.isEmpty() || !armor.isDamageable() || armor.getDamage() <= 0) continue;
-                    armor.setDamage(armor.getDamage() - 1);
-                    int prev = amalgam.getDamage();
-                    amalgam.setDamage(Math.min(prev + 1, amalgam.getMaxDamage()));
-                    if (!justBroke && amalgam.getDamage() >= amalgam.getMaxDamage() && prev < amalgam.getMaxDamage()) {
-                        justBroke = true;
-                    }
-                }
-                if (justBroke) {
-                    player.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
-                }
-            }
-        });
-
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                if (!player.hasStatusEffect(ModEffects.NULL_EFFECT)) continue;
-                for (ItemStack stack : player.getInventory().main) {
-                    if (stack.getItem() instanceof AmalgamItem && stack.getDamage() < stack.getMaxDamage()) {
-                        player.removeStatusEffect(ModEffects.NULL_EFFECT);
-                        break;
-                    }
-                }
-            }
-        });
-
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            if (server.getTicks() % 20 != 0) return;
-            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                if (!player.getWorld().getRegistryKey().equals(World.OVERWORLD)) continue;
-                double px = player.getX(), pz = player.getZ();
-
-                if (FarlandsHelper.isInFarlands(px, pz)) {
-                    Advancement enterAdv = server.getAdvancementLoader().get(new Identifier("masks-n-glory", "farlands_enter"));
-                    if (enterAdv != null && !player.getAdvancementTracker().getProgress(enterAdv).isDone()) {
-                        player.getAdvancementTracker().grantCriterion(enterAdv, "entered_farlands");
-                    }
-                }
-
-                if (!FarlandsHelper.isInFarlands(px, pz)) continue;
-                ServerWorld world = (ServerWorld) player.getWorld();
-                BlockPos center = player.getBlockPos();
-
-                Advancement houseAdv = server.getAdvancementLoader().get(new Identifier("masks-n-glory", "farlands_house"));
-                if (houseAdv != null && !player.getAdvancementTracker().getProgress(houseAdv).isDone()) {
-                    for (BlockPos pos : BlockPos.iterate(center.add(-8, -8, -8), center.add(8, 8, 8))) {
-                        if (world.getBlockState(pos).isOf(Blocks.COBWEB)) {
-                            player.getAdvancementTracker().grantCriterion(houseAdv, "approached_house");
-                            break;
-                        }
-                    }
-                }
-
-                Advancement portalAdv = server.getAdvancementLoader().get(new Identifier("masks-n-glory", "farlands_portal"));
-                if (portalAdv != null && !player.getAdvancementTracker().getProgress(portalAdv).isDone()) {
-                    for (BlockPos pos : BlockPos.iterate(center.add(-8, -8, -8), center.add(8, 8, 8))) {
-                        if (world.getBlockState(pos).isOf(Blocks.BARRIER)) {
-                            player.getAdvancementTracker().grantCriterion(portalAdv, "approached_portal");
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            ServerWorld world = server.getOverworld();
-
-            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                if (!FarlandsHelper.isInFarlands(player.getX(), player.getZ())) continue;
-
-                long currentChunk = player.getChunkPos().toLong();
-                if (currentChunk == lastPlayerChunk.getOrDefault(player.getUuid(), Long.MIN_VALUE)) continue;
-                lastPlayerChunk.put(player.getUuid(), currentChunk);
-
-                int pcx = player.getChunkPos().x;
-                int pcz = player.getChunkPos().z;
-
-                for (int dx = -4; dx <= 4; dx++) {
-                    for (int dz = -4; dz <= 4; dz++) {
-                        int cx = pcx + dx;
-                        int cz = pcz + dz;
-
-                        int startX = cx << 4;
-                        int startZ = cz << 4;
-
-                        long houseSeed = ((long) startX * 123456789L) ^ ((long) startZ * 987654321L);
-                        net.minecraft.util.math.random.Random houseRandom = net.minecraft.util.math.random.Random.create(houseSeed);
-
-                        if (houseRandom.nextInt(500) != 0) continue;
-
-                        int houseX = startX + houseRandom.nextInt(10);
-                        int houseZ = startZ + houseRandom.nextInt(10);
-
-                        int houseY = -1;
-                        for (int y = world.getTopY() - 1; y >= world.getBottomY(); y--) {
-                            if (FarlandsHelper.isSolid(houseX + 3, y, houseZ + 2)) {
-                                houseY = y + 1;
-                                break;
-                            }
-                        }
-                        if (houseY < world.getBottomY() + 5 || houseY > world.getTopY() - 10) continue;
-
-                        BlockPos spawnPos = new BlockPos(houseX + 4, houseY + 1, houseZ + 3);
-                        List<ArmorStandThingEntity> existing = world.getEntitiesByClass(
-                                ArmorStandThingEntity.class, new Box(spawnPos).expand(10), e -> true);
-                        if (!existing.isEmpty()) continue;
-
-                        ArmorStandThingEntity entity = new ArmorStandThingEntity(
-                                ModEntityTypes.ARMOR_STAND_THING_TYPE, world);
-                        entity.refreshPositionAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 90, 0);
-                        world.spawnEntity(entity);
-                    }
-                }
+                GoldenScrap.resetProgress(victim.getUuid());
+                GoldenScrap.cleanupAfterDeath(victim.getUuid());
             }
         });
 

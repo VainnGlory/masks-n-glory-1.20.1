@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.world.FarlandsHelper;
-import net.vainnglory.masksnglory.world.FarlandsPortalManager;
+import net.vainnglory.masksnglory.world.FarlandsPortal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,6 +32,6 @@ public class FarlandsPortalItemMixin {
 
         Vec3d dropPos = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         itemEntity.discard();
-        FarlandsPortalManager.startCorruption((ServerWorld) world, dropPos);
+        FarlandsPortal.startCorruption((ServerWorld) world, dropPos);
     }
 }

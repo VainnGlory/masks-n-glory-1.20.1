@@ -9,7 +9,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.item.custom.BoneKnifeItem;
-import net.vainnglory.masksnglory.util.BoneKnifeParryManager;
+import net.vainnglory.masksnglory.util.Parry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -41,7 +41,7 @@ public class BowParryMixin {
                 .orElse(null);
 
         if (closest != null) {
-            BoneKnifeParryManager.registerArrow(player.getUuid(), closest, world.getTime());
+            Parry.registerArrow(player.getUuid(), closest, world.getTime());
         }
     }
 
@@ -51,7 +51,7 @@ public class BowParryMixin {
         if (hand != Hand.MAIN_HAND) return;
         if (!(user.getOffHandStack().getItem() instanceof BoneKnifeItem)) return;
 
-        if (BoneKnifeParryManager.tryParry(user, world)) {
+        if (Parry.tryParry(user, world)) {
             cir.setReturnValue(TypedActionResult.fail(user.getStackInHand(hand)));
         }
     }

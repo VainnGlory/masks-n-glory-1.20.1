@@ -11,6 +11,8 @@ import net.minecraft.util.Rarity;
 import net.vainnglory.masksnglory.MasksNGlory;
 import net.vainnglory.masksnglory.item.custom.*;
 import net.vainnglory.masksnglory.util.ModRarities;
+import net.vainnglory.masksnglory.item.custom.StabShotItem;
+import net.vainnglory.masksnglory.item.custom.NukeShotItem;
 
 
 public class ModItems {
@@ -85,6 +87,12 @@ public class ModItems {
     public static final Item ROSENSHARD = registerItem("rosenshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
     public static final Item ROSEN_BLINDFOLD = registerItem("rosen_blindfold",
             new ModArmorItem(ModArmorMaterials.ROSENM, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
+    public static final Item RAT_MASK = registerItem("rat_mask",
+            new ModArmorItem(ModArmorMaterials.RATSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
+    public static final Item VSHARD = registerItem("vshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
+    public static final Item LUNERI_HEADPHONES = registerItem("luneri_headphones",
+            new ModArmorItem(ModArmorMaterials.VSHARD, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.SPECIAL));
+    public static final Item RATSHARD = registerItem("ratshard", new Item(new FabricItemSettings().rarity(Rarity.EPIC)));
 
     public static final Item PALE_HELMET = registerItem("pale_helmet",
             new ModArmorItem(ModArmorMaterials.RUSTED, ArmorItem.Type.HELMET, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
@@ -123,6 +131,10 @@ public class ModItems {
             new PaleWarPickaxeItem(ModToolMaterial.RUSTED, 3, -2.4f, new FabricItemSettings().maxCount(1).fireproof(), ModRarities.PALE));
     public static final Item PANICKEDLY_CARVED_WOODEN_SWORD = registerItem("panickedly_carved_wooden_sword",
             new PanickEdlyCarvedWoodenSword(new FabricItemSettings().maxCount(1)));
+    public static final Item STAB_SHOT = registerItem("stab_shot",
+            new StabShotItem(new FabricItemSettings().maxCount(1).fireproof()));
+    public static final Item NUKE_SHOT = registerItem("nuke_shot",
+            new NukeShotItem(new FabricItemSettings().maxCount(1).fireproof()));
 
     public static final Item PALE_TEMPLATE = PaleTemplateItem.createPaleUpgrade();
 

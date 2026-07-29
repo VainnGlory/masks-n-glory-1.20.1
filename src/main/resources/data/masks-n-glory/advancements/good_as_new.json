@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": { "item": "minecraft:recovery_compass" },
+    "title": "good as new",
+    "description": "as if nothing happened.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "entered_area": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

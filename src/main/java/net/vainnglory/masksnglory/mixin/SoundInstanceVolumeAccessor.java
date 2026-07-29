@@ -7,5 +7,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(AbstractSoundInstance.class)
 public interface SoundInstanceVolumeAccessor {
     @Accessor("volume")
+    float masksnglory$getVolume();
+
+    @Accessor("volume")
     void masksnglory$setVolume(float volume);
 }

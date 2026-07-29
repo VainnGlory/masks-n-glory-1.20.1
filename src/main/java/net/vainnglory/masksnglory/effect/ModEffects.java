@@ -19,6 +19,7 @@ public class ModEffects {
     public static final StatusEffect WARDEN = new WardenEffect();
     public static final StatusEffect INSOMNIA = new InsomniaEffect();
     public static final StatusEffect DEAFENED = new DeafenedEffect();
+    public static final StatusEffect MANIA = new ManiaEffect();
 
     public static void registerEffects() {
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "pinning"), PINNING);
@@ -34,5 +35,6 @@ public class ModEffects {
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "wardeneffect"), WARDEN);
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "insomnia"), INSOMNIA);
         Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "deafened"), DEAFENED);
+        Registry.register(Registries.STATUS_EFFECT, new Identifier("masks-n-glory", "mania"), MANIA);
     }
 }

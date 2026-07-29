@@ -6,6 +6,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.vainnglory.masksnglory.world.FarlandsHelper;
 import net.vainnglory.masksnglory.world.ModDimensions;
 import org.joml.Matrix4f;
@@ -26,9 +27,9 @@ public class FarlandsSkyBrightnessMixin {
     private Vec3d masksnglory$farlandsSkyColor(ClientWorld world, Vec3d cameraPos, float tickDelta) {
         Vec3d original = world.getSkyColor(cameraPos, tickDelta);
         float skyAngle = world.getSkyAngle(tickDelta);
+        double t = MathHelper.clamp(MathHelper.cos(skyAngle * ((float) Math.PI * 2.0f)) * 2.0f + 0.5f, 0.0f, 1.0f);
 
         if (world.getRegistryKey().equals(ModDimensions.VERDANT_MEMORY_KEY)) {
-            double t = MathHelper.clamp(MathHelper.cos(skyAngle * ((float) Math.PI * 2.0f)) * 2.0f + 0.5f, 0.0f, 1.0f);
             return new Vec3d(
                     VERDANT_DAY.x * t + VERDANT_NIGHT.x * (1.0 - t),
                     VERDANT_DAY.y * t + VERDANT_NIGHT.y * (1.0 - t),
@@ -36,18 +37,20 @@ public class FarlandsSkyBrightnessMixin {
             );
         }
 
-        if (!FarlandsHelper.isInFarlands(cameraPos.x, cameraPos.z)) {
-            return original;
-        }
+        if (!world.getRegistryKey().equals(World.OVERWORLD)) return original;
+        if (!FarlandsHelper.isInFarlands(cameraPos.x, cameraPos.z)) return original;
+
         float naturalBrightness = MathHelper.clamp(MathHelper.cos(skyAngle * ((float) Math.PI * 2.0f)) * 2.0f + 0.5f, 0.0f, 1.0f);
-        double t = Math.min(1.0, Math.max(0.0, naturalBrightness / 0.3));
-        double nightR = 219.0 / 255.0;
-        double nightG = 212.0 / 255.0;
-        double nightB = 220.0 / 255.0;
+        double ft = Math.min(1.0, Math.max(0.0, naturalBrightness / 0.3));
+        double nightR = 219.0 / 255.0, nightG = 212.0 / 255.0, nightB = 220.0 / 255.0;
+        double tintedR = nightR + (original.x - nightR) * ft;
+        double tintedG = nightG + (original.y - nightG) * ft;
+        double tintedB = nightB + (original.z - nightB) * ft;
+        double strength = 0.7;
         return new Vec3d(
-                nightR + (original.x - nightR) * t,
-                nightG + (original.y - nightG) * t,
-                nightB + (original.z - nightB) * t
+                original.x + (tintedR - original.x) * strength,
+                original.y + (tintedG - original.y) * strength,
+                original.z + (tintedB - original.z) * strength
         );
     }
 }

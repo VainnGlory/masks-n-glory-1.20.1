@@ -16,15 +16,18 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.effect.ModEffects;
 import net.vainnglory.masksnglory.enchantments.ModEnchantments;
 import net.vainnglory.masksnglory.enchantments.TemperEnchantment;
+import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.RetributionHelmet;
 import net.vainnglory.masksnglory.util.ActorManager;
+import net.vainnglory.masksnglory.util.MaskAbilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -152,6 +155,24 @@ public abstract class LivingEntityMixin extends Entity {
         if (self.hasStatusEffect(ModEffects.SEIZED)) {
             ci.cancel();
         }
+    }
+
+    @Inject(method = "jump", at = @At("TAIL"))
+    private void masksnglory$rosenSprintJump(CallbackInfo ci) {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (!(self instanceof PlayerEntity player)) return;
+        if (MaskAbilities.getMaskMaterial(player) != ModArmorMaterials.ROSENM) return;
+        if (player.isSprinting()) return;
+
+        double horizSpeedSq = player.getVelocity().x * player.getVelocity().x
+                + player.getVelocity().z * player.getVelocity().z;
+        if (horizSpeedSq < 0.01) return;
+
+        float yawRad = player.getYaw() * (float) (Math.PI / 180.0);
+        self.setVelocity(self.getVelocity().add(
+                -MathHelper.sin(yawRad) * 0.2f,
+                0.0,
+                MathHelper.cos(yawRad) * 0.2f));
     }
 
     @Inject(method = "setSprinting", at = @At("HEAD"), cancellable = true)

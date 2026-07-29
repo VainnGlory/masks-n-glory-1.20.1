@@ -5,7 +5,7 @@ import net.minecraft.client.sound.MusicTracker;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
-import net.vainnglory.masksnglory.util.FarlandsMusicManager;
+import net.vainnglory.masksnglory.util.FarlandsMusic;
 import net.vainnglory.masksnglory.world.FarlandsHelper;
 import net.vainnglory.masksnglory.world.ModDimensions;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,7 +38,7 @@ public class FarlandsMusicTrackerMixin {
         MusicTrackerAccessor self = (MusicTrackerAccessor)(Object)this;
         SoundInstance current = self.masksnglory$getCurrentMusic();
 
-        if (FarlandsMusicManager.isFarlandsMusic(current)) return;
+        if (FarlandsMusic.isFarlandsMusic(current)) return;
 
         if (current != null) {
             client.getSoundManager().stopSounds(null, SoundCategory.MUSIC);
