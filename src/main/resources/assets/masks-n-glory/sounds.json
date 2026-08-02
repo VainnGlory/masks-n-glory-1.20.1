@@ -14,6 +14,12 @@
     ],
     "subtitle": "masks-n-glory.subtitles.item.pan.hit"
   },
+    "item.pan.superslam": {
+      "sounds": [
+        "masks-n-glory:item/pan_superslam"
+      ],
+      "subtitle": "masks-n-glory.subtitles.item.pan.superslam"
+  },
   "item.bone.hit": {
     "sounds": [
       "masks-n-glory:item/bone_hit_1",

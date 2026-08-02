@@ -84,7 +84,7 @@ public class LuneriSwap {
             target.refreshPositionAndAngles(px, py, pz, target.getYaw(), target.getPitch());
         }
 
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 0, false, true, true));
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 0, false, true, true));
 
         cooldowns.put(id, now);
     }

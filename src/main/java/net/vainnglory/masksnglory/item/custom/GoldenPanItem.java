@@ -47,9 +47,7 @@ import net.vainnglory.masksnglory.util.ModRarities;
 import net.vainnglory.masksnglory.util.ModDeathSource;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Queue;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSoundItem, ModDeathSource {
@@ -73,6 +71,7 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
     private static final long TICKS_PER_REPAIR_WATER = 100L;
     private static final float DENT_PENALTY = 0.08f;
     private static final int HITS_TO_REPAIR = 2;
+    private static final Map<UUID, Long> suppressHitSoundTick = new HashMap<>();
 
     private final float attackDamage;
     private final ModRarities rarity;
@@ -131,6 +130,15 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             }
         }
         return fd;
+    }
+
+    public static void suppressNextHitSound(PlayerEntity player) {
+        suppressHitSoundTick.put(player.getUuid(), player.getWorld().getTime());
+    }
+
+    public static boolean consumeHitSoundSuppression(PlayerEntity player) {
+        Long tick = suppressHitSoundTick.remove(player.getUuid());
+        return tick != null && tick == player.getWorld().getTime();
     }
 
     @Override
@@ -635,12 +643,13 @@ public class GoldenPanItem extends SwordItem implements Vanishable, CustomHitSou
             player.velocityModified = true;
 
             if (capturedFallDistance >= SLAM_SOUND_THRESHOLD) {
+                suppressNextHitSound(player);
                 serverWorld.playSound(
                         null,
                         pos.x, pos.y, pos.z,
-                        SoundEvents.BLOCK_ANVIL_LAND,
+                        MasksNGlorySounds.ITEM_PAN_SUPERSLAM,
                         SoundCategory.PLAYERS,
-                        6.0f, 0.85f
+                        6.0f, 1.0f
                 );
             }
 

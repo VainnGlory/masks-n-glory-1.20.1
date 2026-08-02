@@ -116,6 +116,8 @@ public class MasksNGloryclient implements ClientModInitializer {
         MemoryAmbience.register();
         ManiaOverlay.register();
         GreaseEffectPacket.registerClientReceiver();
+        AtychiphobiaPacket.registerClientReceiver();
+        AtychiphobiaOverlay.register();
 
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, renderer, registrationHelper, context) -> {
             if (entityType == EntityType.PLAYER) {

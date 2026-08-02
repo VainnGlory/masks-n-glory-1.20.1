@@ -13,6 +13,7 @@ public interface MasksNGlorySounds {
     Map<SoundEvent, Identifier> SOUND_EVENTS = new LinkedHashMap<>();
 
     SoundEvent ITEM_PAN_HIT = createSoundEvent("item.pan.hit");
+    SoundEvent ITEM_PAN_SUPERSLAM = createSoundEvent("item.pan.superslam");
     SoundEvent ITEM_RUSTED_HIT = createSoundEvent("item.rusted.hit");
     SoundEvent ITEM_PALE_HIT = createSoundEvent("item.pale.hit");
     SoundEvent ITEM_BONE_HIT = createSoundEvent("item.bone.hit");

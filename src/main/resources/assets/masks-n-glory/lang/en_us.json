@@ -126,7 +126,8 @@
   "painting.masks-n-glory.stop.title": "Stop Impressing The Dead",
 
   "enchantment.masks-n-glory.fear": "Atychiphobia",
-  "enchantment.masks-n-glory.fear.desc": "Give the opponent weakness 1 on hit",
+  "effect.masks-n-glory.atychiphobia": "Atychiphobia",
+  "enchantment.masks-n-glory.fear.desc": "Blinds both you and your target with with hyperventilation",
   "enchantment.masks-n-glory.discombobulated": "Discombobulated",
   "enchantment.masks-n-glory.discombobulated.desc": "Makes the opponent slower on hit",
   "enchantment.masks-n-glory.blunt": "Blunt",
@@ -196,6 +197,7 @@
 
 
   "masks-n-glory.subtitles.item.pan.hit": "Pan hit",
+  "masks-n-glory.subtitles.item.pan.superslam": "Pan superslam",
   "masks-n-glory.subtitles.item.pale.hit": "Greatsword hit",
   "masks-n-glory.subtitles.item.rusted.hit": "Saber/glaive hit",
   "masks-n-glory.subtitles.item.bone.hit": "Knife hit",
@@ -211,7 +213,7 @@
 
   "death.attack.pan": "%1$s was served their eggs and bakey by %2$s.",
   "death.attack.pan.player": "%1$s was served their eggs and bakey by %2$s.",
-  "death.attack.pan.item": "%1$s was served their eggs and bacon by %2$s using %3$s.",
+  "death.attack.pan.item": "%1$s was served their eggs and bakey by %2$s using %3$s.",
 
   "death.attack.rusted": "%1$s was sliced and diced by %2$s",
   "death.attack.rusted.player": "%1$s was sliced and diced by %2$s",

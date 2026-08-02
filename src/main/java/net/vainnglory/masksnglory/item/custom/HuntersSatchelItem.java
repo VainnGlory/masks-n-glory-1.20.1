@@ -1,12 +1,15 @@
 package net.vainnglory.masksnglory.item.custom;
 
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -25,6 +28,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HuntersSatchelItem extends Item {
@@ -51,6 +55,40 @@ public class HuntersSatchelItem extends Item {
     }
 
     @Override
+    public boolean canBeNested() {
+        return false;
+    }
+
+    @Override
+    public void onItemEntityDestroyed(ItemEntity entity) {
+        NbtCompound nbt = entity.getStack().getNbt();
+        if (nbt == null) return;
+
+        List<ItemStack> contents = new ArrayList<>();
+
+        NbtList items = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
+        for (int i = 0; i < items.size(); i++) {
+            contents.add(ItemStack.fromNbt(items.getCompound(i)));
+        }
+
+        NbtList armor = nbt.getList("StoredArmor", NbtElement.COMPOUND_TYPE);
+        for (int i = 0; i < armor.size(); i++) {
+            contents.add(ItemStack.fromNbt(armor.getCompound(i)));
+        }
+
+        if (nbt.contains("StoredPotion", NbtElement.COMPOUND_TYPE)) {
+            int count = nbt.getInt("PotionCount");
+            for (int i = 0; i < count; i++) {
+                ItemStack potion = ItemStack.fromNbt(nbt.getCompound("StoredPotion"));
+                potion.setCount(1);
+                contents.add(potion);
+            }
+        }
+
+        ItemUsage.spawnItemContents(entity, contents.stream().filter(stack -> !stack.isEmpty()));
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack satchel = player.getStackInHand(hand);
         if (world.isClient) return TypedActionResult.pass(satchel);
@@ -58,22 +96,25 @@ public class HuntersSatchelItem extends Item {
         return switch (getMode(satchel)) {
             case ARMOR -> useArmor(player, satchel);
             case POTION -> usePotion(player, satchel);
-            default -> openGui(player, satchel);
+            default -> openGui(player, satchel, hand);
         };
     }
 
-    private TypedActionResult<ItemStack> openGui(PlayerEntity player, ItemStack satchel) {
+    private TypedActionResult<ItemStack> openGui(PlayerEntity player, ItemStack satchel, Hand hand) {
+        final int lockedSlot = hand == Hand.OFF_HAND
+                ? PlayerInventory.OFF_HAND_SLOT
+                : player.getInventory().selectedSlot;
         final SimpleInventory inv = loadInventory(satchel);
-        inv.addListener(sender -> saveInventory(satchel, inv));
+
         player.playSound(SoundEvents.BLOCK_ENDER_CHEST_OPEN, SoundCategory.PLAYERS, 1.0f, 1.0f);
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory(
-                (syncId, playerInv, p) -> new SatchelScreenHandler(syncId, playerInv, inv, player),
+                (syncId, playerInv, p) -> new SatchelScreenHandler(syncId, playerInv, inv, lockedSlot),
                 Text.literal("Hunter's Satchel")
         ));
         return TypedActionResult.success(satchel);
     }
 
-    private SimpleInventory loadInventory(ItemStack satchel) {
+    private static SimpleInventory loadInventory(ItemStack satchel) {
         SimpleInventory inv = new SimpleInventory(DEFAULT_SLOTS) {
             @Override
             public boolean isValid(int slot, ItemStack stack) {
@@ -87,7 +128,7 @@ public class HuntersSatchelItem extends Item {
         return inv;
     }
 
-    private void saveInventory(ItemStack satchel, SimpleInventory inv) {
+    private static void saveInventory(ItemStack satchel, SimpleInventory inv) {
         NbtList list = new NbtList();
         for (int i = 0; i < inv.size(); i++) {
             NbtCompound c = new NbtCompound();
@@ -217,26 +258,86 @@ public class HuntersSatchelItem extends Item {
     }
 
     private static class SatchelScreenHandler extends GenericContainerScreenHandler {
-        private final PlayerEntity player;
+        private final PlayerInventory playerInventory;
+        private final SimpleInventory inv;
+        private final int lockedSlot;
 
-        SatchelScreenHandler(int syncId, PlayerInventory playerInv, SimpleInventory inv, PlayerEntity player) {
+        SatchelScreenHandler(int syncId, PlayerInventory playerInv, SimpleInventory inv, int lockedSlot) {
             super(ScreenHandlerType.GENERIC_9X1, syncId, playerInv, inv, 1);
-            this.player = player;
+            this.playerInventory = playerInv;
+            this.inv = inv;
+            this.lockedSlot = lockedSlot;
+
             for (int i = 0; i < DEFAULT_SLOTS; i++) {
                 Slot old = this.slots.get(i);
-                final int slotIndex = i;
-                this.slots.set(slotIndex, new Slot(inv, slotIndex, old.x, old.y) {
+                Slot replacement = new Slot(inv, i, old.x, old.y) {
                     @Override
                     public boolean canInsert(ItemStack stack) {
                         return !(stack.getItem() instanceof HuntersSatchelItem);
                     }
-                });
+                };
+                replacement.id = i;
+                this.slots.set(i, replacement);
             }
+
+            if (lockedSlot >= 0 && lockedSlot < 9) {
+                int screenSlot = DEFAULT_SLOTS + 27 + lockedSlot;
+                Slot old = this.slots.get(screenSlot);
+                Slot replacement = new Slot(playerInv, lockedSlot, old.x, old.y) {
+                    @Override
+                    public boolean canInsert(ItemStack stack) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean canTakeItems(PlayerEntity player) {
+                        return false;
+                    }
+                };
+                replacement.id = screenSlot;
+                this.slots.set(screenSlot, replacement);
+            }
+
+            inv.addListener(sender -> this.persist());
+        }
+
+        private ItemStack resolveSatchel() {
+            ItemStack stack = this.playerInventory.getStack(this.lockedSlot);
+            return stack.getItem() instanceof HuntersSatchelItem ? stack : ItemStack.EMPTY;
+        }
+
+        private void persist() {
+            ItemStack satchel = resolveSatchel();
+            if (!satchel.isEmpty()) {
+                saveInventory(satchel, this.inv);
+            }
+        }
+
+        @Override
+        public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+            if (actionType == SlotActionType.SWAP && button == this.lockedSlot) {
+                return;
+            }
+            super.onSlotClick(slotIndex, button, actionType, player);
         }
 
         @Override
         public void onClosed(PlayerEntity player) {
             super.onClosed(player);
+
+            ItemStack satchel = resolveSatchel();
+            if (!satchel.isEmpty()) {
+                saveInventory(satchel, this.inv);
+            } else {
+                for (int i = 0; i < this.inv.size(); i++) {
+                    ItemStack stack = this.inv.getStack(i);
+                    if (!stack.isEmpty()) {
+                        player.getInventory().offerOrDrop(stack);
+                    }
+                }
+                this.inv.clear();
+            }
+
             player.playSound(SoundEvents.BLOCK_ENDER_CHEST_CLOSE, SoundCategory.PLAYERS, 1.0f, 1.0f);
         }
     }

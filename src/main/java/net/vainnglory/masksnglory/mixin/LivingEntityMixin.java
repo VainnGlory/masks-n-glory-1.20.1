@@ -27,6 +27,7 @@ import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.item.ModItems;
 import net.vainnglory.masksnglory.item.custom.RetributionHelmet;
 import net.vainnglory.masksnglory.util.ActorManager;
+import net.vainnglory.masksnglory.util.Atychiphobia;
 import net.vainnglory.masksnglory.util.MaskAbilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -201,6 +202,13 @@ public abstract class LivingEntityMixin extends Entity {
         ItemStack weapon = player.getMainHandStack();
         if (EnchantmentHelper.getLevel(ModEnchantments.TEMPER, weapon) <= 0) return;
         TemperEnchantment.onSwing(player.getUuid());
+    }
+
+    @Inject(method = "swingHand(Lnet/minecraft/util/Hand;)V", at = @At("HEAD"))
+    private void masksnglory$atychiphobiaSwingDetect(Hand hand, CallbackInfo ci) {
+        if (!(((Object) this) instanceof ServerPlayerEntity player)) return;
+        if (hand != Hand.MAIN_HAND) return;
+        Atychiphobia.tryConsumeQte(player);
     }
 
 

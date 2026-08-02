@@ -10,6 +10,7 @@ import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.world.World;
 import net.vainnglory.masksnglory.item.ModArmorMaterials;
 import net.vainnglory.masksnglory.item.custom.CustomHitSoundItem;
+import net.vainnglory.masksnglory.item.custom.GoldenPanItem;
 import net.vainnglory.masksnglory.util.ActorManager;
 import net.vainnglory.masksnglory.util.MaskAbilities;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,11 +33,14 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttackCooldownProgress(F)F"))
     private void masksnglory$PlayCustomHitSound(Entity target, CallbackInfo ci) {
-        if (!this.getWorld().isClient) {
-            if (this.getAttackCooldownProgress(0.5F) > 0.9F) {
-                if (this.getMainHandStack().getItem() instanceof CustomHitSoundItem customHitSoundItem) {
-                    customHitSoundItem.playHitSound((PlayerEntity) (Object) this);
-                }
+        if (this.getWorld().isClient) return;
+
+        PlayerEntity self = (PlayerEntity) (Object) this;
+        if (GoldenPanItem.consumeHitSoundSuppression(self)) return;
+
+        if (this.getAttackCooldownProgress(0.5F) > 0.9F) {
+            if (this.getMainHandStack().getItem() instanceof CustomHitSoundItem customHitSoundItem) {
+                customHitSoundItem.playHitSound(self);
             }
         }
     }

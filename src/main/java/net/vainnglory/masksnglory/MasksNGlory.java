@@ -131,9 +131,11 @@ public class MasksNGlory implements ModInitializer {
         PactEnchantment.registerAttackCallback();
         LockoutEnchantment.registerAttackCallback();
         TemperEnchantment.registerAttackCallback();
+        FearEnchantment.registerAttackCallback();
         TemperEnchantment.registerTickCallback();
         IncumbentEnchantment.registerAttackCallback();
         NotorietyEnchantment.registerCallbacks();
+        Atychiphobia.register();
         NotorietyCommand.register();
         Mania.register();
         CastIron.register();
